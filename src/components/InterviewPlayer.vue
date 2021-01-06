@@ -1,12 +1,11 @@
 <template>
-  <div class="interviewplayer" v-if="audioFile" @click="click">
-    <div v-if="playing">⏹️</div>
+  <div class="interviewplayer" :class="{ playing : isPlaying }" v-if="audioFile" @click="click">
+    <div v-if="isPlaying">⏹️</div>
     <div v-else>▶️</div>
-    <div>{{ seekpos }} </div>
-    <div>{{ record.fields["Date of Interview"] }}</div>
-    <div>{{ record.fields["Interviewee"] }}</div>
-    <div>{{ record.fields["Bureau Chief"] }}</div>
-    <div>{{ record.fields["Duration"] }}</div>
+    <div>Date: {{ record.fields["Date of Interview"] }}</div>
+    <div v-if="bureau_chief">Bureau Chief: {{ bureau_chief.fields["Name"] }}</div>
+    <div v-if="interviewee">Interviewee: {{ interviewee.fields["Name"] }}</div>
+    <div>Duration: {{ record.fields["Duration"] }}</div>
     <slot></slot>
   </div>
 </template>
@@ -35,7 +34,7 @@ export default {
     },
     click() {
       console.log("so you clicked on me", this.audioFile)
-      if(this.playing) {
+      if(this.isPlaying) {
         this.sound.pause();
       } else {
         Howler.stop()
@@ -48,7 +47,7 @@ export default {
     },
   },
   computed: {
-    playing() {
+    isPlaying() {
       try { 
         return this.sound.playing();
       } catch {
@@ -62,13 +61,24 @@ export default {
         return 0;
       }
     },
-    records() {
-      return this.$store.state.records;
+    interviews() {
+      return this.$store.getters.interviews;
+    },
+    people() {
+      return this.$store.getters.people;
+    },
+    bureau_chief() {
+      try { return this.people[this.record.fields["Bureau Chief"]];   } 
+      catch { return undefined;  }
+    },
+    interviewee() {
+      try { return this.people[this.record.fields["Interviewee"]];   } 
+      catch { return undefined;  }
     },
     record() {
-      try {
-        return this.records.filter(r => { return r.id == this.id })[0];
-      } catch {
+      if(this.id in this.interviews) {
+        return this.interviews[this.id];
+      } else {
         return undefined;
       }
     },
@@ -86,11 +96,17 @@ export default {
 
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 
 .interviewplayer {
-  background-color: red;
+  padding: 20px;
+  background-color: #AFF;
+  border-radius: 30px;
   cursor: pointer;
+
+  &.playing {
+    background-color: #AFA;
+  }
 }
 
 </style>

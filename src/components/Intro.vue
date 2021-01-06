@@ -2,7 +2,7 @@
   <div class="about">
 
     <div class="entries">
-      <div class="entry" v-for="record in records" v-bind:key="record.id">
+      <div class="entry" v-for="record in interviews" v-bind:key="record.id">
         <InterviewBlob :id="record.id" >
           <InterviewPlayer :id="record.id" />
         </InterviewBlob>
@@ -27,12 +27,12 @@ export default {
     InterviewPlayer,
   },
   computed: {
-    records() {
-      return this.$store.state.records;
+    interviews() {
+      return this.$store.getters.interviews;
     },
     allFields() {
       try { 
-        return Object.keys(this.records[0].fields)
+        return Object.keys(this.interviews[0].fields)
       } catch {
         return []
       }

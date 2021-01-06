@@ -18,13 +18,13 @@ export default {
     };
   },
   computed: {
-    records() {
-      return this.$store.state.records;
+    interviews() {
+      return this.$store.getters.interviews;
     },
     record() {
-      try {
-        return this.records.filter(r => { return r.id == this.id })[0];
-      } catch {
+      if(this.id in this.interviews) {
+        return this.interviews[this.id];
+      } else {
         return undefined;
       }
     },
