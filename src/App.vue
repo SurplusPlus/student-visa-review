@@ -48,17 +48,5 @@ body {
   padding: 1em;
 }
 
-@media only screen and (max-width: 1020px) {
-  #app {
-    display: none;
-  }
-
-  #mobile {
-    color: green;
-    display: block !important;
-    font-size: 3em;
-  }
-}
-
 
 </style>
