@@ -2,7 +2,7 @@
   <div class="nav">
     NAV
       <router-link :to="{ name: 'Intro' }">Intro</router-link>
-      <router-link :to="{ name: 'HelloWorld' }">HelloWorld</router-link>
+      <router-link :to="{ name: 'ListView' }">ListView</router-link>
   </div>
 </template>
 

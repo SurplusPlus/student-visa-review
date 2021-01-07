@@ -1,7 +1,7 @@
 <template>
   <div class="interviewblob">
     <slot></slot>
-      <svg width="200" height="200">
+      <svg width="200" height="200" viewBox="0 0 200 200">
         <g>
           <path class="blobpath" :d="points"></path>
         </g>
@@ -128,6 +128,10 @@ function random(min, max) {
 <style scoped>
 
 .interviewblob {
+}
+svg {
+  width: 100%;
+  height: auto;
 }
 
 </style>

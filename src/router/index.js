@@ -7,7 +7,7 @@ import store from '@/store'
 
 import Nav from "@/components/Nav.vue";
 import Intro from "@/components/Intro.vue";
-import HelloWorld from "@/components/HelloWorld.vue";
+import ListView from "@/components/ListView.vue";
 
 Vue.use(VueRouter);
 
@@ -27,11 +27,11 @@ const routes = [
     }
   },
   {
-    path: "/helloworld",
-    name: "HelloWorld",
+    path: "/list",
+    name: "ListView",
     components: {
       nav: Nav,
-      view: HelloWorld,
+      view: ListView,
     },
   },
 ];
