@@ -1,11 +1,5 @@
 <template>
-  <div class="interviewplayer" :class="{ playing : isPlaying }" v-if="audioFile" @click="click">
-    <div v-if="isPlaying">⏹️</div>
-    <div v-else>▶️</div>
-    <div>Date: {{ record.fields["Date of Interview"] }}</div>
-    <div v-if="bureau_chief">Bureau Chief: {{ bureau_chief.fields["Name"] }}</div>
-    <div v-if="interviewee">Interviewee: {{ interviewee.fields["Name"] }}</div>
-    <div>Duration: {{ record.fields["Duration"] }}</div>
+  <div class="soundpoint" :class="{ playing : isPlaying }" v-if="audioFile" @click="click">
     <slot></slot>
   </div>
 </template>
@@ -16,11 +10,13 @@ import {Howl, Howler} from 'howler';
 
 
 export default {
-  name: "InterviewPlayer",
+  name: "SoundPoint",
   props: ['id'],
   data() {
     return {
       sound: undefined,
+      playnext: false,
+      status: "stopped",
     };
   },
   mounted() {
@@ -28,23 +24,23 @@ export default {
   },
   methods: {
     initAudio() {
+      if(this.sound) { return; }
       this.sound = new Howl({
         src: this.audioFile,
         pos: [this.record.fields["x"], this.record.fields["y"], 0],
+        html5: true,
+        autoplay: true,
+        loop: true,
       });
     },
     click() {
       console.log("so you clicked on me", this.audioFile)
       if(this.isPlaying) {
         this.sound.pause();
+        Howler.stop() 
       } else {
-        Howler.stop()
         this.sound.play();
       }
-      console.log(this.$el)
-      console.log(this.$el.top)
-      console.log(this.$el.getBoundingClientRect().left)
-      console.log(this.$el.getBoundingClientRect().top)
     },
   },
   computed: {
@@ -99,10 +95,7 @@ export default {
 
 <style lang="scss" scoped>
 
-.interviewplayer {
-  padding: 20px;
-  background-color: #AFF;
-  border-radius: 30px;
+.soundpoint {
   cursor: pointer;
 
   &.playing {

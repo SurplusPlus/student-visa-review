@@ -1,8 +1,8 @@
 <template>
   <div class="nav">
-    NAV
       <router-link :to="{ name: 'Intro' }">Intro</router-link>
       <router-link :to="{ name: 'ListView' }">ListView</router-link>
+      <router-link :to="{ name: 'Landscape' }">Landscape</router-link>
   </div>
 </template>
 
@@ -25,7 +25,7 @@ export default {
 .nav {
   display: flex;
   flex-direction: column;
-  margin: 10vh 10vw;
+  margin: 20px;
   border: 1px solid black;
 }
 

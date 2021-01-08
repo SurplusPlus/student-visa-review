@@ -8,6 +8,7 @@ import store from '@/store'
 import Nav from "@/components/Nav.vue";
 import Intro from "@/components/Intro.vue";
 import ListView from "@/components/ListView.vue";
+import Landscape from "@/components/Landscape.vue";
 
 Vue.use(VueRouter);
 
@@ -32,6 +33,14 @@ const routes = [
     components: {
       nav: Nav,
       view: ListView,
+    },
+  },
+{
+    path: "/landscape",
+    name: "Landscape",
+    components: {
+      nav: Nav,
+      view: Landscape,
     },
   },
 ];
