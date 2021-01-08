@@ -1,17 +1,19 @@
 <template>
-  <div class="soundpoint" :class="{ playing : isPlaying }" v-if="audioFile" @click="click">
+  <div class="listener" :style="`top: ${y}px; left: ${x}px;`">
+    {{x }} {{y}}
     <slot></slot>
   </div>
 </template>
 
 <script>
 
+/*  eslint-disable */ 
 import {Howl, Howler} from 'howler';
 
 
 export default {
-  name: "SoundPoint",
-  props: ['id'],
+  name: "Listener",
+  props: ['x', 'y'],
   data() {
     return {
       sound: undefined,
@@ -19,29 +21,10 @@ export default {
       status: "stopped",
     };
   },
-  mounted() {
-    this.initAudio();
+  updated() {
+    Howler.pos(this.x  / 10, this.y / 10, 0)
   },
   methods: {
-    initAudio() {
-      if(this.sound) { return; }
-      this.sound = new Howl({
-        src: this.audioFile,
-        pos: [this.record.fields["x"] / 10, this.record.fields["y"] / 10, 0],
-        html5: false,
-        autoplay: true,
-        loop: true,
-      });
-    },
-    click() {
-      console.log("so you clicked on me", this.audioFile)
-      if(this.isPlaying) {
-        this.sound.pause();
-        Howler.stop() 
-      } else {
-        this.sound.play();
-      }
-    },
   },
   computed: {
     isPlaying() {
@@ -95,12 +78,15 @@ export default {
 
 <style lang="scss" scoped>
 
-.soundpoint {
+.listener {
+  position: absolute;
   cursor: pointer;
 
   &.playing {
     background-color: #AFA;
   }
+
 }
 
 </style>
+

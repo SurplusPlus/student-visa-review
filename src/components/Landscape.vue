@@ -1,9 +1,13 @@
 <template>
   <div class="landscape" @mousemove="mousemove">
 
+    <div>[THIS PAGE IS NOT FULLY WORKING YET] </div>
+
     <SoundPoint class="soundpoint" v-for="record in interviews" v-bind:key="record.id" :id="record.id" :style="positionStyle(record.id)" >
       <InterviewBlob :id="record.id"  />
     </SoundPoint>
+
+    <Listener :x="mouseX" :y="mouseY" />
 
     <button @click="test">stop</button>
 
@@ -17,6 +21,7 @@
 import {Howler} from 'howler';
 import InterviewBlob from "@/components/InterviewBlob.vue";
 import SoundPoint from "@/components/SoundPoint.vue";
+import Listener from "@/components/Listener.vue";
 //import SoundPlayer from "@/components/SoundPlayer.js"
 
 export default {
@@ -24,12 +29,14 @@ export default {
   data() {
     return {
       interviewSounds: {},
-      interviewLocations: {},
+      mouseX: null,
+      mouseY: null,
     };
   },
   components: {
     InterviewBlob,
     SoundPoint,
+    Listener,
   },
   computed: {
     interviews() {
@@ -48,11 +55,8 @@ export default {
   },
   methods: {
     mousemove(e) {
-      let x = Math.round(e.pageX - this.gbcr.x);
-      let y = Math.round(e.pageY - this.gbcr.y);
-      console.log(x,y);
-      Howler.pos(x, y, 0)
-      console.log("setting pos to " , x, y, 0)
+      this.mouseX = Math.round(e.pageX - this.gbcr.x);
+      this.mouseY = Math.round(e.pageY - this.gbcr.y);
     },
     positionStyle(id) {
       return { 
@@ -70,25 +74,8 @@ export default {
         return "";
       }
     },
-
-    initLocations() {
-      //    this.soundPlayer = new SoundPlayer();
-      var self = this;
-      for(let id in this.interviews) {
-        var x = Math.random() * 400;
-        var y = Math.random() * 400;
-        self.interviewLocations[id] = { x: x, y: y, z: 0 };
-/*        this.interviewSounds[id] = new Howl({
-          src: this.audioFileOf(id),
-          pos: [x, y, 0],
-        });  */
-      }
-        console.log(self.interviewLocations);
-
-    },
   },
   mounted() {
-    this.initLocations();
   },
 };
 </script>
