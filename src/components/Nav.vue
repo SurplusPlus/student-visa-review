@@ -1,5 +1,6 @@
 <template>
   <div class="nav">
+    TECHNICAL PROGRESS DRAFT - NO COLORS/STYLING/DESIGN HAS BEEN APPLIED TO THIS WEBSITE
       <router-link :to="{ name: 'Intro' }">Intro</router-link>
       <router-link :to="{ name: 'ListView' }">ListView</router-link>
       <router-link :to="{ name: 'Landscape' }">Landscape</router-link>

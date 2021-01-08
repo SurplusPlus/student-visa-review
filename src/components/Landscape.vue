@@ -1,7 +1,7 @@
 <template>
   <div class="landscape" @mousemove="mousemove">
 
-    <div>[THIS PAGE IS NOT FULLY WORKING YET] </div>
+    <div>[LANDSCAPE / MAIN PAGE TO GO HERE]</div>
 
     <SoundPoint class="soundpoint" v-for="record in interviews" v-bind:key="record.id" :id="record.id" :style="positionStyle(record.id)" >
       <InterviewBlob :id="record.id"  />
