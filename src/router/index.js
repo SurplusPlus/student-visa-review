@@ -5,42 +5,33 @@ import VueRouter from "vue-router";
 
 import store from '@/store'
 
-import Nav from "@/components/Nav.vue";
-import Intro from "@/components/Intro.vue";
-import ListView from "@/components/ListView.vue";
-import Landscape from "@/components/Landscape.vue";
+import LandscapeNav from "@/views/LandscapeNav.vue";
+import IndexView from "@/views/IndexView.vue";
+import LandscapeView from "@/views/LandscapeView.vue";
 
 Vue.use(VueRouter);
 
-var siteName = "Vue / Vuex / Router <-> Airtable"
+var siteName = "Student Visa Review"
 
 const routes = [
   {
     path: "/",
-    redirect: "/intro",
+    redirect: "/Landscape",
   },
   {
-    path: "/intro",
-    name: "Intro",
+    path: "/index",
+    name: "Index",
     components: {
-      nav: Nav,
-      view: Intro,
-    }
-  },
-  {
-    path: "/list",
-    name: "ListView",
-    components: {
-      nav: Nav,
-      view: ListView,
+      nav: LandscapeNav,
+      view: IndexView,
     },
   },
 {
     path: "/landscape",
     name: "Landscape",
     components: {
-      nav: Nav,
-      view: Landscape,
+      nav: LandscapeNav,
+      view: LandscapeView,
     },
   },
 ];

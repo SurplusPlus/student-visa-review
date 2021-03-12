@@ -1,17 +1,27 @@
 <template>
-  <div class="hello">
-    <div class="bc-list" v-for="(bc, bcid) in interviewsByBureauChief" v-bind:key = "bcid">
-      <div class="bc-name">{{ bc.fields["Name"] }}</div>
-      <div class="interview" v-for="interview in bc.interviews" :key="interview.id">
-        <InterviewBlob :id="interview.id" />
-        <div class="interview-name">{{ interview.fields["Name"] }}</div>
+  <div class="indexview">
+    <div class="bureauchief" v-for="(bc, bcid) in interviewsByBureauChief" v-bind:key = "bcid">
+      <div class="bc-info">
+        <div class="bc-name">{{ bc.fields["Name"] }}</div>
+        <div class="bc-location">{{ bc.fields["Location"] }}</div>
+      </div>
+      <div class="interviews">
+        <div class="interview" v-for="interview in bc.interviews" :key="interview.id">
+          <InterviewBlob :id="interview.id" />
+          <div class="interview-name">{{ interview.fields["Name"] }}</div>
+        </div>
       </div>
     </div>
+
+    <BackgroundSky />
   </div>
 </template>
 
 <script>
 import InterviewBlob from "@/components/InterviewBlob.vue";
+import BackgroundSky from "@/components/BackgroundSky.vue";
+
+import "@fontsource/space-mono/400.css"
 
 export default {
   name: "ListView",
@@ -20,6 +30,7 @@ export default {
   },
   components: {
     InterviewBlob,
+    BackgroundSky,
   },
   methods: {
     bureau_chief_of(id) {
@@ -66,18 +77,56 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 
+.indexview {
+  font-family: 'Space Mono', serif;
+
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  width: 70vw;
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+.bureauchief {
+  width: 300px;
+  border: 1px solid gray;
+}
+
+.bc-info {
+  padding: 20px;
+  height: 80px; 
+}
+
 
 .bc-name {
-  font-size: 2em;
+  font-size: 1.3em;
+  margin-bottom: 5px;
+}
+
+.bc-location {
+  font-size: 0.85em;
+  opacity: 0.9;
+}
+
+.interviews {
+  color: #5B5B5B;
+  background-color: #F5F5F5;
 }
 
 .interview {
+  font-size: 0.9em;
   display: flex;
   flex-direction: row;
   align-items: center;
+  border-bottom: 1px solid #CCC;
+  padding: 5px 10px;
+  height: 40px;
 }
 .interviewblob {
-  width: 50px;
+  width: 30px;
+  margin-right: 10px;
 }
 
 </style>

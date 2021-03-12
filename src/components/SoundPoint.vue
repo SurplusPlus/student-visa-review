@@ -28,8 +28,8 @@ export default {
       this.sound = new Howl({
         src: this.audioFile,
         pos: [this.record.fields["x"] / 10, this.record.fields["y"] / 10, 0],
-        html5: false,
-        autoplay: true,
+        html5: true,
+        autoplay: false,
         loop: true,
       });
     },

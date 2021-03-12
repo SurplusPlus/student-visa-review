@@ -11,6 +11,8 @@
 
     <button @click="test">stop</button>
 
+    <BackgroundSky />
+
   </div>
 </template>
 
@@ -18,6 +20,8 @@
 
 /*  eslint-disable */ 
 
+
+import BackgroundSky from "@/components/BackgroundSky.vue";
 import {Howler} from 'howler';
 import InterviewBlob from "@/components/InterviewBlob.vue";
 import SoundPoint from "@/components/SoundPoint.vue";
@@ -37,6 +41,7 @@ export default {
     InterviewBlob,
     SoundPoint,
     Listener,
+    BackgroundSky,
   },
   computed: {
     interviews() {
@@ -81,9 +86,12 @@ export default {
 </script>
 <style scoped lang="scss">
 .landscape {
-  position: relative;
-  height: 1000px;
-  background-color: #AAB;
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  left: 0px;
+  bottom: 0px;
+
 }
 
 .soundpoint {
