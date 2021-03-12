@@ -5,6 +5,7 @@ import VueRouter from "vue-router";
 
 import store from '@/store'
 
+import IndexNav from "@/views/IndexNav.vue";
 import LandscapeNav from "@/views/LandscapeNav.vue";
 import IndexView from "@/views/IndexView.vue";
 import LandscapeView from "@/views/LandscapeView.vue";
@@ -22,7 +23,7 @@ const routes = [
     path: "/index",
     name: "Index",
     components: {
-      nav: LandscapeNav,
+      nav: IndexNav,
       view: IndexView,
     },
   },
