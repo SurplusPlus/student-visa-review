@@ -10,9 +10,12 @@
   "dependencies": {
     "@fontsource/cormorant-garamond": "^4.1.0",
     "@fontsource/space-mono": "^4.2.2",
+    "@panzoom/panzoom": "^4.3.2",
+    "@svgdotjs/svg.js": "^3.0.16",
     "airtable": "^0.10.1",
     "core-js": "^3.6.5",
     "google-fonts-webpack-plugin": "^0.4.4",
+    "gsap": "^3.6.0",
     "howler": "^2.2.1",
     "vue": "^2.6.11",
     "vue-router": "^3.4.3",

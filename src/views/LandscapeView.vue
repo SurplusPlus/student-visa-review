@@ -1,7 +1,14 @@
 <template>
   <div class="landscape" @mousemove="mousemove">
 
-    <div>[LANDSCAPE / MAIN PAGE TO GO HERE]</div>
+    <div id="windowcenter"></div>
+
+    <Map scale="1">
+      <div class="test">Heyyy</div>
+    </Map>
+
+
+
 
     <SoundPoint class="soundpoint" v-for="record in interviews" v-bind:key="record.id" :id="record.id" :style="positionStyle(record.id)" >
       <InterviewBlob :id="record.id"  />
@@ -22,26 +29,33 @@
 
 
 import BackgroundSky from "@/components/BackgroundSky.vue";
+import Map from "@/components/Map.vue";
+
+
 import {Howler} from 'howler';
 import InterviewBlob from "@/components/InterviewBlob.vue";
 import SoundPoint from "@/components/SoundPoint.vue";
 import Listener from "@/components/Listener.vue";
+
 //import SoundPlayer from "@/components/SoundPlayer.js"
 
 export default {
-  name: "About",
+  name: "LandscapeView",
   data() {
     return {
+      mapsvg: require('@/assets/map.svg'),
       interviewSounds: {},
       mouseX: null,
       mouseY: null,
+      panzoom: null,
     };
   },
   components: {
+    Map,
+    BackgroundSky,
     InterviewBlob,
     SoundPoint,
     Listener,
-    BackgroundSky,
   },
   computed: {
     interviews() {
@@ -99,7 +113,21 @@ export default {
   position: absolute;
 }
 
+#windowcenter {
+  width: 10px;
+  height: 10px;
+  position: fixed;
+  top: calc(50% - 5px);
+  left: calc(50% - 5px);
+  background-color: red;
+  z-index: 1000;
+}
 
+.test {
+  position: absolute;
+  left: 50px;
+  bottom: 500px;
+}
 
 </style>
 
