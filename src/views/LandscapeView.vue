@@ -4,9 +4,7 @@
     <div id="windowcenter"></div>
 
     <Map scale="1">
-      <div class="test">Heyyy</div>
     </Map>
-
 
 
 
