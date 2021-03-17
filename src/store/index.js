@@ -42,11 +42,23 @@ export default new Vuex.Store({
   state: {
     interviews: [],
     people: [],
+    loadedNum: 0,
     hasLoaded: false,
   },
   getters: {
     interviews(state) {
       return state.interviews;
+    },
+    hasLoaded(state) {
+      return state.hasLoaded;
+    },
+    interviewsById(state) {
+      return Object.values(state.interviews).reduce(function(a, b) { 
+        if("SVGID" in b.fields) { 
+          a[b.fields["SVGID"]] = b;
+        }
+        return a;
+      }, {});
     },
     people(state) {
       return state.people;
@@ -58,6 +70,9 @@ export default new Vuex.Store({
 		},
 		setPeople(state, r) {
 			state.people = r;
+		},
+    setLoaded(state) {
+			state.hasLoaded = true;
 		},
   },
   actions: {
@@ -81,6 +96,7 @@ export default new Vuex.Store({
           return map;
         }, {});
         context.commit("setInterviews", interviews);
+        if(++context.state.loadedNum == 2) { context.commit("setLoaded"); }
       });
     },
     fetchPeople(context) {
@@ -97,6 +113,7 @@ export default new Vuex.Store({
           return map;
         }, {});
         context.commit("setPeople", people);
+        if(++context.state.loadedNum == 2) { context.commit("setLoaded"); }
       });
     },
   }

@@ -1,6 +1,6 @@
 <template>
   <div id="mapwrapper">
-    {{ scale }} 
+    {{ scale }} xxx <br><br>
     <object id="mapsvg" type="image/svg+xml" :data="mapsvg" />
     <slot></slot>
   </div>
@@ -9,7 +9,6 @@
 <script>
 
 /*  eslint-disable */ 
-
 
 import Map from "@/components/Map.vue";
 import Panzoom from '@panzoom/panzoom'
@@ -24,11 +23,10 @@ export default {
   data() {
     return {
       mapsvg: require('@/assets/map.svg'),
-      svgloaded: false,
+      loaded: false,
       dim: 5000,
       panzoom: null,
-      x: 3737,
-      y: 1213,
+      x: 3737, y: 1213,
     };
   },
   props: ["scale"],
@@ -36,6 +34,44 @@ export default {
     Map,
   },
   computed: {
+    getSVGElementsWithId() {
+      try {
+        let elems  = Array.from(document.getElementById("mapsvg").contentDocument.getElementsByTagName("svg")[0].childNodes)
+        .filter(function(m) {
+         return m.id !== undefined;
+        })
+      return elems;
+      } catch {
+        return null;
+      }
+    },
+    sortedMapElements() {
+
+      // svg elements are named BLOB-test1 ... 
+      // occasionally SVG fills or textures may be called BLOB-test1_1, etc
+      // we want svgs split by a '-' without any underscores
+      let d = {};
+      this.getSVGElementsWithId
+        .filter(function(elem) {
+          return (!elem.id.includes("_"));
+        })
+        .forEach(function(elem) {
+          try {
+            let [typ, id] = elem.id.split("-");
+            if(!(id in d) && id !== undefined) { d[id] = {}; }
+            d[id][typ] = elem; 
+          } catch {
+            // elem doesn't have a dash in it
+          }
+        });
+      return d;
+    },
+    hasLoaded() {
+      return this.$store.getters.hasLoaded;
+    },
+    interviewsById() {
+      return this.$store.getters.interviewsById;
+    }
   },
   methods: {
     getSVGID(id) {
@@ -50,8 +86,12 @@ export default {
         (1 - 1/s) * this.dim / 2  + (window.innerHeight / 2 / s ) - (y), {animate: animate})
     },
     getXYofID(id) {
-      var bbox = this.getSVGID(id).getBBox();
-      return {x: bbox.x + (bbox.width / 2), y: bbox.y + (bbox.height / 2) };
+      try {
+        var bbox = this.getSVGID(id).getBBox();
+        return {x: bbox.x + (bbox.width / 2), y: bbox.y + (bbox.height / 2) };
+      } catch {
+        return null;
+      }
     },
     panToID(id, animate = true) {
       let xy = this.getXYofID(id);
@@ -90,6 +130,9 @@ export default {
       }
      
     },
+
+    /////////////////////////////
+
     onsvgload() {
       var self = this;
       self.getSVGID("OJ-october").addEventListener('click', function(e) {
@@ -98,40 +141,88 @@ export default {
       self.getSVGID("KH-october").addEventListener('click', function(e) {
         self.panAlongPath("KH-october-path", 5000);
       })
-    }
+    },
+
+    placeBlobs() {
+      console.log(this.sortedMapElements);
+      // scan along paths
+
+      for (let id in this.sortedMapElements) {
+        if(id in this.interviewsById) {
+          // id is in both svg map and in airtable
+          console.log("yo", id );
+
+          console.log(this.sortedMapElements[id]);
+          console.log(this.interviewsById[id].fields["Audio File"][0].url);
+
+          // TODO - given this invormation, move the blobs to the right spot 
+
+        }
+      }
+
+    },
+
+    zoomToStart() {
+      let s = this.getSVGID("START")
+      if(!s) {
+        console.log("PROBLEM! START is not defined in SVG");
+      } else {
+        this.panToID("START", false);
+      }
+    },
+
+    initPanZoom() {
+      this.panzoom = Panzoom(document.getElementById("mapwrapper"), {
+        startScale: this.scale,
+        startX: this.x,
+        startY: this.y,
+      }); 
+    //  this.panTo(this.x, this.y, false);
+      this.panzoom.zoom(this.scale);
+
+      var self = this;
+      window.addEventListener('resize', function() {
+        console.log("resized");
+        self.panTo(self.x, self.y, false);
+      });
+
+      window.panzoom = this.panzoom;
+      window.panTo = this.panTo;
+      window.panToID = this.panToID;
+      window.getPathPoints =  this.getPathPoints;
+      window.panAlongPath =  this.panAlongPath; 
+    },
+
+
+    ///////////////////
+
+    mapLoaded() {
+      this.initPanZoom();
+
+      this.placeBlobs();
+
+      this.zoomToStart();
+    },
+
+
+    listenForOnload() {
+      if(this.hasLoaded && document.getElementById("mapsvg") !== null) {
+        console.log("loaded!!");
+        this.loaded = true;
+        this.mapLoaded();
+      } else {
+        setTimeout(this.listenForOnload, 500);
+      }
+    },
+
+
   },
   mounted() {
-    var self = this;
-    this.panzoom = Panzoom(document.getElementById("mapwrapper"), {
-      startScale: this.scale,
-      startX: this.x,
-      startY: this.y,
-    }); 
-    this.panTo(this.x, this.y);
-
-    window.addEventListener('resize', function() {
-      console.log("resized");
-      this.panTo(self.x, self.y, false);
-    });
-
-    window.panzoom = this.panzoom;
-    window.panTo = this.panTo;
-    window.panToID = this.panToID;
-    window.getPathPoints =  this.getPathPoints;
-    window.panAlongPath =  this.panAlongPath;
-
-
-
+    this.listenForOnload();
   },
   created() {
   },
   updated() {
-    if(document.getElementById("mapsvg") !== null && !this.svgloaded) { 
-      this.svgloaded = true;
-      this.onsvgload();
-    }
-    this.panzoom.zoom(this.scale);
-    this.panTo(this.x, this.y);
   },
 
 };

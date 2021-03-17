@@ -1,5 +1,5 @@
 <template>
-  <div class="landscape" @mousemove="mousemove">
+  <div class="mapcontroller">
 
     <div id="windowcenter"></div>
 
@@ -8,10 +8,6 @@
     <!--<SoundPoint class="soundpoint" v-for="record in interviews" v-bind:key="record.id" :id="record.id" :style="positionStyle(record.id)" >
       <InterviewBlob :id="record.id"  />
     </SoundPoint> -->
-
-    <Listener :x="mouseX" :y="mouseY" />
-
-    <button @click="test">stop</button>
 
     <BackgroundSky />
 
@@ -26,31 +22,15 @@
 import BackgroundSky from "@/components/BackgroundSky.vue";
 import Map from "@/components/Map.vue";
 
-
-import {Howler} from 'howler';
-import InterviewBlob from "@/components/InterviewBlob.vue";
-import SoundPoint from "@/components/SoundPoint.vue";
-import Listener from "@/components/Listener.vue";
-
-//import SoundPlayer from "@/components/SoundPlayer.js"
-
 export default {
   name: "MapController",
   data() {
     return {
-      mapsvg: require('@/assets/map.svg'),
-      interviewSounds: {},
-      mouseX: null,
-      mouseY: null,
-      panzoom: null,
     };
   },
   components: {
     Map,
     BackgroundSky,
-    InterviewBlob,
-    SoundPoint,
-    Listener,
   },
   computed: {
     interviews() {
@@ -63,49 +43,25 @@ export default {
         return []
       }
     },
-    gbcr() {
-      return this.$el.getBoundingClientRect();
-    }
+    stateLoaded() {
+      return this.$store.getters.hasLoaded;
+    },
   },
   methods: {
-    mousemove(e) {
-      this.mouseX = Math.round(e.pageX - this.gbcr.x);
-      this.mouseY = Math.round(e.pageY - this.gbcr.y);
-    },
-    positionStyle(id) {
-      return { 
-        top: this.interviews[id].fields["x"] + "px",
-        left: this.interviews[id].fields["y"] + "px"
-      };
-    },
-    test() {
-        Howler.stop()
-    },
-    audioFileOf(interviewid) {
-      try {
-        return this.interviews[interviewid].fields["Audio File"][0]["url"];
-      } catch {
-        return "";
-      }
-    },
   },
   mounted() {
   },
 };
 </script>
 <style scoped lang="scss">
-.landscape {
+
+.mapcontroller {
   position: fixed;
   top: 0px;
   right: 0px;
   left: 0px;
   bottom: 0px;
 
-}
-
-.soundpoint {
-  width: 75px;
-  position: absolute;
 }
 
 #windowcenter {
@@ -118,11 +74,6 @@ export default {
   z-index: 1000;
 }
 
-.test {
-  position: absolute;
-  left: 50px;
-  bottom: 500px;
-}
 
 </style>
 
