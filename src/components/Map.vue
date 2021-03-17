@@ -136,16 +136,6 @@ export default {
 
     /////////////////////////////
 
-    onsvgload() {
-      var self = this;
-      self.getSVGID("OJ-october").addEventListener('click', function(e) {
-        self.panAlongPath("OJ-october-path", 5000);
-      })
-      self.getSVGID("KH-october").addEventListener('click', function(e) {
-        self.panAlongPath("KH-october-path", 5000);
-      })
-    },
-
     placeBlobs() {
       console.log(this.sortedMapElements);
       // scan along paths
@@ -155,8 +145,52 @@ export default {
           // id is in both svg map and in airtable
           console.log("yo", id );
 
-          console.log(this.sortedMapElements[id]);
-          console.log(this.interviewsById[id].fields["Audio File"][0].url);
+          let rec = this.sortedMapElements[id];
+          let audiofile = null;
+          try { 
+            thisfile = this.interviewsById[id].fields["Audio File"][0];
+          } catch {
+          }
+
+          /*
+          get blob
+
+          if blob has path
+            move blob to start and end of path
+          else
+            don't... do anything
+          */
+
+         
+          if("PATH" in rec) {
+
+            console.log("rec has path");
+            console.log(rec["PATH"]);
+
+            let svgblob = SVG(rec["BLOB"]);
+            let svgpath = SVG(rec["PATH"]);
+            let start = svgpath.pointAt(0);
+            let end = svgpath.pointAt(svgpath.length());
+
+            console.log(start, end);
+
+            svgblob.center(start.x, start.y);
+            svgblob.click(function() {
+              console.log("clicked", svgpath.id());
+              self.panAlongPath(svgpath.id(), 5000);
+            });
+            svgblob.addClass("clickable"); // TODO - figure out how to style svg
+
+
+
+            if(start.x !== end.x || start.y !== end.y) { 
+              // open loop
+              svgblob.center(end.x, end.y) // TODO - this needs some work
+            }
+
+          } 
+
+
 
           // TODO - given this invormation, move the blobs to the right spot 
 
@@ -194,6 +228,7 @@ export default {
       window.panToID = this.panToID;
       window.getPathPoints =  this.getPathPoints;
       window.panAlongPath =  this.panAlongPath; 
+      window.getSVGID = this.getSVGID;
     },
 
 
@@ -230,6 +265,7 @@ export default {
 };
 
 
+window.SVG = SVG;
 
 </script>
 <style scoped lang="scss">
@@ -239,6 +275,10 @@ export default {
   z-index: 10;
   width: 5000px;
   height: 5000px;
+}
+
+.clickable {
+  background-color: blue;
 }
 
 
