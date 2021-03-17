@@ -1,7 +1,7 @@
 <template>
   <div id="mapwrapper">
     {{ scale }} xxx <br><br>
-    <object id="mapsvg" type="image/svg+xml" :data="mapsvg" />
+    <object id="mapsvg" type="image/svg+xml" :data="mapsvg" @load="svgloaded=true"/>
     <slot></slot>
   </div>
 </template>
@@ -24,9 +24,11 @@ export default {
     return {
       mapsvg: require('@/assets/map.svg'),
       loaded: false,
+      svgloaded: false,
       dim: 5000,
       panzoom: null,
-      x: 3737, y: 1213,
+      x: 2500, // placeholder value
+      y: 2500,
     };
   },
   props: ["scale"],
@@ -167,23 +169,40 @@ export default {
       if(!s) {
         console.log("PROBLEM! START is not defined in SVG");
       } else {
-        this.panToID("START", false);
+        console.log("panning to start");
+//        this.panToID("START", false);
+        console.log(this.getXYofID("START"));
       }
     },
 
     initPanZoom() {
+//      let xy = this.getXYofID(id);
+//      this.x = xy.x; 
+//      this.y = xy.y;
+
+      this.x = 2311;
+      this.y = 1882;
+
       this.panzoom = Panzoom(document.getElementById("mapwrapper"), {
         startScale: this.scale,
         startX: this.x,
         startY: this.y,
       }); 
-    //  this.panTo(this.x, this.y, false);
-      this.panzoom.zoom(this.scale);
 
       var self = this;
+
+      setTimeout(() => { 
+        self.panzoom.pan(2311, 1882);
+        console.log("panzooming");
+      }, 5000)
+
+
+//      this.panTo(this.x, this.y, false);
+//      this.panzoom.zoom(this.scale);
+
       window.addEventListener('resize', function() {
         console.log("resized");
-        self.panTo(self.x, self.y, false);
+//        self.panTo(self.x, self.y, false);
       });
 
       window.panzoom = this.panzoom;
@@ -196,7 +215,7 @@ export default {
 
     ///////////////////
 
-    mapLoaded() {
+    initMap() {
       this.initPanZoom();
 
       this.placeBlobs();
@@ -206,10 +225,10 @@ export default {
 
 
     listenForOnload() {
-      if(this.hasLoaded && document.getElementById("mapsvg") !== null) {
-        console.log("loaded!!");
+      if(this.hasLoaded && this.svgloaded) {
+        console.log("LOADED!");
         this.loaded = true;
-        this.mapLoaded();
+        this.initMap();
       } else {
         setTimeout(this.listenForOnload, 500);
       }
