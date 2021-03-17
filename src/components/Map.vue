@@ -97,7 +97,8 @@ export default {
     },
     panToID(id, animate = true) {
       let xy = this.getXYofID(id);
-      panTo(xy.x, xy.y, animate);
+      console.log(xy);
+      this.panTo(xy.x, xy.y, animate);
     },
     getPathPoints(id, steps) {
       var svg = this.getSVGID(id);
@@ -164,47 +165,30 @@ export default {
 
     },
 
-    zoomToStart() {
-      let s = this.getSVGID("START")
-      if(!s) {
-        console.log("PROBLEM! START is not defined in SVG");
-      } else {
-        console.log("panning to start");
-//        this.panToID("START", false);
-        console.log(this.getXYofID("START"));
-      }
-    },
 
     initPanZoom() {
-//      let xy = this.getXYofID(id);
-//      this.x = xy.x; 
-//      this.y = xy.y;
-
-      this.x = 2311;
-      this.y = 1882;
 
       this.panzoom = Panzoom(document.getElementById("mapwrapper"), {
-        startScale: this.scale,
-        startX: this.x,
-        startY: this.y,
+        startScale: this.scale
       }); 
 
       var self = this;
 
       setTimeout(() => { 
-        self.panzoom.pan(2311, 1882);
-        console.log("panzooming");
-      }, 5000)
+        let s = this.getSVGID("START")
+        if(!s) {
+          console.log("PROBLEM! START is not defined in SVG");
+        } else {
+          this.panToID("START", false);
+        }
+      }, 10) // not sure why this works but it does
 
-
-//      this.panTo(this.x, this.y, false);
-//      this.panzoom.zoom(this.scale);
 
       window.addEventListener('resize', function() {
-        console.log("resized");
-//        self.panTo(self.x, self.y, false);
+        self.panTo(self.x, self.y, false);
       });
 
+      // for debug
       window.panzoom = this.panzoom;
       window.panTo = this.panTo;
       window.panToID = this.panToID;
@@ -220,7 +204,6 @@ export default {
 
       this.placeBlobs();
 
-      this.zoomToStart();
     },
 
 
