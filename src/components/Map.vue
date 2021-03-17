@@ -111,7 +111,7 @@ export default {
       }
       return points;
     },
-    async panAlongPath(id, durationms) {
+    async panAlongPath(id, durationms, stepinterval, callback) {
       function delay(t){
         return new Promise((resolve,reject)=>{
           setTimeout(()=>{
@@ -120,7 +120,6 @@ export default {
         })
       }
       var self = this;
-      let stepinterval = 200;
       let steps = durationms / stepinterval;
       let pathpoints = getPathPoints(id, steps);
 
@@ -130,6 +129,7 @@ export default {
       for(let p of pathpoints) {
         await delay(stepinterval);
         self.panTo(p.x, p.y, true);
+        callback(p.x, p.y);
       }
      
     },
@@ -177,9 +177,11 @@ export default {
             svgblob.center(start.x, start.y);
             svgblob.click(function() {
               console.log("clicked", svgpath.id());
-              self.panAlongPath(svgpath.id(), 5000);
+              self.panAlongPath(svgpath.id(), 5000, 50, function(x, y) {
+                svgblob.animate({ duration: 50 }).ease('-').center(x, y);
+              });
             });
-            svgblob.addClass("clickable"); // TODO - figure out how to style svg
+            svgblob.addClass("clickable"); // TODO - figure out how to tyle svg
 
 
 
