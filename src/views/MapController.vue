@@ -35,7 +35,7 @@ import Listener from "@/components/Listener.vue";
 //import SoundPlayer from "@/components/SoundPlayer.js"
 
 export default {
-  name: "MapView",
+  name: "MapController",
   data() {
     return {
       mapsvg: require('@/assets/map.svg'),

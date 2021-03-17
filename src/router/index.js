@@ -7,7 +7,7 @@ import store from '@/store'
 
 import Overlay from "@/views/Overlay.vue";
 import IndexView from "@/views/IndexView.vue";
-import MapView from "@/views/MapView.vue";
+import MapController from "@/views/MapController.vue";
 import TestView from "@/views/TestView.vue";
 
 Vue.use(VueRouter);
@@ -32,7 +32,7 @@ const routes = [
     name: "Landscape",
     components: {
       overlay: Overlay,
-      underlay: MapView,
+      underlay: MapController,
     },
   },
   {
