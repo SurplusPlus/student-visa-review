@@ -14,7 +14,7 @@
 
 
 export default {
-  name: "About",
+  name: "TestView",
   data() {
     return {
       mapsvg: require('@/assets/map.svg'),

@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-      <router-view name="nav" />
-      <router-view name="view" />
+      <router-view name="overlay" />
+      <router-view name="underlay" />
   </div>
 </template>
 

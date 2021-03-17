@@ -5,10 +5,9 @@ import VueRouter from "vue-router";
 
 import store from '@/store'
 
-import IndexNav from "@/views/IndexNav.vue";
-import LandscapeNav from "@/views/LandscapeNav.vue";
+import Overlay from "@/views/Overlay.vue";
 import IndexView from "@/views/IndexView.vue";
-import LandscapeView from "@/views/LandscapeView.vue";
+import MapView from "@/views/MapView.vue";
 import TestView from "@/views/TestView.vue";
 
 Vue.use(VueRouter);
@@ -24,24 +23,24 @@ const routes = [
     path: "/index",
     name: "Index",
     components: {
-      nav: IndexNav,
-      view: IndexView,
+      overlay: Overlay,
+      underlay: IndexView,
     },
   },
   {
     path: "/landscape",
     name: "Landscape",
     components: {
-      nav: LandscapeNav,
-      view: LandscapeView,
+      overlay: Overlay,
+      underlay: MapView,
     },
   },
   {
     path: "/test",
     name: "Test",
     components: {
-      nav: LandscapeNav,
-      view: TestView,
+      overlay: Overlay,
+      underlay: TestView,
     },
   },
 ];

@@ -3,14 +3,11 @@
 
     <div id="windowcenter"></div>
 
-    <Map scale="1">
-    </Map>
+    <Map scale="1"></Map>
 
-
-
-    <SoundPoint class="soundpoint" v-for="record in interviews" v-bind:key="record.id" :id="record.id" :style="positionStyle(record.id)" >
+    <!--<SoundPoint class="soundpoint" v-for="record in interviews" v-bind:key="record.id" :id="record.id" :style="positionStyle(record.id)" >
       <InterviewBlob :id="record.id"  />
-    </SoundPoint>
+    </SoundPoint> -->
 
     <Listener :x="mouseX" :y="mouseY" />
 
@@ -38,7 +35,7 @@ import Listener from "@/components/Listener.vue";
 //import SoundPlayer from "@/components/SoundPlayer.js"
 
 export default {
-  name: "LandscapeView",
+  name: "MapView",
   data() {
     return {
       mapsvg: require('@/assets/map.svg'),
