@@ -121,6 +121,7 @@ a {
   display: inline-block;
   position: relative;
   text-align: center;
+  color: black;
 }
 
 
@@ -130,6 +131,7 @@ a {
   left: 30px;
   color: black;
   font-size: 1.3em;
+  z-index: 10001;
 }
 
 </style>
