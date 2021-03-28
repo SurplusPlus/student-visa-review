@@ -62,6 +62,27 @@ export default new Vuex.Store({
         return a;
       }, {});
     },
+    interviewsByBureauChief(state) {
+
+      return Object.values(state.interviews).reduce((map, obj) => {
+
+        let bc;
+        try {
+          bc = state.people[state.interviews[obj.id].fields["Bureau Chief"]];
+        } catch {
+          bc = undefined;
+        }
+
+        if(bc && bc.id) {
+          if(!(bc.id in map)) { 
+            map[bc.id] = state.people[bc.id];
+            map[bc.id].interviews = [];
+          }
+          map[bc.id].interviews.push(obj);
+        }
+        return map;
+      }, {});
+    },
     people(state) {
       return state.people;
     },
