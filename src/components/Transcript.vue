@@ -1,7 +1,7 @@
 <template>
   <div id="transcript">
     <div class="upperborder">
-      <img src="@/assets/transcript_upperborder.svg" />
+      <img src="@/assets/transcript_upperborder.svg" style="width: 25vw"/>
     </div>
     <div class="content">
       <div class="header">Transcript</div>
@@ -17,6 +17,8 @@
 
 <script>
 import "@fontsource/cormorant-garamond/500.css"
+import "@fontsource/space-mono/700.css"
+
 
 export default {
   name: "Transcript",
@@ -35,21 +37,47 @@ export default {
 
 
 #transcript {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Space Mono', serif;
   display: flex;
   flex-direction: column;
   position: fixed;
   z-index: 1000;
   bottom: 0px;
   left: 0px;
+  width: 25vw;
+
 }
 
 .upperborder {
+  width: 25vw;
 }
+
+
 .content {
-  margin-top: -20px;
+  margin-top: -10px;
   padding: 20px;
-  background-color: #E5E1E0;
+  background-color: #f5f5f5;
+  font-size: .9em;
+}
+
+.person {
+  font-weight: 700;
+}
+
+.header {
+  font-weight: 700;
+  font-size: 1.3em;
+  padding-bottom: 20px;
+}
+
+.title {
+  font-style: italic;
+  color: #5b5b5b;
+}
+
+.date {
+  font-style: italic;
+  color: #5b5b5b;
 }
 
 </style>

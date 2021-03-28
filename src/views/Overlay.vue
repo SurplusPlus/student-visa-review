@@ -12,7 +12,7 @@
       <div id="indexnav">
         <router-link class="returnbutton" :to="{ name: 'Landscape' }">
           <div class="buttontext">Return</div>
-          <img src="@/assets/return.svg"/>
+          <img class="returnbutton" src="@/assets/return.svg"/>
         </router-link>
       </div>
     </template>
@@ -25,6 +25,7 @@
 import Transcript from "@/components/Transcript.vue";
 import "@fontsource/cormorant-garamond/500.css"
 import "@fontsource/space-mono/400.css"
+
 
 export default {
   name: "Overlay",
@@ -48,13 +49,14 @@ export default {
 
 .nav {
   pointer-events: none;
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Space Mono', serif;
   position: fixed;
   z-index: 1000;
   top: 0px;
   right: 0px;
   left: 0px;
   bottom: 0px;
+  
 }
 
 .nav > * {
@@ -69,7 +71,7 @@ export default {
   text-align: center;
   position: fixed;
   z-index: 1000;
-  font-size: 1.5em;
+  font-size: 1.3em;
 }
 
 a {
@@ -80,19 +82,23 @@ a {
 #nav-home {
   left: 0px;
   top: 0px;
-  background-color: #EBE3DC;
+  background-color: #f5f5f5;
   width: 100px;
   height: 100px;
   border-radius: 50px;
+  box-shadow: -2px 6px 40px #F5f5f5;
+  mix-blend-mode: hard-light;
 }
 
 #nav-index {
   right: 0px;
   top: 0px;
-  background-color: #EBE3DC;
+  background-color: #f5f5f5;
   width: 100px;
   height: 100px;
   border-radius: 50px;
+  box-shadow: -2px 6px 40px #f5f5f5;
+  mix-blend-mode: hard-light;
 }
 
 
@@ -115,14 +121,17 @@ a {
   display: inline-block;
   position: relative;
   text-align: center;
+  color: black;
 }
+
 
 .buttontext {
   position: absolute;
   top: 30px;
   left: 30px;
   color: black;
-  font-size: 1.5em;
+  font-size: 1.3em;
+  z-index: 10001;
 }
 
 </style>

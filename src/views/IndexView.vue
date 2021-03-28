@@ -79,19 +79,18 @@ export default {
 
 .indexview {
   font-family: 'Space Mono', serif;
-
   position: absolute;
   right: 0px;
   top: 0px;
-  width: 70vw;
+  width: 75vw;
   display: flex;
   justify-content: flex-end;
   flex-wrap: wrap;
 }
 
 .bureauchief {
-  width: 300px;
-  border: 1px solid gray;
+  width: 325px;
+  box-shadow: -1px 1px 0px #5b5b5b, ;
 }
 
 .bc-info {
@@ -115,15 +114,25 @@ export default {
   background-color: #F5F5F5;
 }
 
+
 .interview {
   font-size: 0.9em;
   display: flex;
   flex-direction: row;
   align-items: center;
-  border-bottom: 1px solid #CCC;
+  border-bottom: .5px solid #CCC;
   padding: 5px 10px;
   height: 40px;
+  transition: background .2s ease;
+  transition: color .2s ease;
 }
+
+.interview:hover {
+  cursor: pointer;
+  background: #212121;
+  color: #f5f5f5;
+ }
+
 .interviewblob {
   width: 30px;
   margin-right: 10px;
