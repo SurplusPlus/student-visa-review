@@ -5,6 +5,7 @@
       <div id="nav-home" class="navbutton"  ><router-link :to="{ name: 'Landscape' }">Home</router-link></div>
       <div id="nav-index" class="navbutton" ><router-link :to="{ name: 'Index' }">Index</router-link></div>
 
+      <SoundPlayer />
       <Transcript />
     </template>
 
@@ -23,6 +24,7 @@
 <script>
 
 import Transcript from "@/components/Transcript.vue";
+import SoundPlayer from "@/components/SoundPlayer.vue";
 import "@fontsource/cormorant-garamond/500.css"
 import "@fontsource/space-mono/400.css"
 
@@ -34,6 +36,7 @@ export default {
   },
   components: {
     Transcript,
+    SoundPlayer,
   },
   computed: {
     route() {

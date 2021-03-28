@@ -46,6 +46,8 @@ export default new Vuex.Store({
     people: [],
     loadedNum: 0,
     hasLoaded: false,
+    playingInterviewId: null,
+    audioStatus: "stopped",
   },
   getters: {
     interviews(state) {
@@ -86,6 +88,9 @@ export default new Vuex.Store({
     people(state) {
       return state.people;
     },
+    playingInterviewId(state) {
+      return state.playingInterviewId;
+    },
   },
   mutations: {
 		setInterviews(state, r) {
@@ -97,6 +102,12 @@ export default new Vuex.Store({
     setLoaded(state) {
 			state.hasLoaded = true;
 		},
+    setPlayingInterviewId(state, id) {
+			state.playingInterviewId = id;
+		},
+    setAudioStatus(state, status) {
+      state.audioStatus = status;
+    },
   },
   actions: {
     fetchData(context) {
@@ -139,5 +150,8 @@ export default new Vuex.Store({
         if(++context.state.loadedNum == 2) { context.commit("setLoaded"); }
       });
     },
+    playInterview(context, id) {
+      context.commit("setPlayingInterviewId", id);
+    }
   }
 });
