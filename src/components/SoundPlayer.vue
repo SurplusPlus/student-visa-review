@@ -1,8 +1,9 @@
 <template>
   <div class="soundplayer debug" :class="{ playing : isPlaying }">
-    hello
+   soundplayer debug 
     {{ playingInterviewId }}
     {{ audioFile }} 
+
   </div>
 </template>
 
@@ -16,15 +17,31 @@ export default {
   data() {
     return {
       interviewSound: undefined,
+      ambientSound: undefined,
       isPlaying: false,
       status: "stopped",
     };
   },
   mounted() {
-//    this.initAudio();
   },
   methods: {
+    initAmbientSound() { // TODO : currently not working 
+      this.ambientSound = new Howl({
+        src: [ '@/assets/ambient_crickets.webm' ],
+        html5: true,
+        autoplay: true,
+        loop: true,
+      });
+      this.ambientSound.play();
+      window.as = this.ambientSound;
+    },
     playInterviewById(id) {
+
+      if(this.ambientSound === undefined) {
+        console.log("triggering");
+        this.initAmbientSound();
+      }
+
       console.log('wooo', this.audioFile);
       try { 
         this.interviewSound.stop();
@@ -37,15 +54,6 @@ export default {
       });
       this.interviewSound.play();
     },
-    /*click() {
-      console.log("so you clicked on me", this.audioFile)
-      if(this.isPlaying) {
-        this.sound.pause();
-        Howler.stop() 
-      } else {
-        this.sound.play();
-      }
-    },*/
   },
   computed: {
     playingInterviewId() {
@@ -84,9 +92,10 @@ export default {
 <style lang="scss" scoped>
 
 .debug {
+  font-size: 0.7em;
   position: fixed;
-  top: 30px;
-  left: 30px;
+  bottom: 0px;
+  right: 0px;
   border: 2px solid red;
   z-index: 100000;
 }
