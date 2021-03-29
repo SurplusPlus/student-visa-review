@@ -1,5 +1,5 @@
 <template>
-  <div id="backgroundsky" class="night">
+  <div id="backgroundsky" class="day">
   </div>
 </template>
 

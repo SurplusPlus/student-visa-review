@@ -95,12 +95,11 @@ export default {
   padding: 25px;
   background-color: #f5f5f5;
   font-size: .9em;
-  box-shadow: -2px 6px 40px #F5f5f5;
+  box-shadow: -2px 6px 40px rgba(245, 245, 245, .8), 0px 0px 1.5px #212121;
   mix-blend-mode: hard-light;
   border-radius: 50px 50px 0 0;
   margin: 0 0 0 20px;
-  box-shadow: 0px 0px 1px #212121;
-}
+  }
 
 .person {
   font-weight: 700;

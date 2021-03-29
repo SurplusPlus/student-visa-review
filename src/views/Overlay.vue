@@ -88,12 +88,11 @@ a {
   background-color: #f5f5f5;
   padding: 25px;
   border-radius: 50px;
-  box-shadow: -2px 6px 40px #F5f5f5;
+  box-shadow: -2px 6px 40px rgba(245, 245, 245, .8), 0px 0px 1.5px #212121;
   mix-blend-mode: hard-light;
   margin: 25px 0 0 20px;
   animation: floating 5s infinite;
   animation-timing-function: ease;
-  box-shadow: 0px 0px 1px #212121;
 }
 
 #nav-index {
@@ -102,13 +101,11 @@ a {
   background-color: #f5f5f5;
   padding: 25px;
   border-radius: 50px;
-  box-shadow: -2px 6px 40px #f5f5f5;
+  box-shadow: -2px 6px 40px rgba(245, 245, 245, .8), 0px 0px 1.5px #212121;
   mix-blend-mode: hard-light;
   margin: 25px 20px 0 0;
   animation: floating 5s infinite;
   animation-timing-function: ease;
-  box-shadow: 0px 0px 1px #212121;
-
 }
 
 
@@ -131,18 +128,17 @@ a {
   display: inline-block;
   position: relative;
   text-align: center;
-  color: black;
+  color: #212121;
   background: #f5f5f5;
   padding: 25px;
   border-radius: 50px;
-  box-shadow: -2px 6px 40px #f5f5f5;
+  box-shadow: -2px 6px 40px rgba(245, 245, 245, .8), 0px 0px 1.5px #212121;
   mix-blend-mode: hard-light;
   font-size: 1.3em;
   margin: 25px 0 0 20px;
   transition: background-color 2s ease;
   animation: floating 5s infinite;
   animation-timing-function: ease;
-  box-shadow: 0px 0px 1px #212121;
 }
 
 .returnbutton:hover {
