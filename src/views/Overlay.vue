@@ -90,7 +90,7 @@ a {
   border-radius: 50px;
   box-shadow: -2px 6px 40px #F5f5f5;
   mix-blend-mode: hard-light;
-  margin: 25px;
+  margin: 25px 0 0 20px;
   animation: floating 5s infinite;
   animation-timing-function: ease;
 }
@@ -103,7 +103,7 @@ a {
   border-radius: 50px;
   box-shadow: -2px 6px 40px #f5f5f5;
   mix-blend-mode: hard-light;
-  margin: 25px;
+  margin: 25px 20px 0 0;
   animation: floating 5s infinite;
   animation-timing-function: ease;
 }
@@ -135,7 +135,7 @@ a {
   box-shadow: -2px 6px 40px #f5f5f5;
   mix-blend-mode: hard-light;
   font-size: 1.3em;
-  margin: 25px;
+  margin: 25px 0 0 20px;
   animation: floating 5s infinite;
   animation-timing-function: ease;
 }

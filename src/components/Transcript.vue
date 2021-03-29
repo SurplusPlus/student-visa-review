@@ -1,8 +1,5 @@
 <template>
   <div id="transcript">
-    <!-- <div class="upperborder">
-      <img src="@/assets/transcript_upperborder.svg" style="width: 25vw"/>
-    </div> -->
     <div class="content">
       <div class="header">Transcript</div>
       <div class="transcript">
@@ -92,19 +89,16 @@ export default {
   max-height: 400px;
 }
 
-.upperborder {
-  width: 25vw;
-}
-
-
 .content {
   overflow: auto;
   margin-top: -10px;
-  padding: 20px;
+  padding: 25px;
   background-color: #f5f5f5;
   font-size: .9em;
   box-shadow: -2px 6px 40px #F5f5f5;
   mix-blend-mode: hard-light;
+  border-radius: 50px 50px 0 0;
+  margin: 0 0 0 20px;
 }
 
 .person {
@@ -118,9 +112,11 @@ export default {
 }
 
 .header {
-  font-weight: 700;
+  font-weight: 400;
   font-size: 1.3em;
   padding-bottom: 20px;
+  font-family: 'Space Mono', serif;
+
 }
 
 .title {

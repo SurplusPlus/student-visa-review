@@ -28,12 +28,6 @@ export default {
   left: 0px;
   right: 0px;
   bottom: 0px;
-
-  // background: rgb(191,212,244);
-  // animation-name: sunset;
-  // animation-duration: 10s ease;
-  // animation-direction: alternate;
-  // background: linear-gradient(180deg, rgba(191,212,244,1) 0%, rgba(235,227,220,1) 100%); 
   /* TODO: make this programmatic */
 }
 
@@ -44,7 +38,7 @@ export default {
 }
 
 .night {
-  background: rgb(191,212,244);
+  background:  #3D5D7A;
   background: linear-gradient(180deg, #3D5D7A 0%, #755454 100%);
   transition: background 10s;
 }
