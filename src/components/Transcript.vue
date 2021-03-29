@@ -6,10 +6,12 @@
     <div class="content">
       <div class="header">Transcript</div>
       <div class="transcript">
-        <div class="titlebar"><span class="title">Minho Kwon with Yoonji Kang</span>, <span class="date">November</span></div>
-        <p><span class="person">Minho:</span> Okay Yoonji, I’m glad to see you in person. I’m will ask you some question about our exhibition. The first question is, who and where are you?</p>
-        <p><span class="person">Yoonji:</span> First of all, nice to meet you as well. My name is Yoonji Kan from South Korea, and I am a graduate architecture student in RISD. I am taking classes fully online.</p>
-        <p><span class="person">Minho:</span> Oh, that’s really interesting because...</p>
+        <div v-for="(turn, idx) in processedTranscript" :key="idx"> 
+          <span class="person">{{ turn.name }}:</span>
+          <p v-for="phrase in turn.phrases" :key="phrase.time">
+            <span class="time">{{ phrase.time }}</span> {{ phrase.text }} 
+          </p>
+        </div>
       </div>
     </div>
   </div>
@@ -28,6 +30,48 @@ export default {
   components: {
   },
   computed: {
+    interviews() {
+      return this.$store.getters.interviews;
+    },
+    playingInterviewId() {
+      return this.$store.getters.playingInterviewId;
+    },
+    playingRecord() {
+      if(this.playingInterviewId in this.interviews) {
+        return this.interviews[this.playingInterviewId];
+      } else {
+        return undefined;
+      }
+    },
+    transcript() {
+      try { 
+        return this.playingRecord.fields['Transcript'];
+      } catch {
+        return "";
+      }
+    },
+    processedTranscript() {
+      if(this.transcript === "") { return []; }
+        var turns = this.transcript.split(/(?=\[.*\])/)
+        turns = turns.map(function(x) { 
+            var res = x.trim().split(/\[(.*)\]/).slice(1); 
+            
+            var phrases = res[1].trim().split(/(?=\(\d*:\d*\))/).map(function(p) {
+              console.log("p", p);
+              try {
+                var newp = p.split(/\((\d*:\d*)\)/).slice(1);
+                return { time: newp[0].trim(), text: newp[1].trim() }
+              } catch {
+                // newp might be badly formatted.. failback to just displaying text 
+                return { time: null, text: p };
+              }
+
+            })
+
+            return { name: res[0], phrases: phrases}; 
+        })
+        return turns;
+    },
   },
   methods: {
   }
@@ -45,7 +89,8 @@ export default {
   bottom: 0px;
   left: 0px;
   width: 25vw;
-
+  height: 500px;
+  overflow: auto;
 }
 
 .upperborder {
@@ -62,6 +107,12 @@ export default {
 
 .person {
   font-weight: 700;
+}
+
+.time {
+  opacity: 0.5;
+  font-size: 0.8em;
+  display: block;
 }
 
 .header {
