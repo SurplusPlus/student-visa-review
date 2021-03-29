@@ -1,6 +1,5 @@
 <template>
   <div id="mapwrapper">
-    {{ scale }} xxx <br><br>
     <object id="mapsvg" type="image/svg+xml" :data="mapsvg" @load="svgloaded=true"/>
     <slot></slot>
   </div>
@@ -22,7 +21,7 @@ export default {
   name: "Map",
   data() {
     return {
-      mapsvg: require('@/assets/map_testing.svg'),
+      mapsvg: require('@/assets/map/working/map.svg'),
       loaded: false,
       svgloaded: false,
       dim: 5000,
