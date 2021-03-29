@@ -89,8 +89,7 @@ export default {
   bottom: 0px;
   left: 0px;
   width: 25vw;
-  height: 500px;
-  overflow: auto;
+  max-height: 400px;
 }
 
 .upperborder {
@@ -99,6 +98,7 @@ export default {
 
 
 .content {
+  overflow: auto;
   margin-top: -10px;
   padding: 20px;
   background-color: #f5f5f5;
