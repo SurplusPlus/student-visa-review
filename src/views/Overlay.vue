@@ -11,9 +11,9 @@
 
     <template v-else>
       <div id="indexnav">
-        <router-link class="returnbutton" :to="{ name: 'Landscape' }">
-          <div class="buttontext">Return</div>
-          <img class="returnbutton" src="@/assets/return.svg"/>
+        <router-link :to="{ name: 'Landscape' }">
+          <div class="buttontext returnbutton">Return</div>
+          <!-- <img class="returnbutton" src="@/assets/return.svg"/> -->
         </router-link>
       </div>
     </template>
@@ -86,22 +86,26 @@ a {
   left: 0px;
   top: 0px;
   background-color: #f5f5f5;
-  width: 100px;
-  height: 100px;
+  padding: 25px;
   border-radius: 50px;
   box-shadow: -2px 6px 40px #F5f5f5;
   mix-blend-mode: hard-light;
+  margin: 25px;
+  animation: floating 5s infinite;
+  animation-timing-function: ease;
 }
 
 #nav-index {
   right: 0px;
   top: 0px;
   background-color: #f5f5f5;
-  width: 100px;
-  height: 100px;
+  padding: 25px;
   border-radius: 50px;
   box-shadow: -2px 6px 40px #f5f5f5;
   mix-blend-mode: hard-light;
+  margin: 25px;
+  animation: floating 5s infinite;
+  animation-timing-function: ease;
 }
 
 
@@ -125,17 +129,32 @@ a {
   position: relative;
   text-align: center;
   color: black;
-}
-
-
-.buttontext {
-  position: absolute;
-  top: 30px;
-  left: 30px;
-  color: black;
+  background: #f5f5f5;
+  padding: 25px;
+  border-radius: 50px;
+  box-shadow: -2px 6px 40px #f5f5f5;
+  mix-blend-mode: hard-light;
   font-size: 1.3em;
-  z-index: 10001;
+  margin: 25px;
+  animation: floating 5s infinite;
+  animation-timing-function: ease;
 }
+
+
+@keyframes floating {
+  0%   {transform: translatey(-8px);}
+  50%  {transform: translatey(0px);}
+  100% {transform: translatey(-8px);}
+}
+
+// .buttontext {
+//   position: absolute;
+//   top: 30px;
+//   left: 30px;
+//   color: black;
+//   font-size: 1.3em;
+//   z-index: 10001;
+// }
 
 </style>
 

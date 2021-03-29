@@ -1,8 +1,8 @@
 <template>
   <div id="transcript">
-    <div class="upperborder">
+    <!-- <div class="upperborder">
       <img src="@/assets/transcript_upperborder.svg" style="width: 25vw"/>
-    </div>
+    </div> -->
     <div class="content">
       <div class="header">Transcript</div>
       <div class="transcript">
@@ -103,6 +103,8 @@ export default {
   padding: 20px;
   background-color: #f5f5f5;
   font-size: .9em;
+  box-shadow: -2px 6px 40px #F5f5f5;
+  mix-blend-mode: hard-light;
 }
 
 .person {
