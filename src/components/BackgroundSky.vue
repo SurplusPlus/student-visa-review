@@ -1,5 +1,5 @@
 <template>
-  <div id="backgroundsky" class="night">
+  <div id="backgroundsky" class="day">
   </div>
 </template>
 
@@ -32,15 +32,13 @@ export default {
 }
 
 .day {
-  background: rgb(191,212,244);
   background: linear-gradient(180deg, rgba(191,212,244,1) 0%, rgba(235,227,220,1) 100%); 
-  transition: background 10s;
+  transition: background 5s;
 }
 
 .night {
-  background:  #3D5D7A;
   background: linear-gradient(180deg, #3D5D7A 0%, #755454 100%);
-  transition: background 10s;
+  transition: background 5s;
 }
 
 // @keyframes sunset {
