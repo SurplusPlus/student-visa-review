@@ -134,9 +134,11 @@ export default {
      
     },
 
+
     /////////////////////////////
 
     placeBlobs() {
+      var self = this;
       console.log(this.sortedMapElements);
       // scan along paths
 
@@ -175,12 +177,26 @@ export default {
             console.log(start, end);
 
             svgblob.center(start.x, start.y);
+
+
+
+            // duration setup
+            let duration;
+            try { 
+              duration = this.interviewsById[id].fields['Duration'] * 1000;
+            } catch {
+              duration = 5000;
+            }
+
             svgblob.click(function() {
               console.log("clicked", svgpath.id());
-              self.panAlongPath(svgpath.id(), 5000, 50, function(x, y) {
+              self.panAlongPath(svgpath.id(), duration, 50, function(x, y) {
                 svgblob.animate({ duration: 50 }).ease('-').center(x, y);
               });
+              self.$store.dispatch('playInterview', self.interviewsById[id].id);
+
             });
+
             svgblob.addClass("clickable"); // TODO - figure out how to tyle svg
 
 

@@ -51,17 +51,7 @@ export default {
       return this.$store.getters.interviews;
     },
     interviewsByBureauChief() {
-      return Object.values(this.interviews).reduce((map, obj) => {
-        let bc = this.bureau_chief_of(obj.id);
-        if(bc && bc.id) {
-          if(!(bc.id in map)) { 
-            map[bc.id] = this.people[bc.id];
-            map[bc.id].interviews = [];
-          }
-          map[bc.id].interviews.push(obj);
-        return map;
-        }
-      }, {});
+      return this.$store.getters.interviewsByBureauChief;
     },
     allFields() {
       try { 

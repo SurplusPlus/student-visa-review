@@ -46,6 +46,8 @@ export default new Vuex.Store({
     people: [],
     loadedNum: 0,
     hasLoaded: false,
+    playingInterviewId: null,
+    audioStatus: "stopped",
   },
   getters: {
     interviews(state) {
@@ -62,8 +64,32 @@ export default new Vuex.Store({
         return a;
       }, {});
     },
+    interviewsByBureauChief(state) {
+
+      return Object.values(state.interviews).reduce((map, obj) => {
+
+        let bc;
+        try {
+          bc = state.people[state.interviews[obj.id].fields["Bureau Chief"]];
+        } catch {
+          bc = undefined;
+        }
+
+        if(bc && bc.id) {
+          if(!(bc.id in map)) { 
+            map[bc.id] = state.people[bc.id];
+            map[bc.id].interviews = [];
+          }
+          map[bc.id].interviews.push(obj);
+        }
+        return map;
+      }, {});
+    },
     people(state) {
       return state.people;
+    },
+    playingInterviewId(state) {
+      return state.playingInterviewId;
     },
   },
   mutations: {
@@ -76,6 +102,12 @@ export default new Vuex.Store({
     setLoaded(state) {
 			state.hasLoaded = true;
 		},
+    setPlayingInterviewId(state, id) {
+			state.playingInterviewId = id;
+		},
+    setAudioStatus(state, status) {
+      state.audioStatus = status;
+    },
   },
   actions: {
     fetchData(context) {
@@ -118,5 +150,8 @@ export default new Vuex.Store({
         if(++context.state.loadedNum == 2) { context.commit("setLoaded"); }
       });
     },
+    playInterview(context, id) {
+      context.commit("setPlayingInterviewId", id);
+    }
   }
 });
