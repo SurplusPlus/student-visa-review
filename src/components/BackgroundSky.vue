@@ -1,5 +1,5 @@
 <template>
-  <div id="backgroundsky" class="day">
+  <div id="backgroundsky" class="night">
   </div>
 </template>
 
@@ -46,8 +46,5 @@ export default {
 //   50% { background: linear-gradient(180deg, #3D5D7A 0%, #755454 100%);}
 //   100% {background: linear-gradient(180deg, rgba(191,212,244,1) 0%, rgba(235,227,220,1) 100%); }
 // }
-
-
-
 
 </style>

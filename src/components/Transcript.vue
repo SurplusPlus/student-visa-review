@@ -99,6 +99,7 @@ export default {
   mix-blend-mode: hard-light;
   border-radius: 50px 50px 0 0;
   margin: 0 0 0 20px;
+  box-shadow: 0px 0px 1px #212121;
 }
 
 .person {

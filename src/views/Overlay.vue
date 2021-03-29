@@ -59,7 +59,6 @@ export default {
   right: 0px;
   left: 0px;
   bottom: 0px;
-  
 }
 
 .nav > * {
@@ -77,6 +76,7 @@ export default {
   font-size: 1.3em;
 }
 
+
 a {
   color: black;
   text-decoration: none;
@@ -93,6 +93,7 @@ a {
   margin: 25px 0 0 20px;
   animation: floating 5s infinite;
   animation-timing-function: ease;
+  box-shadow: 0px 0px 1px #212121;
 }
 
 #nav-index {
@@ -106,6 +107,8 @@ a {
   margin: 25px 20px 0 0;
   animation: floating 5s infinite;
   animation-timing-function: ease;
+  box-shadow: 0px 0px 1px #212121;
+
 }
 
 
@@ -136,8 +139,14 @@ a {
   mix-blend-mode: hard-light;
   font-size: 1.3em;
   margin: 25px 0 0 20px;
+  transition: background-color 2s ease;
   animation: floating 5s infinite;
   animation-timing-function: ease;
+  box-shadow: 0px 0px 1px #212121;
+}
+
+.returnbutton:hover {
+    background-color: rgba(235, 227, 220, .8);
 }
 
 
