@@ -15,8 +15,6 @@ const airtable_table = process.env.VUE_APP_AIRTABLE_TABLE;
 const airtable_base = process.env.VUE_APP_AIRTABLE_BASE;
 const airtable_view = process.env.VUE_APP_AIRTABLE_VIEW ;
 
-console.log(process_api_key)
-
 export default {
   name: "App",
   components: {

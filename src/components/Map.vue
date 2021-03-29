@@ -22,12 +22,12 @@ export default {
   name: "Map",
   data() {
     return {
-      mapsvg: require('@/assets/map.svg'),
+      mapsvg: require('@/assets/map_testing.svg'),
       loaded: false,
       svgloaded: false,
       dim: 5000,
       panzoom: null,
-      x: 2500, // placeholder value
+      x: 2500, 
       y: 2500,
     };
   },
@@ -262,7 +262,7 @@ export default {
 
     listenForOnload() {
       if(this.hasLoaded && this.svgloaded) {
-        console.log("LOADED!");
+        console.log("MAP LOADED");
         this.loaded = true;
         this.initMap();
       } else {
@@ -297,6 +297,11 @@ window.SVG = SVG;
 
 .clickable {
   background-color: blue;
+}
+
+#mapsvg:hover {
+  background-color: pink;
+
 }
 
 

@@ -1,7 +1,7 @@
 <template>
   <div id="transcript">
     <div class="upperborder">
-      <img src="@/assets/transcript_upperborder.svg" style="width: 25vw"/>
+      <img src="@/assets/interface/transcript_upperborder.svg" style="width: 25vw"/>
     </div>
     <div class="content">
       <div class="header">Transcript</div>

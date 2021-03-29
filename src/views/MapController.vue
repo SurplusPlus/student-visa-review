@@ -5,10 +5,6 @@
 
     <Map scale="1"></Map>
 
-    <!--<SoundPoint class="soundpoint" v-for="record in interviews" v-bind:key="record.id" :id="record.id" :style="positionStyle(record.id)" >
-      <InterviewBlob :id="record.id"  />
-    </SoundPoint> -->
-
     <BackgroundSky />
 
   </div>
