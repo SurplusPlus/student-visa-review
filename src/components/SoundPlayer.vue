@@ -13,71 +13,91 @@
 import {Howl, Howler} from 'howler';
 
 export default {
-  name: "PathPlayer",
+  name: "SoundPlayer",
   data() {
     return {
-      interviewPath: undefined,
-      ambientPath: undefined,
+      audioHowl: undefined,
+      ambientSrc: [ '@/assets/ambient_crickets.webm' ],
+      ambientHowl: undefined,
       isPlaying: false,
       status: "stopped",
+      audioFile: "",
     };
   },
   mounted() {
   },
   methods: {
-    initAmbientPath() { // TODO : currently not working 
-      this.ambientPath = new Howl({
+    initAmbientHowl() { // TODO : currently not working 
+      this.ambientHowl = new Howl({
         src: [ '@/assets/ambient_crickets.webm' ],
         html5: true,
         autoplay: true,
         loop: true,
       });
-      this.ambientPath.play();
-      window.as = this.ambientPath;
+      this.ambientHowl.play();
+      window.as = this.ambientHowl;
+    },
+    fadeOutAudio() {
+      var self = this;
+      var fadeoutdur = 1500;
+      try { 
+        this.audioHowl.fade(1, 0, fadeoutdur);
+        setTimeout(function() {
+          self.audioHowl.stop();
+          self.audioHowl.unload();
+        }, fadeoutdur)
+      } catch {}
     },
     playPathById(id) {
-
-      if(this.ambientPath === undefined) {
-        console.log("triggering");
-        this.initAmbientPath();
+ 
+      if(this.audioHowl !== undefined) {
+        this.audioHowl.stop();
+        this.audioHowl.unload();
       }
 
-      console.log('wooo', this.audioFile);
+      console.log("playpathbyid", id)
+
+/*      if(this.ambientHowl === undefined) {
+        console.log("triggering");
+        this.initAmbientHowl();
+      } */
+
       try { 
-        this.interviewPath.stop();
-        this.interviewPath.unload();
-      } catch {}
-      this.interviewPath = new Howl({
-        src: [this.audioFile],
-        autoplay: false,
-        loop: false,
-      });
-      this.interviewPath.play();
+        let thisdata = this.audiopathData.filter(function(d) {
+          return d.id === id
+        })[0]
+
+        this.audioFile = thisdata['Audio File'].url; 
+        console.log('wooo', this.audioFile);
+
+        this.audioHowl = new Howl({
+          src: [this.audioFile],
+          autoplay: false,
+          loop: false,
+        });
+        this.audioHowl.play();
+      } catch {
+      }
     },
   },
   computed: {
     playingPathId() {
       return this.$store.getters.playingPathId;
     },
+    nextPlayingPathId() {
+      return this.$store.getters.nextPlayingPathId;
+    },
     interviews() {
       return this.$store.getters.interviews;
     },
-    record() {
-      if(this.playingPathId in this.interviews) {
-        return this.interviews[this.playingPathId];
-      } else {
-        return undefined;
-      }
-    },
-    audioFile() {
-      try {
-        return this.record.fields["Audio File"][0]["url"];
-      } catch {
-        return "";
-      }
+    audiopathData() {
+      return this.$store.getters.audiopathData;
     },
   },
   watch: {
+    nextPlayingPathId: function(newId, oldId) {
+      this.fadeOutAudio();
+    },
     playingPathId: function(newId, oldId) {
       this.playPathById(newId);
     },

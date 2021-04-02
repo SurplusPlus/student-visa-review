@@ -3,25 +3,38 @@
     <slot></slot>
       <svg @click="onclick" width="200" height="200" viewBox="0 0 200 200">
         <g>
-          <path class="blobpath"  :d="points" ></path>
+          <path class="blobpath" :d="points" ></path>
         </g>
       </svg>
   </div>
 </template>
 
 <script>
+/*  eslint-disable */ 
+import { gsap } from "gsap";
+
 export default {
   name: "InterviewBlob",
   props: ['id'],
   data() {
     return {
+      blob: null,
+      numPoints: 10,
+      minRadius: 80,
+      maxRadius: 100,
+      centerX: 100,
+      centerY: 100,
+      minDuration: 2,
+      maxDuration: 3,
+      rawpoints: [],
+      tl: null
     };
   },
   methods: {
     onclick: function() {
       // clicking on a blob means playing it!
-      this.$store.commit("setPlayingPathId", this.id);
-      console.log('setPlayingPathId', this.id);
+      this.$store.commit("setNextPlayingPathId", this.id);
+      console.log('setNextPlayingPathId', this.id);
       // this is handled by MapController
     }
   },
@@ -37,47 +50,77 @@ export default {
       }
     },
     points() {
-      let blob = createBlob({ 
-        numPoints: 12,
-        minRadius: 50,
-        maxRadius: 100,
-        centerX: 100,
-        centerY: 100,
-        minDuration: 1,
-        maxDuration: 2
-      });
-
-      return cardinal(blob.points, true, 1);
-
+      try {
+        return cardinal(this.rawpoints, true, 1);
+      } catch {
+        return []
+      }
+    },
+    playingPathId() {
+      return this.$store.getters.playingPathId;
+    },
+    areWePlaying() {
+      return this.playingPathId === this.id;
+    },
+  },
+  mounted() {
+    this.blob = createBlob({
+      this: this
+    });
+  },
+  watch: {
+    areWePlaying (newv, oldv) {
+      console.log(newv, oldv);
+      if(newv) {
+        this.minDuration= 0.5;
+        this.maxDuration= 1;
+        console.log(this.tl.duration())
+        // TODO make this work 
+      }
     }
   },
 };
 
 /** BELOW FROM https://codepen.io/osublake/pen/vdzjyg */ 
 var createBlob = function(options) {
+  var self = options.this;
    
   var points = [];  
-
-  var slice = (Math.PI * 2) / options.numPoints;
+  
+  var slice = (Math.PI * 2) / self.numPoints;
   var startAngle = random(Math.PI * 2);
   
-  
-  for (let i = 0; i < options.numPoints; i++) {
+  var tl = gsap.timeline({
+  });   
+
+  for (let i = 0; i < self.numPoints; i++) {
     
     let angle = startAngle + i * slice;
-    let radius = random(options.minRadius, options.maxRadius);
+    let radius = random(self.minRadius, self.maxRadius);
+    var duration = random(self.minDuration, self.maxDuration);
+    
     
     let point = {
-      x: options.centerX + Math.cos(angle) * radius,
-      y: options.centerY + Math.sin(angle) * radius,
+      x: self.centerX + Math.cos(angle) * radius,
+      y: self.centerY + Math.sin(angle) * radius,
     };   
-    
+
+    tl.to(point, duration, {
+      x: self.centerX + Math.cos(angle) * self.maxRadius,
+      y: self.centerY + Math.sin(angle) * self.maxRadius,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut",
+      duration: -random(duration)
+    });
+   
     points.push(point);
   }
   
-  options.points = points;
+  self.rawpoints = points;
+  self.tl = tl;
 
-  return options;
+  
 }
 
 

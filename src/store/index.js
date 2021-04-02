@@ -88,6 +88,7 @@ export default new Vuex.Store({
     mapScale: 1,
 
     playingPathId: null,
+    nextPlayingPathId: null,
     audioStatus: "stopped", // stopped, playing, requeuing (aka moving to a new queue)
     
   },
@@ -133,6 +134,9 @@ export default new Vuex.Store({
     playingPathId(state) {
       return state.playingPathId;
     },
+    nextPlayingPathId(state) {
+      return state.nextPlayingPathId;
+    },
     audiopathData(state) {
       return state.audiopathData;
     },
@@ -149,6 +153,9 @@ export default new Vuex.Store({
 		},
     setPlayingPathId(state, id) {
 			state.playingPathId = id;
+		},
+    setNextPlayingPathId(state, id) {
+			state.nextPlayingPathId = id;
 		},
     setAudioStatus(state, status) {
       state.audioStatus = status;
@@ -210,16 +217,23 @@ export default new Vuex.Store({
     },
     postFetch(context) {
 
-      let airtableSVGIDs = Object.values(context.state.interviews)
-        .map(function(d) {
-          return d.fields['SVGID'];
-        })
-        .filter(function(d) {
-          return d !== undefined;
-        });
+      let interviewsByAirtableSVGIDs = Object.values(context.state.interviews)
+        .filter(function(d) { return d.fields['SVGID'] !== undefined })
+        .reduce(function(a,d) { 
+          a[d.fields['SVGID']] = d.fields;
+          return a;
+        }, {})
 
       let validAudiopathData = context.state._rawAudiopathData.filter(function(audiopath) {
-        return airtableSVGIDs.includes(audiopath.id);
+        return audiopath.id in interviewsByAirtableSVGIDs;
+      });
+
+
+      validAudiopathData.forEach(function(audiopath) {
+        audiopath['Duration'] = interviewsByAirtableSVGIDs[audiopath.id]['Duration']
+        if(interviewsByAirtableSVGIDs[audiopath.id]['Audio File'].length > 0) {
+          audiopath['Audio File'] = interviewsByAirtableSVGIDs[audiopath.id]['Audio File'][0]
+        }
       });
 
       context.commit("setAudiopathData", validAudiopathData);
