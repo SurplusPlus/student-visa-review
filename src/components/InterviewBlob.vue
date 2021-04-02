@@ -19,13 +19,22 @@ export default {
   data() {
     return {
       blob: null,
+      numPoints: 10,
+      minRadius: 80,
+      maxRadius: 100,
+      centerX: 100,
+      centerY: 100,
+      minDuration: 2,
+      maxDuration: 3,
+      rawpoints: [],
+      tl: null
     };
   },
   methods: {
     onclick: function() {
       // clicking on a blob means playing it!
-      this.$store.commit("setPlayingPathId", this.id);
-      console.log('setPlayingPathId', this.id);
+      this.$store.commit("setNextPlayingPathId", this.id);
+      console.log('setNextPlayingPathId', this.id);
       // this is handled by MapController
     }
   },
@@ -42,75 +51,76 @@ export default {
     },
     points() {
       try {
-        return cardinal(this.blob.points, true, 1);
+        return cardinal(this.rawpoints, true, 1);
       } catch {
         return []
       }
-    
-    }
+    },
+    playingPathId() {
+      return this.$store.getters.playingPathId;
+    },
+    areWePlaying() {
+      return this.playingPathId === this.id;
+    },
   },
   mounted() {
-    this.blob = createBlob({ 
-      numPoints: 10,
-      minRadius: 80,
-      maxRadius: 100,
-      centerX: 100,
-      centerY: 100,
-      minDuration: 2,
-      maxDuration: 3
+    this.blob = createBlob({
+      this: this
     });
+  },
+  watch: {
+    areWePlaying (newv, oldv) {
+      console.log(newv, oldv);
+      if(newv) {
+        this.minDuration= 0.5;
+        this.maxDuration= 1;
+        console.log(this.tl.duration())
+        // TODO make this work 
+      }
+    }
   },
 };
 
 /** BELOW FROM https://codepen.io/osublake/pen/vdzjyg */ 
 var createBlob = function(options) {
+  var self = options.this;
    
   var points = [];  
-  var path = options.element;
   
-
-  var slice = (Math.PI * 2) / options.numPoints;
+  var slice = (Math.PI * 2) / self.numPoints;
   var startAngle = random(Math.PI * 2);
   
   var tl = gsap.timeline({
-    onUpdate: update
   });   
 
-  for (let i = 0; i < options.numPoints; i++) {
+  for (let i = 0; i < self.numPoints; i++) {
     
     let angle = startAngle + i * slice;
-    let radius = random(options.minRadius, options.maxRadius);
-    var duration = random(options.minDuration, options.maxDuration);
+    let radius = random(self.minRadius, self.maxRadius);
+    var duration = random(self.minDuration, self.maxDuration);
     
     
     let point = {
-      x: options.centerX + Math.cos(angle) * radius,
-      y: options.centerY + Math.sin(angle) * radius,
+      x: self.centerX + Math.cos(angle) * radius,
+      y: self.centerY + Math.sin(angle) * radius,
     };   
 
     tl.to(point, duration, {
-      x: options.centerX + Math.cos(angle) * options.maxRadius,
-      y: options.centerY + Math.sin(angle) * options.maxRadius,
+      x: self.centerX + Math.cos(angle) * self.maxRadius,
+      y: self.centerY + Math.sin(angle) * self.maxRadius,
       repeat: -1,
       yoyo: true,
       ease: "sine.inOut",
-      duration: 0, //-random(duration)
+      duration: -random(duration)
     });
    
     points.push(point);
   }
   
-  options.points = points;
-  options.tl = tl;
+  self.rawpoints = points;
+  self.tl = tl;
 
-
-  function update() {
-//    console.log("update");
-//    path.setAtntribute("d", cardinal(points, true, 1));
-  }
   
-
-  return options;
 }
 
 

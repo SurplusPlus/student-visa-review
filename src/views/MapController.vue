@@ -57,13 +57,23 @@ export default {
     playingPathId() {
       return this.$store.getters.playingPathId;
     },
+    nextPlayingPathId() {
+      return this.$store.getters.nextPlayingPathId;
+    },
   },
   methods: {
+
   },
   watch: {
-    playingPathId(newid, oldid) {
+    nextPlayingPathId(newid, oldid) {
+      var self = this;
       //TRIGGER ANIMATION HERE TODO 
       console.log(oldid, newid)
+      console.log("ok....")
+      setTimeout(function() {
+        self.$store.commit("setPlayingPathId", newid);
+      }, 2000);
+
     },
   },
   mounted() {
