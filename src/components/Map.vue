@@ -70,7 +70,7 @@ export default {
   name: "Map",
   data() {
     return {
-      mapsvg: require('@/assets/map/working/map.svg'),
+      mapsvg: require('@/assets/map/working/svgmap.svg'),
       loaded: false,
       svgloaded: false,
       dim: 5000,
