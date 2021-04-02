@@ -11,9 +11,9 @@
 
     <template v-else>
       <div id="indexnav">
-        <router-link class="returnbutton" :to="{ name: 'Landscape' }">
-          <div class="buttontext">Return</div>
-          <img class="returnbutton" src="@/assets/interface/return.svg"/>
+        <router-link :to="{ name: 'Landscape' }">
+          <div class="buttontext returnbutton">Return</div>
+          <!-- <img class="returnbutton" src="@/assets/return.svg"/> -->
         </router-link>
       </div>
     </template>
@@ -59,7 +59,6 @@ export default {
   right: 0px;
   left: 0px;
   bottom: 0px;
-  
 }
 
 .nav > * {
@@ -77,6 +76,7 @@ export default {
   font-size: 1.3em;
 }
 
+
 a {
   color: black;
   text-decoration: none;
@@ -86,22 +86,26 @@ a {
   left: 0px;
   top: 0px;
   background-color: #f5f5f5;
-  width: 100px;
-  height: 100px;
+  padding: 25px;
   border-radius: 50px;
-  box-shadow: -2px 6px 40px #F5f5f5;
+  box-shadow: -2px 6px 40px rgba(245, 245, 245, .8), 0px 0px 1.5px #212121;
   mix-blend-mode: hard-light;
+  margin: 25px 0 0 20px;
+  animation: floating 5s infinite;
+  animation-timing-function: ease;
 }
 
 #nav-index {
   right: 0px;
   top: 0px;
   background-color: #f5f5f5;
-  width: 100px;
-  height: 100px;
+  padding: 25px;
   border-radius: 50px;
-  box-shadow: -2px 6px 40px #f5f5f5;
+  box-shadow: -2px 6px 40px rgba(245, 245, 245, .8), 0px 0px 1.5px #212121;
   mix-blend-mode: hard-light;
+  margin: 25px 20px 0 0;
+  animation: floating 5s infinite;
+  animation-timing-function: ease;
 }
 
 
@@ -124,18 +128,38 @@ a {
   display: inline-block;
   position: relative;
   text-align: center;
-  color: black;
-}
-
-
-.buttontext {
-  position: absolute;
-  top: 30px;
-  left: 30px;
-  color: black;
+  color: #212121;
+  background: #f5f5f5;
+  padding: 25px;
+  border-radius: 50px;
+  box-shadow: -2px 6px 40px rgba(245, 245, 245, .8), 0px 0px 1.5px #212121;
+  mix-blend-mode: hard-light;
   font-size: 1.3em;
-  z-index: 10001;
+  margin: 25px 0 0 20px;
+  transition: background-color 2s ease;
+  animation: floating 5s infinite;
+  animation-timing-function: ease;
 }
+
+.returnbutton:hover {
+    background-color: rgba(235, 227, 220, .8);
+}
+
+
+@keyframes floating {
+  0%   {transform: translatey(-8px);}
+  50%  {transform: translatey(0px);}
+  100% {transform: translatey(-8px);}
+}
+
+// .buttontext {
+//   position: absolute;
+//   top: 30px;
+//   left: 30px;
+//   color: black;
+//   font-size: 1.3em;
+//   z-index: 10001;
+// }
 
 </style>
 
