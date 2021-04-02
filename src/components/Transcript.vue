@@ -1,5 +1,6 @@
 <template>
   <div id="transcript">
+    {{ playingPathId }}
     <div class="upperborder">
       <img src="@/assets/interface/transcript_upperborder.svg" style="width: 25vw"/>
     </div>
@@ -33,27 +34,30 @@ export default {
     interviews() {
       return this.$store.getters.interviews;
     },
-    playingInterviewId() {
-      return this.$store.getters.playingInterviewId;
+    playingPathId() {
+      return this.$store.getters.playingPathId;
     },
     playingRecord() {
-      if(this.playingInterviewId in this.interviews) {
-        return this.interviews[this.playingInterviewId];
+      if(this.playingPathId in this.interviews) {
+        return this.interviews[this.playingPathId];
       } else {
         return undefined;
       }
     },
+    playingPathData() {
+      return this.$store.getters.playingPathData;
+    },
     transcript() {
       try { 
-        return this.playingRecord.fields['Transcript'];
+        return this.playingPathData['Transcript'];
       } catch {
         return "";
       }
     },
     processedTranscript() {
-      if(this.transcript === undefined || this.transcript === "") { return []; }
+      try {
 
-        var turns = this.transcript.split(/(?=\[.*\])/)
+        var turns = this.transcript.trim().split(/(?=\[.*\])/)
         turns = turns.map(function(x) { 
             var res = x.trim().split(/\[(.*)\]/).slice(1); 
             
@@ -72,6 +76,9 @@ export default {
             return { name: res[0], phrases: phrases}; 
         })
         return turns;
+      } catch { 
+        return []; 
+      }
     },
   },
   methods: {
