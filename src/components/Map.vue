@@ -1,8 +1,12 @@
 <template>
   <div id="mapwrapper">
-    {{ scale }} xxx <br><br>
     <object id="mapsvg" type="image/svg+xml" :data="mapsvg" @load="svgloaded=true"/>
     <slot></slot>
+    <div id="debug">
+      heyyyy
+      {{ sortMapElements() }} 
+      {{ interviewsInMap }} 
+    </div>
   </div>
 </template>
 
@@ -10,7 +14,51 @@
 
 /*  eslint-disable */ 
 
+/******** MAP LOGIC ***********/
+/*
+
+Map is 5000 x 5000px, absolutely positioned.
+Map background and data is driven by map.svg.
+Blobs are svg blobs created by the InterviewBlob component.
+
+When site is loaded..
+
+1.
+Airtable is processed for interview data. 
+Airtable data has ids (e.g. 'mlbl', 'transit.mkad')
+
+
+2. SVG map is processed for movement paths with the same ID 
+SVG map layers are named with BLOB-mlbl, PATH-transit.mkd, etc to notate blob or path shapes.
+
+Rules - paths and their directions note the movement of blobs on the page
+TODO: for now, the blobs in illustrator are ignored.
+
+3. Site scans for airtable data that is also in svg map as a path.
+
+4. InterviewBlobs are placed at: 
+
+if a transit blob, then either end of a transit path
+else on the closed loop of a path
+
+5. When InterviewBlobs are clicked:
+- existing audio is paused
+- existing animation is stopped / handled TODO
+- new audio is loaded and played
+- new animation is created
+
+===
+
+An animation consists of:
+- the 
+
+*/
+
+
+
 import Map from "@/components/Map.vue";
+import InterviewBlob from "@/components/InterviewBlob.vue";
+
 import Panzoom from '@panzoom/panzoom'
 import { SVG } from '@svgdotjs/svg.js'
 import { gsap } from "gsap";
@@ -22,40 +70,56 @@ export default {
   name: "Map",
   data() {
     return {
-      mapsvg: require('@/assets/map.svg'),
+      mapsvg: require('@/assets/map/working/map.svg'),
       loaded: false,
       svgloaded: false,
       dim: 5000,
       panzoom: null,
-      x: 2500, // placeholder value
+      x: 2500, 
       y: 2500,
     };
   },
   props: ["scale"],
   components: {
+    InterviewBlob,
     Map,
   },
   computed: {
+    hasLoaded() {
+      return this.$store.getters.hasLoaded;
+    },
+    interviewsById() {
+      return this.$store.getters.interviewsById;
+    },
+    interviewsInMap() {
+      return "yo";
+//      return this.sortedMapElements.filter(function(id) {
+//        return id in this.interviewsById;
+//      });
+    },
+
+  },
+  methods: {
     getSVGElementsWithId() {
       try {
         let elems  = Array.from(document.getElementById("mapsvg").contentDocument.getElementsByTagName("svg")[0].childNodes)
         .filter(function(m) {
-         return m.id !== undefined;
+         return m.id !== undefined && m.id !== "";
         })
-      return elems;
+        return elems;
       } catch {
-        return null;
+        return [];
       }
     },
-    sortedMapElements() {
-
+    sortMapElements() {
       // svg elements are named BLOB-test1 ... 
       // occasionally SVG fills or textures may be called BLOB-test1_1, etc
       // we want svgs split by a '-' without any underscores
       let d = {};
-      this.getSVGElementsWithId
+      this.getSVGElementsWithId()
         .filter(function(elem) {
-          return (!elem.id.includes("_"));
+//          return (!elem.id.includes("_"));
+          return true;
         })
         .forEach(function(elem) {
           try {
@@ -67,15 +131,8 @@ export default {
           }
         });
       return d;
+
     },
-    hasLoaded() {
-      return this.$store.getters.hasLoaded;
-    },
-    interviewsById() {
-      return this.$store.getters.interviewsById;
-    }
-  },
-  methods: {
     getSVGID(id) {
       return document.getElementById("mapsvg").contentDocument.getElementById(id);
     },
@@ -112,7 +169,7 @@ export default {
       return points;
     },
     async panAlongPath(id, durationms, stepinterval, callback) {
-      function delay(t){
+      function delay(t) {
         return new Promise((resolve,reject)=>{
           setTimeout(()=>{
             resolve();
@@ -128,7 +185,7 @@ export default {
 
       for(let p of pathpoints) {
         await delay(stepinterval);
-        self.panTo(p.x, p.y, true);
+        self.panTo(p.x, p.y, false);
         callback(p.x, p.y);
       }
      
@@ -139,15 +196,15 @@ export default {
 
     placeBlobs() {
       var self = this;
-      console.log(this.sortedMapElements);
+      console.log(this.sortMapElements());
       // scan along paths
 
-      for (let id in this.sortedMapElements) {
+      for (let id in this.sortMapElements()) {
         if(id in this.interviewsById) {
           // id is in both svg map and in airtable
           console.log("yo", id );
 
-          let rec = this.sortedMapElements[id];
+          let rec = this.sortMapElements()[id];
           let audiofile = null;
           try { 
             thisfile = this.interviewsById[id].fields["Audio File"][0];
@@ -188,10 +245,11 @@ export default {
               duration = 5000;
             }
 
+            console.log("Setting a click");
             svgblob.click(function() {
               console.log("clicked", svgpath.id());
-              self.panAlongPath(svgpath.id(), duration, 50, function(x, y) {
-                svgblob.animate({ duration: 50 }).ease('-').center(x, y);
+              self.panAlongPath(svgpath.id(), duration, 20, function(x, y) {
+                svgblob.animate({ duration: 20 }).ease('-').center(x, y);
               });
               self.$store.dispatch('playInterview', self.interviewsById[id].id);
 
@@ -211,6 +269,7 @@ export default {
 
 
           // TODO - given this invormation, move the blobs to the right spot 
+          console.log("ok");
 
         }
       }
@@ -247,6 +306,9 @@ export default {
       window.getPathPoints =  this.getPathPoints;
       window.panAlongPath =  this.panAlongPath; 
       window.getSVGID = this.getSVGID;
+      window.sortMapElements = this.sortMapElements;
+      window.getSVGElementsWithId = this.getSVGElementsWithId;
+      window.initMap = this.initMap;
     },
 
 
@@ -254,15 +316,13 @@ export default {
 
     initMap() {
       this.initPanZoom();
-
       this.placeBlobs();
-
     },
 
 
     listenForOnload() {
       if(this.hasLoaded && this.svgloaded) {
-        console.log("LOADED!");
+        console.log("MAP LOADED");
         this.loaded = true;
         this.initMap();
       } else {
@@ -279,6 +339,12 @@ export default {
   },
   updated() {
   },
+  watch: {
+    svgLoaded: function() {
+      console.log("OK svgloaded");
+    },
+  },
+
 
 };
 
@@ -289,14 +355,28 @@ window.SVG = SVG;
 <style scoped lang="scss">
 
 
+#debug {
+  position: absolute;
+  top: 2411px;
+  left: 545px;
+  z-index: 100000;
+  border: 2px solid pink;
+  width: 100px;
+  height: 100px;
+}
+
 #mapwrapper {
   z-index: 10;
   width: 5000px;
   height: 5000px;
 }
 
+
 .clickable {
   background-color: blue;
+}
+
+#mapsvg:hover {
 }
 
 

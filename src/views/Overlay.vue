@@ -13,7 +13,7 @@
       <div id="indexnav">
         <router-link class="returnbutton" :to="{ name: 'Landscape' }">
           <div class="buttontext">Return</div>
-          <img class="returnbutton" src="@/assets/return.svg"/>
+          <img class="returnbutton" src="@/assets/interface/return.svg"/>
         </router-link>
       </div>
     </template>

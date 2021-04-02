@@ -1,11 +1,6 @@
 <template>
-  <div class="landscape">
-    hey a test
-
-    {{ mapsvg }} 
-    <object type="image/svg+xml" :data="mapsvg" />
-
-
+  <div id="svgmapwrapper">
+    <object id="mapsvg" type="image/svg+xml" :data="mapsvg" @load="svgloaded=true"/>
   </div>
 </template>
 
@@ -14,9 +9,8 @@
 /*  eslint-disable */ 
 
 
-
 export default {
-  name: "TestView",
+  name: "Map",
   data() {
     return {
       mapsvg: require('@/assets/map/working/pathmap.svg'),
@@ -27,15 +21,33 @@ export default {
   computed: {
   },
   methods: {
-    parse: function() {
-
-    },
   },
   mounted() {
-    this.parse();
   },
+  created() {
+  },
+  updated() {
+  },
+  watch: {
+  },
+
+
 };
+
+
 </script>
 <style scoped lang="scss">
+
+
+#svgmapwrapper {
+  z-index: 10;
+  width: 5000px;
+  height: 5000px;
+}
+
+#mapsvg:hover {
+}
+
+
 </style>
 

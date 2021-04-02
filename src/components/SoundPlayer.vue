@@ -1,7 +1,7 @@
 <template>
   <div class="soundplayer debug" :class="{ playing : isPlaying }">
    soundplayer debug 
-    {{ playingInterviewId }}
+    {{ playingPathId }}
     {{ audioFile }} 
 
   </div>
@@ -13,11 +13,11 @@
 import {Howl, Howler} from 'howler';
 
 export default {
-  name: "SoundPlayer",
+  name: "PathPlayer",
   data() {
     return {
-      interviewSound: undefined,
-      ambientSound: undefined,
+      interviewPath: undefined,
+      ambientPath: undefined,
       isPlaying: false,
       status: "stopped",
     };
@@ -25,46 +25,46 @@ export default {
   mounted() {
   },
   methods: {
-    initAmbientSound() { // TODO : currently not working 
-      this.ambientSound = new Howl({
+    initAmbientPath() { // TODO : currently not working 
+      this.ambientPath = new Howl({
         src: [ '@/assets/ambient_crickets.webm' ],
         html5: true,
         autoplay: true,
         loop: true,
       });
-      this.ambientSound.play();
-      window.as = this.ambientSound;
+      this.ambientPath.play();
+      window.as = this.ambientPath;
     },
-    playInterviewById(id) {
+    playPathById(id) {
 
-      if(this.ambientSound === undefined) {
+      if(this.ambientPath === undefined) {
         console.log("triggering");
-        this.initAmbientSound();
+        this.initAmbientPath();
       }
 
       console.log('wooo', this.audioFile);
       try { 
-        this.interviewSound.stop();
-        this.interviewSound.unload();
+        this.interviewPath.stop();
+        this.interviewPath.unload();
       } catch {}
-      this.interviewSound = new Howl({
+      this.interviewPath = new Howl({
         src: [this.audioFile],
         autoplay: false,
         loop: false,
       });
-      this.interviewSound.play();
+      this.interviewPath.play();
     },
   },
   computed: {
-    playingInterviewId() {
-      return this.$store.getters.playingInterviewId;
+    playingPathId() {
+      return this.$store.getters.playingPathId;
     },
     interviews() {
       return this.$store.getters.interviews;
     },
     record() {
-      if(this.playingInterviewId in this.interviews) {
-        return this.interviews[this.playingInterviewId];
+      if(this.playingPathId in this.interviews) {
+        return this.interviews[this.playingPathId];
       } else {
         return undefined;
       }
@@ -78,8 +78,8 @@ export default {
     },
   },
   watch: {
-    playingInterviewId: function(newId, oldId) {
-      this.playInterviewById(newId);
+    playingPathId: function(newId, oldId) {
+      this.playPathById(newId);
     },
 
   },

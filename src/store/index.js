@@ -40,14 +40,56 @@ function loadAirtableData(options, callback) {
 }
 
 
+function loadAudiopathDataFromSvg(svgpath, callback) {
+  const parser = new DOMParser(); 
+  fetch(svgpath)
+    .then(function (response) {
+      return response.text();
+    })
+    .then(function(text) {
+      const svgDoc = parser.parseFromString(text, 'image/svg+xml');
+      let pathData = Array.from(svgDoc.querySelectorAll('path'))
+        .map(function(x) { 
+          return { rawid: x.getAttribute("id"), d: x.getAttribute("d"), elem: x }  
+        })
+
+      var audiopathData = pathData.filter(function(d) {
+          return d.rawid.includes( "PATH-");
+      });
+
+      audiopathData.forEach(function(d) {
+        d.id = d.rawid.replace("PATH-", "");
+        if(d.rawid.includes("transit")) {
+          d.type = "transit";
+        } else if(d.rawid.includes("intro")) {
+          d.type = "intro";
+        } else {
+          d.type = "interview";
+        }
+      });
+
+      callback(audiopathData);
+    });
+}
+
+
+
+
+
 export default new Vuex.Store({
   state: {
+    mapsvg: require('@/assets/map/working/map.svg'),
     interviews: [],
     people: [],
+    _rawAudiopathData: [],
+    audiopathData: [],
     loadedNum: 0,
     hasLoaded: false,
-    playingInterviewId: null,
-    audioStatus: "stopped",
+    mapScale: 1,
+
+    playingPathId: null,
+    audioStatus: "stopped", // stopped, playing, requeuing (aka moving to a new queue)
+    
   },
   getters: {
     interviews(state) {
@@ -88,8 +130,11 @@ export default new Vuex.Store({
     people(state) {
       return state.people;
     },
-    playingInterviewId(state) {
-      return state.playingInterviewId;
+    playingPathId(state) {
+      return state.playingPathId;
+    },
+    audiopathData(state) {
+      return state.audiopathData;
     },
   },
   mutations: {
@@ -102,11 +147,17 @@ export default new Vuex.Store({
     setLoaded(state) {
 			state.hasLoaded = true;
 		},
-    setPlayingInterviewId(state, id) {
-			state.playingInterviewId = id;
+    setPlayingPathId(state, id) {
+			state.playingPathId = id;
 		},
     setAudioStatus(state, status) {
       state.audioStatus = status;
+    },
+    setAudiopathData(state, apd) {
+      state.audiopathData = apd;
+    },
+    setRawAudiopathData(state, apd) {
+      state._rawAudiopathData = apd;
     },
   },
   actions: {
@@ -114,6 +165,7 @@ export default new Vuex.Store({
       if (!context.state.hasLoaded) {
         context.dispatch("fetchInterviews");
         context.dispatch("fetchPeople");
+        context.dispatch("fetchAudiopathData");
       }
     },
     fetchInterviews(context) {
@@ -130,7 +182,7 @@ export default new Vuex.Store({
           return map;
         }, {});
         context.commit("setInterviews", interviews);
-        if(++context.state.loadedNum == 2) { context.commit("setLoaded"); }
+        if(++context.state.loadedNum == 3) { context.dispatch("postFetch") }
       });
     },
     fetchPeople(context) {
@@ -147,11 +199,37 @@ export default new Vuex.Store({
           return map;
         }, {});
         context.commit("setPeople", people);
-        if(++context.state.loadedNum == 2) { context.commit("setLoaded"); }
+        if(++context.state.loadedNum == 3) { context.dispatch("postFetch") }
       });
     },
-    playInterview(context, id) {
-      context.commit("setPlayingInterviewId", id);
-    }
+    fetchAudiopathData(context) {
+      loadAudiopathDataFromSvg(context.state.mapsvg, function(audiopathData) {
+        context.commit("setRawAudiopathData", audiopathData);
+        if(++context.state.loadedNum == 3) { context.dispatch("postFetch") }
+      });
+    },
+    postFetch(context) {
+
+      let airtableSVGIDs = Object.values(context.state.interviews)
+        .map(function(d) {
+          return d.fields['SVGID'];
+        })
+        .filter(function(d) {
+          return d !== undefined;
+        });
+
+      let validAudiopathData = context.state._rawAudiopathData.filter(function(audiopath) {
+        return airtableSVGIDs.includes(audiopath.id);
+      });
+
+      context.commit("setAudiopathData", validAudiopathData);
+
+      console.log(validAudiopathData);
+
+      context.commit("setLoaded");
+    },
+    playPath(context, id) {
+      context.commit("setPlayingPathId", id);
+    },
   }
 });
