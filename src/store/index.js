@@ -140,6 +140,16 @@ export default new Vuex.Store({
     audiopathData(state) {
       return state.audiopathData;
     },
+    playingPathData(state) {
+      try {
+        let thisdata = state.audiopathData.filter(function(d) {
+          return d.id === state.playingPathId;
+        })[0];
+        return thisdata;
+      } catch {
+        return null;
+      }
+    },
   },
   mutations: {
 		setInterviews(state, r) {
@@ -228,11 +238,13 @@ export default new Vuex.Store({
         return audiopath.id in interviewsByAirtableSVGIDs;
       });
 
-
       validAudiopathData.forEach(function(audiopath) {
+        audiopath['Transcript'] = interviewsByAirtableSVGIDs[audiopath.id]['Transcript']
         audiopath['Duration'] = interviewsByAirtableSVGIDs[audiopath.id]['Duration']
-        if(interviewsByAirtableSVGIDs[audiopath.id]['Audio File'].length > 0) {
+        audiopath['SVGTexture'] = interviewsByAirtableSVGIDs[audiopath.id]['SVGTexture']
+        try {
           audiopath['Audio File'] = interviewsByAirtableSVGIDs[audiopath.id]['Audio File'][0]
+        } catch { 
         }
       });
 

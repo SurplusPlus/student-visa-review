@@ -1,10 +1,15 @@
 <template>
-  <div class="interviewblob">
+  <div class="interviewblob">  
     <slot></slot>
       <svg @click="onclick" width="200" height="200" viewBox="0 0 200 200">
         <g>
-          <path class="blobpath" :d="points" ></path>
+          <path class="blobpath" :d="points" :style="'fill: url(#texture-' + id + ')' "></path>
         </g>
+          <defs>
+            <pattern :id="'texture-'+id" width="1" height="1" viewBox="0 0 200 200" preserveAspectRatio="none">
+              <image :xlink:href="SVGTexture" width="200" height="200" preserveAspectRatio="none"></image>
+            </pattern>
+          </defs>
       </svg>
   </div>
 </template>
@@ -42,11 +47,18 @@ export default {
     interviews() {
       return this.$store.getters.interviews;
     },
-    record() {
-      if(this.id in this.interviews) {
-        return this.interviews[this.id];
-      } else {
-        return undefined;
+    audiopathData() {
+      return this.$store.getters.audiopathData;
+    },
+    thisdata() {
+      var self = this;
+      try {
+        let thisdata = this.audiopathData.filter(function(d) {
+          return d.id === self.id;
+        })[0]
+        return thisdata;
+      } catch {
+        return null;
       }
     },
     points() {
@@ -62,6 +74,13 @@ export default {
     areWePlaying() {
       return this.playingPathId === this.id;
     },
+    SVGTexture() {
+      if(this.thisdata.SVGTexture !== undefined && this.thisdata.SVGTexture !== "") {
+        return require('@/assets/map/working/' + this.thisdata.SVGTexture)
+      } else {
+        return require('@/assets/map/working/day_rock_3.jpg')
+      }
+    }
   },
   mounted() {
     this.blob = createBlob({
@@ -104,7 +123,7 @@ var createBlob = function(options) {
       x: self.centerX + Math.cos(angle) * radius,
       y: self.centerY + Math.sin(angle) * radius,
     };   
-
+/*
     tl.to(point, duration, {
       x: self.centerX + Math.cos(angle) * self.maxRadius,
       y: self.centerY + Math.sin(angle) * self.maxRadius,
@@ -112,7 +131,7 @@ var createBlob = function(options) {
       yoyo: true,
       ease: "sine.inOut",
       duration: -random(duration)
-    });
+    }); */
    
     points.push(point);
   }
@@ -180,6 +199,9 @@ function random(min, max) {
 
 <style scoped>
 
+.blobpath {
+  fill: url(#image)
+}
 .interviewblob {
 }
 svg {
