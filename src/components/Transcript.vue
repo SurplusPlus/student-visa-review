@@ -37,13 +37,6 @@ export default {
     playingPathId() {
       return this.$store.getters.playingPathId;
     },
-    playingRecord() {
-      if(this.playingPathId in this.interviews) {
-        return this.interviews[this.playingPathId];
-      } else {
-        return undefined;
-      }
-    },
     playingPathData() {
       return this.$store.getters.playingPathData;
     },

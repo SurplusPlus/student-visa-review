@@ -1,13 +1,13 @@
 <template>
-  <div class="interviewblob"> 
+  <div class="interviewblob">  
     <slot></slot>
       <svg @click="onclick" width="200" height="200" viewBox="0 0 200 200">
         <g>
-          <path class="blobpath" :d="points" ></path>
+          <path class="blobpath" :d="points" :style="'fill: url(#texture-' + id + ')' "></path>
         </g>
           <defs>
-            <pattern id='image' width="1" height="1" viewBox="0 0 200 200" preserveAspectRatio="none">
-              <image xlink:href='@/assets/map/maptextures/rocks_jan1.png' width="200" height="200" preserveAspectRatio="none"></image>
+            <pattern :id="'texture-'+id" width="1" height="1" viewBox="0 0 200 200" preserveAspectRatio="none">
+              <image :xlink:href="SVGTexture" width="200" height="200" preserveAspectRatio="none"></image>
             </pattern>
           </defs>
       </svg>
@@ -54,7 +54,7 @@ export default {
       var self = this;
       try {
         let thisdata = this.audiopathData.filter(function(d) {
-          return d.id === self.id
+          return d.id === self.id;
         })[0]
         return thisdata;
       } catch {
@@ -74,6 +74,13 @@ export default {
     areWePlaying() {
       return this.playingPathId === this.id;
     },
+    SVGTexture() {
+      if(this.thisdata.SVGTexture !== undefined && this.thisdata.SVGTexture !== "") {
+        return require('@/assets/map/working/' + this.thisdata.SVGTexture)
+      } else {
+        return require('@/assets/map/working/day_rock_3.jpg')
+      }
+    }
   },
   mounted() {
     this.blob = createBlob({
