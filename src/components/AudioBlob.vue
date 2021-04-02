@@ -9,7 +9,6 @@
                 <div class='divtext'>{{ thisdata['Name'] }}</div>
               </div>
             </foreignObject>    
-            <!--            <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">{{ thisdata['Name'] }}</text>     -->
           </template>
           <template v-else>
             <text x="50%" y="95%" dominant-baseline="middle" text-anchor="middle">{{ thisdata['Name'] }}</text>    
@@ -148,15 +147,15 @@ var createBlob = function(options) {
       x: self.centerXY + Math.cos(angle) * radius,
       y: self.centerXY + Math.sin(angle) * radius,
     };   
-/*
+
     tl.to(point, duration, {
-      x: self.centerX + Math.cos(angle) * self.maxRadius,
-      y: self.centerY + Math.sin(angle) * self.maxRadius,
+      x: self.centerXY + Math.cos(angle) * self.radii.max,
+      y: self.centerXY + Math.sin(angle) * self.radii.max,
       repeat: -1,
       yoyo: true,
       ease: "sine.inOut",
       duration: -random(duration)
-    }); */
+    }); 
    
     points.push(point);
   }
