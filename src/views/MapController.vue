@@ -62,6 +62,7 @@ export default {
   },
   watch: {
     playingPathId(newid, oldid) {
+      //TRIGGER ANIMATION HERE TODO 
       console.log(oldid, newid)
     },
   },

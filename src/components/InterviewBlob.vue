@@ -42,7 +42,9 @@ export default {
         minRadius: 50,
         maxRadius: 100,
         centerX: 100,
-        centerY: 100
+        centerY: 100,
+        minDuration: 1,
+        maxDuration: 2
       });
 
       return cardinal(blob.points, true, 1);
