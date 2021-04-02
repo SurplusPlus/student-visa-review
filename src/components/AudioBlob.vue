@@ -1,13 +1,23 @@
 <template>
-  <div class="interviewblob">  
-    <slot></slot>
-      <svg @click="onclick" width="200" height="200" viewBox="0 0 200 200">
+  <div :id="'audioBlob-' + id" :class="[ 'audioBlob', thisdata.type, { 'playing': areWePlaying } ]" :style="positionStyle">  
+      <svg @click="onclick" :width="viewboxdim" :height="viewboxdim" :viewBox="'0 0 ' + viewboxdim + ' ' + viewboxdim">
         <g>
           <path class="blobpath" :d="points" :style="'fill: url(#texture-' + id + ')' "></path>
+          <template v-if="thisdata.type !== 'interview'">
+            <foreignObject x="0%" y="0%" width="100%" height="100%" dominant-baseline="middle" text-anchor="middle">
+              <div class='divtextwrapper'>
+                <div class='divtext'>{{ thisdata['Name'] }}</div>
+              </div>
+            </foreignObject>    
+            <!--            <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">{{ thisdata['Name'] }}</text>     -->
+          </template>
+          <template v-else>
+            <text x="50%" y="95%" dominant-baseline="middle" text-anchor="middle">{{ thisdata['Name'] }}</text>    
+          </template>
         </g>
           <defs>
-            <pattern :id="'texture-'+id" width="1" height="1" viewBox="0 0 200 200" preserveAspectRatio="none">
-              <image :xlink:href="SVGTexture" width="200" height="200" preserveAspectRatio="none"></image>
+            <pattern :id="'texture-'+id" width="1" height="1" :viewBox="'0 0 ' + viewboxdim + ' ' + viewboxdim" preserveAspectRatio="none">
+              <image :xlink:href="SVGTexture" :width="viewboxdim" :height="viewboxdim" preserveAspectRatio="none"></image>
             </pattern>
           </defs>
       </svg>
@@ -17,22 +27,20 @@
 <script>
 /*  eslint-disable */ 
 import { gsap } from "gsap";
+import "@fontsource/space-mono/700.css"
 
 export default {
-  name: "InterviewBlob",
+  name: "AudioBlob",
   props: ['id'],
   data() {
     return {
       blob: null,
-      numPoints: 10,
-      minRadius: 80,
-      maxRadius: 100,
-      centerX: 100,
-      centerY: 100,
+      numPoints: 6,
       minDuration: 2,
       maxDuration: 3,
       rawpoints: [],
-      tl: null
+      tl: null,
+      dimpadding: 30,
     };
   },
   methods: {
@@ -63,10 +71,26 @@ export default {
     },
     points() {
       try {
-        return cardinal(this.rawpoints, true, 1);
+        return cardinal(this.rawpoints, true, 1.1);
       } catch {
         return []
       }
+    },
+    centerXY() {
+      return this.radii.max + this.dimpadding ;
+    },
+    radii() {
+      if(this.thisdata.type === "transit") {
+        return { min: 170, max: 180 }
+      } else {
+        return { min: 80, max: 100 }
+      }
+    },
+    positionStyle() {
+      return { 'margin-top': -this.centerXY + "px", 'margin-left': -this.centerXY + "px"}
+    },
+    viewboxdim() {
+      return (this.radii.max + this.dimpadding) * 2;
     },
     playingPathId() {
       return this.$store.getters.playingPathId;
@@ -76,9 +100,9 @@ export default {
     },
     SVGTexture() {
       if(this.thisdata.SVGTexture !== undefined && this.thisdata.SVGTexture !== "") {
-        return require('@/assets/map/working/' + this.thisdata.SVGTexture)
+        return require('@/assets/map/maptextures/' + this.thisdata.SVGTexture)
       } else {
-        return require('@/assets/map/working/day_rock_3.jpg')
+        return require('@/assets/map/maptextures/broken_image.gif')
       }
     }
   },
@@ -115,13 +139,14 @@ var createBlob = function(options) {
   for (let i = 0; i < self.numPoints; i++) {
     
     let angle = startAngle + i * slice;
-    let radius = random(self.minRadius, self.maxRadius);
+    let radius = random(self.radii.min, self.radii.max);
+    console.log(radius);
     var duration = random(self.minDuration, self.maxDuration);
     
     
     let point = {
-      x: self.centerX + Math.cos(angle) * radius,
-      y: self.centerY + Math.sin(angle) * radius,
+      x: self.centerXY + Math.cos(angle) * radius,
+      y: self.centerXY + Math.sin(angle) * radius,
     };   
 /*
     tl.to(point, duration, {
@@ -200,12 +225,39 @@ function random(min, max) {
 <style scoped>
 
 .blobpath {
-  fill: url(#image)
+  stroke: #999;
+  stroke-width: 1;
 }
-.interviewblob {
+
+.playing .blobpath {
+  stroke: #FFA;
+  stroke-width: 5; 
 }
-svg {
+
+text, .divtext {
+  user-select: none;
+}
+
+.divtextwrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
+  height: 100%;
+}
+
+.divtext {
+  display: inline-block;
+  padding: 10px;
+  background-color: white;
+  font-size: 1.1em;
+}
+.transit .text {
+  color: blue;
+}
+
+svg {
+  font-family: 'Space Mono', serif;
   height: auto;
 }
 

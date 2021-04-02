@@ -1,7 +1,7 @@
 <template>
   <div id="audiopath">
-    <div class="mapblob" v-for="p in pathPoints"  :key="p.x + p.y" :style="{ top: p.y - blobRadius + 'px', left: p.x - blobRadius + 'px'}">
-      <InterviewBlob :id="thisData.id"  />
+    <div class="mapblob" v-for="p in pathPoints"  :key="p.x + p.y" :style="{ top: p.y + 'px', left: p.x + 'px'}">
+      <AudioBlob :id="thisData.id"  />
     </div>
   </div>
 </template>
@@ -10,7 +10,7 @@
 
 /*  eslint-disable */ 
 
-import InterviewBlob from "@/components/InterviewBlob.vue";
+import AudioBlob from "@/components/AudioBlob.vue";
 
 import { SVG } from '@svgdotjs/svg.js'
 
@@ -19,11 +19,10 @@ export default {
   props: ['id'],
   data() {
     return {
-      blobRadius: 100,
     };
   },
   components: {
-    InterviewBlob
+    AudioBlob
   },
   computed: {
     audiopathData() {
@@ -62,8 +61,6 @@ export default {
   left: 0px;
   bottom: 0px;
   z-index: 10000;
-  width: 200px;
-
 }
 
 

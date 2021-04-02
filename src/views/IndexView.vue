@@ -7,7 +7,7 @@
       </div>
       <div class="interviews">
         <div class="interview" v-for="interview in bc.interviews" :key="interview.id">
-          <InterviewBlob :id="interview.id" />
+          <AudioBlob :id="interview.id" />
           <div class="interview-name">{{ interview.fields["Name"] }}</div>
         </div>
       </div>
@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import InterviewBlob from "@/components/InterviewBlob.vue";
+import AudioBlob from "@/components/AudioBlob.vue";
 import BackgroundSky from "@/components/BackgroundSky.vue";
 
 import "@fontsource/space-mono/400.css"
@@ -29,7 +29,7 @@ export default {
     return {};
   },
   components: {
-    InterviewBlob,
+    AudioBlob,
     BackgroundSky,
   },
   methods: {
