@@ -1,9 +1,9 @@
 <template>
   <div class="interviewblob">
     <slot></slot>
-      <svg width="200" height="200" viewBox="0 0 200 200">
+      <svg @click="onclick" width="200" height="200" viewBox="0 0 200 200">
         <g>
-          <path class="blobpath" @click="onclick"  :d="points" ></path>
+          <path class="blobpath"  :d="points" ></path>
         </g>
       </svg>
   </div>
@@ -19,8 +19,10 @@ export default {
   },
   methods: {
     onclick: function() {
-      this.$root.$emit('blob-clicked', this.id)
-      console.log('blob-clicked', this.id);
+      // clicking on a blob means playing it!
+      this.$store.commit("setPlayingPathId", this.id);
+      console.log('setPlayingPathId', this.id);
+      // this is handled by MapController
     }
   },
   computed: {

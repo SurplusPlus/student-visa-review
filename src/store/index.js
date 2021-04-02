@@ -86,8 +86,10 @@ export default new Vuex.Store({
     loadedNum: 0,
     hasLoaded: false,
     mapScale: 1,
-    playingInterviewId: null,
-    audioStatus: "stopped",
+
+    playingPathId: null,
+    audioStatus: "stopped", // stopped, playing, requeuing (aka moving to a new queue)
+    
   },
   getters: {
     interviews(state) {
@@ -128,8 +130,8 @@ export default new Vuex.Store({
     people(state) {
       return state.people;
     },
-    playingInterviewId(state) {
-      return state.playingInterviewId;
+    playingPathId(state) {
+      return state.playingPathId;
     },
     audiopathData(state) {
       return state.audiopathData;
@@ -145,8 +147,8 @@ export default new Vuex.Store({
     setLoaded(state) {
 			state.hasLoaded = true;
 		},
-    setPlayingInterviewId(state, id) {
-			state.playingInterviewId = id;
+    setPlayingPathId(state, id) {
+			state.playingPathId = id;
 		},
     setAudioStatus(state, status) {
       state.audioStatus = status;
@@ -226,8 +228,8 @@ export default new Vuex.Store({
 
       context.commit("setLoaded");
     },
-    playInterview(context, id) {
-      context.commit("setPlayingInterviewId", id);
+    playPath(context, id) {
+      context.commit("setPlayingPathId", id);
     },
   }
 });

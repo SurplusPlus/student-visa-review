@@ -1,7 +1,8 @@
 <template>
   <div id="mapcontroller">
 
-    <div id="windowcenter"></div>
+    {{ stateLoaded}} 
+    <div id="windowcenter">{{ playingPathId }}</div>
 
     <AudioPath v-for="d in audiopathData" :key="d.id" :id="d.id"></AudioPath>
 
@@ -53,8 +54,16 @@ export default {
     stateLoaded() {
       return this.$store.getters.hasLoaded;
     },
+    playingPathId() {
+      return this.$store.getters.playingPathId;
+    },
   },
   methods: {
+  },
+  watch: {
+    playingPathId(newid, oldid) {
+      console.log(oldid, newid)
+    },
   },
   mounted() {
   },
