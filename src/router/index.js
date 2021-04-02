@@ -6,9 +6,9 @@ import VueRouter from "vue-router";
 import store from '@/store'
 
 import Overlay from "@/views/Overlay.vue";
+import TestView from "@/views/TestView.vue";
 import IndexView from "@/views/IndexView.vue";
 import MapController from "@/views/MapController.vue";
-import TestView from "@/views/TestView.vue";
 
 Vue.use(VueRouter);
 
@@ -36,8 +36,8 @@ const routes = [
     },
   },
   {
-    path: "/test",
-    name: "Test",
+    path: "/testview",
+    name: "TestView",
     components: {
       overlay: Overlay,
       underlay: TestView,

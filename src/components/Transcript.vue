@@ -48,7 +48,8 @@ export default {
       }
     },
     processedTranscript() {
-      if(this.transcript === "") { return []; }
+      if(this.transcript === undefined || this.transcript === "") { return []; }
+
         var turns = this.transcript.split(/(?=\[.*\])/)
         turns = turns.map(function(x) { 
             var res = x.trim().split(/\[(.*)\]/).slice(1); 

@@ -1,9 +1,9 @@
 <template>
   <div class="interviewblob">
     <slot></slot>
-      <svg width="200" height="200" viewBox="0 0 200 200">
+      <svg @click="onclick" width="200" height="200" viewBox="0 0 200 200">
         <g>
-          <path class="blobpath" :d="points"></path>
+          <path class="blobpath"  :d="points" ></path>
         </g>
       </svg>
   </div>
@@ -16,6 +16,14 @@ export default {
   data() {
     return {
     };
+  },
+  methods: {
+    onclick: function() {
+      // clicking on a blob means playing it!
+      this.$store.commit("setPlayingPathId", this.id);
+      console.log('setPlayingPathId', this.id);
+      // this is handled by MapController
+    }
   },
   computed: {
     interviews() {
@@ -34,7 +42,9 @@ export default {
         minRadius: 50,
         maxRadius: 100,
         centerX: 100,
-        centerY: 100
+        centerY: 100,
+        minDuration: 1,
+        maxDuration: 2
       });
 
       return cardinal(blob.points, true, 1);
