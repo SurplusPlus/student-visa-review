@@ -1,11 +1,14 @@
 <template>
-  <div class="mapcontroller">
+  <div id="mapcontroller">
 
     <div id="windowcenter"></div>
 
-    <Map scale="1"></Map>
+    <AudioPath v-for="d in audiopathData" :key="d.id" :id="d.id"></AudioPath>
 
-    <BackgroundSky />
+    <!--    <Map scale="1"></Map> -->
+    <SvgMapBackdrop scale="1"></SvgMapBackdrop>
+
+    <BackgroundSky class="fixed" />
 
   </div>
 </template>
@@ -17,6 +20,9 @@
 
 import BackgroundSky from "@/components/BackgroundSky.vue";
 import Map from "@/components/Map.vue";
+import AudioPath from "@/components/AudioPath.vue";
+import SvgMapBackdrop from "@/components/SvgMapBackdrop.vue";
+
 
 export default {
   name: "MapController",
@@ -26,11 +32,16 @@ export default {
   },
   components: {
     Map,
+    AudioPath,
+    SvgMapBackdrop,
     BackgroundSky,
   },
   computed: {
     interviews() {
       return this.$store.getters.interviews;
+    },
+    audiopathData() {
+      return this.$store.getters.audiopathData;
     },
     allFields() {
       try { 
@@ -50,25 +61,38 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-
-.mapcontroller {
-  position: fixed;
+#mapcontroller {
+  position: absolute;
   top: 0px;
   right: 0px;
   left: 0px;
   bottom: 0px;
-
 }
 
+#mapcontroller > * {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  left: 0px;
+  bottom: 0px;
+}
+
+.fixed {
+  position: fixed !important;
+}
+
+
+
+
 #windowcenter {
-  width: 10px;
-  height: 10px;
+  width: 6px;
+  height: 6px;
   position: fixed;
-  top: calc(50% - 5px);
-  left: calc(50% - 5px);
+  top: calc(50% - 3px);
+  left: calc(50% - 3px);
   background-color: red;
+  border-radius: 5px;
   z-index: 1000;
-  display: none;
 }
 
 

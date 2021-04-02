@@ -48,7 +48,10 @@ function loadAudiopathDataFromSvg(svgpath, callback) {
     })
     .then(function(text) {
       const svgDoc = parser.parseFromString(text, 'image/svg+xml');
-      let pathData = Array.from(svgDoc.querySelectorAll('path')).map(function(x) { return { rawid: x.getAttribute("id"), d: x.getAttribute("d") }  })
+      let pathData = Array.from(svgDoc.querySelectorAll('path'))
+        .map(function(x) { 
+          return { rawid: x.getAttribute("id"), d: x.getAttribute("d"), elem: x }  
+        })
 
       var audiopathData = pathData.filter(function(d) {
           return d.rawid.includes( "PATH-");
@@ -56,6 +59,13 @@ function loadAudiopathDataFromSvg(svgpath, callback) {
 
       audiopathData.forEach(function(d) {
         d.id = d.rawid.replace("PATH-", "");
+        if(d.rawid.includes("transit")) {
+          d.type = "transit";
+        } else if(d.rawid.includes("intro")) {
+          d.type = "intro";
+        } else {
+          d.type = "interview";
+        }
       });
 
       callback(audiopathData);
@@ -71,12 +81,13 @@ export default new Vuex.Store({
     mapsvg: require('@/assets/map/working/map.svg'),
     interviews: [],
     people: [],
+    _rawAudiopathData: [],
+    audiopathData: [],
     loadedNum: 0,
     hasLoaded: false,
+    mapScale: 1,
     playingInterviewId: null,
     audioStatus: "stopped",
-    audiopathData: [],
-    _rawAudiopathData: [],
   },
   getters: {
     interviews(state) {
@@ -119,6 +130,9 @@ export default new Vuex.Store({
     },
     playingInterviewId(state) {
       return state.playingInterviewId;
+    },
+    audiopathData(state) {
+      return state.audiopathData;
     },
   },
   mutations: {

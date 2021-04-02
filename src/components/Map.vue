@@ -51,7 +51,6 @@ else on the closed loop of a path
 
 An animation consists of:
 - the 
-MapController handles
 
 */
 
@@ -71,7 +70,7 @@ export default {
   name: "Map",
   data() {
     return {
-      mapsvg: require('@/assets/map/map_orig.svg'),
+      mapsvg: require('@/assets/map/working/map.svg'),
       loaded: false,
       svgloaded: false,
       dim: 5000,
@@ -192,27 +191,6 @@ export default {
      
     },
 
-    async animatedemo() {
-      function delay(t) {
-        return new Promise((resolve,reject)=>{
-          setTimeout(()=>{
-            resolve();
-          },t)
-        })
-      }
-      var self = this;
-      let steps = 1000
-
-      console.log(steps)
-
-      for(let x = 0; x < 4; x+= 0.01) {
-        await delay(5);
-        self.panTo(2500 + Math.sin(x) * 1000, 2500 + Math.cos(x) * 1000, false)
-      }
-     
-    },
-
-
 
     /////////////////////////////
 
@@ -331,7 +309,6 @@ export default {
       window.sortMapElements = this.sortMapElements;
       window.getSVGElementsWithId = this.getSVGElementsWithId;
       window.initMap = this.initMap;
-      window.animatedemo = this.animatedemo;
     },
 
 

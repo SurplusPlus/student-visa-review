@@ -3,7 +3,7 @@
     <slot></slot>
       <svg width="200" height="200" viewBox="0 0 200 200">
         <g>
-          <path class="blobpath" :d="points"></path>
+          <path class="blobpath" @click="onclick"  :d="points" ></path>
         </g>
       </svg>
   </div>
@@ -16,6 +16,12 @@ export default {
   data() {
     return {
     };
+  },
+  methods: {
+    onclick: function() {
+      this.$root.$emit('blob-clicked', this.id)
+      console.log('blob-clicked', this.id);
+    }
   },
   computed: {
     interviews() {
