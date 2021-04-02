@@ -3,18 +3,22 @@
     <slot></slot>
       <svg @click="onclick" width="200" height="200" viewBox="0 0 200 200">
         <g>
-          <path class="blobpath"  :d="points" ></path>
+          <path class="blobpath" :d="points" ></path>
         </g>
       </svg>
   </div>
 </template>
 
 <script>
+/*  eslint-disable */ 
+import { gsap } from "gsap";
+
 export default {
   name: "InterviewBlob",
   props: ['id'],
   data() {
     return {
+      blob: null,
     };
   },
   methods: {
@@ -37,19 +41,24 @@ export default {
       }
     },
     points() {
-      let blob = createBlob({ 
-        numPoints: 12,
-        minRadius: 50,
-        maxRadius: 100,
-        centerX: 100,
-        centerY: 100,
-        minDuration: 1,
-        maxDuration: 2
-      });
-
-      return cardinal(blob.points, true, 1);
-
+      try {
+        return cardinal(this.blob.points, true, 1);
+      } catch {
+        return []
+      }
+    
     }
+  },
+  mounted() {
+    this.blob = createBlob({ 
+      numPoints: 10,
+      minRadius: 80,
+      maxRadius: 100,
+      centerX: 100,
+      centerY: 100,
+      minDuration: 2,
+      maxDuration: 3
+    });
   },
 };
 
@@ -57,25 +66,49 @@ export default {
 var createBlob = function(options) {
    
   var points = [];  
+  var path = options.element;
+  
 
   var slice = (Math.PI * 2) / options.numPoints;
   var startAngle = random(Math.PI * 2);
   
-  
+  var tl = gsap.timeline({
+    onUpdate: update
+  });   
+
   for (let i = 0; i < options.numPoints; i++) {
     
     let angle = startAngle + i * slice;
     let radius = random(options.minRadius, options.maxRadius);
+    var duration = random(options.minDuration, options.maxDuration);
+    
     
     let point = {
       x: options.centerX + Math.cos(angle) * radius,
       y: options.centerY + Math.sin(angle) * radius,
     };   
-    
+
+    tl.to(point, duration, {
+      x: options.centerX + Math.cos(angle) * options.maxRadius,
+      y: options.centerY + Math.sin(angle) * options.maxRadius,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut",
+      duration: 0, //-random(duration)
+    });
+   
     points.push(point);
   }
   
   options.points = points;
+  options.tl = tl;
+
+
+  function update() {
+//    console.log("update");
+//    path.setAtntribute("d", cardinal(points, true, 1));
+  }
+  
 
   return options;
 }
