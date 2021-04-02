@@ -76,6 +76,7 @@ export default new Vuex.Store({
     playingInterviewId: null,
     audioStatus: "stopped",
     audiopathData: [],
+    _rawAudiopathData: [],
   },
   getters: {
     interviews(state) {
@@ -138,7 +139,10 @@ export default new Vuex.Store({
     },
     setAudiopathData(state, apd) {
       state.audiopathData = apd;
-    }
+    },
+    setRawAudiopathData(state, apd) {
+      state._rawAudiopathData = apd;
+    },
   },
   actions: {
     fetchData(context) {
@@ -162,7 +166,7 @@ export default new Vuex.Store({
           return map;
         }, {});
         context.commit("setInterviews", interviews);
-        if(++context.state.loadedNum == 3) { context.commit("setLoaded"); }
+        if(++context.state.loadedNum == 3) { context.dispatch("postFetch") }
       });
     },
     fetchPeople(context) {
@@ -179,14 +183,34 @@ export default new Vuex.Store({
           return map;
         }, {});
         context.commit("setPeople", people);
-        if(++context.state.loadedNum == 3) { context.commit("setLoaded"); }
+        if(++context.state.loadedNum == 3) { context.dispatch("postFetch") }
       });
     },
     fetchAudiopathData(context) {
       loadAudiopathDataFromSvg(context.state.mapsvg, function(audiopathData) {
-        context.commit("setAudiopathData", audiopathData);
-        if(++context.state.loadedNum == 3) { context.commit("setLoaded"); }
+        context.commit("setRawAudiopathData", audiopathData);
+        if(++context.state.loadedNum == 3) { context.dispatch("postFetch") }
       });
+    },
+    postFetch(context) {
+
+      let airtableSVGIDs = Object.values(context.state.interviews)
+        .map(function(d) {
+          return d.fields['SVGID'];
+        })
+        .filter(function(d) {
+          return d !== undefined;
+        });
+
+      let validAudiopathData = context.state._rawAudiopathData.filter(function(audiopath) {
+        return airtableSVGIDs.includes(audiopath.id);
+      });
+
+      context.commit("setAudiopathData", validAudiopathData);
+
+      console.log(validAudiopathData);
+
+      context.commit("setLoaded");
     },
     playInterview(context, id) {
       context.commit("setPlayingInterviewId", id);
