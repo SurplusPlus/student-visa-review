@@ -19,7 +19,7 @@
 
 Map is 5000 x 5000px, absolutely positioned.
 Map background and data is driven by map.svg.
-Blobs are svg blobs created by the InterviewBlob component.
+Blobs are svg blobs created by the AudioBlob component.
 
 When site is loaded..
 
@@ -36,12 +36,12 @@ TODO: for now, the blobs in illustrator are ignored.
 
 3. Site scans for airtable data that is also in svg map as a path.
 
-4. InterviewBlobs are placed at: 
+4. AudioBlobs are placed at: 
 
 if a transit blob, then either end of a transit path
 else on the closed loop of a path
 
-5. When InterviewBlobs are clicked:
+5. When AudioBlobs are clicked:
 - existing audio is paused
 - existing animation is stopped / handled TODO
 - new audio is loaded and played
@@ -57,7 +57,7 @@ An animation consists of:
 
 
 import Map from "@/components/Map.vue";
-import InterviewBlob from "@/components/InterviewBlob.vue";
+import AudioBlob from "@/components/AudioBlob.vue";
 
 import Panzoom from '@panzoom/panzoom'
 import { SVG } from '@svgdotjs/svg.js'
@@ -81,7 +81,7 @@ export default {
   },
   props: ["scale"],
   components: {
-    InterviewBlob,
+    AudioBlob,
     Map,
   },
   computed: {
