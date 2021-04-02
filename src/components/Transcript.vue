@@ -51,7 +51,8 @@ export default {
       }
     },
     processedTranscript() {
-      if(this.transcript === "") { return []; }
+      if(this.transcript === undefined || this.transcript === "") { return []; }
+
         var turns = this.transcript.split(/(?=\[.*\])/)
         turns = turns.map(function(x) { 
             var res = x.trim().split(/\[(.*)\]/).slice(1); 
@@ -101,7 +102,7 @@ export default {
   overflow: auto;
   margin-top: -10px;
   padding: 20px;
-  background-color: #f5f5f5;
+  background-color: #E5E1E0;
   font-size: .9em;
 }
 

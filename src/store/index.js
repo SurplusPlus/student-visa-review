@@ -40,14 +40,42 @@ function loadAirtableData(options, callback) {
 }
 
 
+function loadAudiopathDataFromSvg(svgpath, callback) {
+  const parser = new DOMParser(); 
+  fetch(svgpath)
+    .then(function (response) {
+      return response.text();
+    })
+    .then(function(text) {
+      const svgDoc = parser.parseFromString(text, 'image/svg+xml');
+      let pathData = Array.from(svgDoc.querySelectorAll('path')).map(function(x) { return { rawid: x.getAttribute("id"), d: x.getAttribute("d") }  })
+
+      var audiopathData = pathData.filter(function(d) {
+          return d.rawid.includes( "PATH-");
+      });
+
+      audiopathData.forEach(function(d) {
+        d.id = d.rawid.replace("PATH-", "");
+      });
+
+      callback(audiopathData);
+    });
+}
+
+
+
+
+
 export default new Vuex.Store({
   state: {
+    mapsvg: require('@/assets/map/working/map.svg'),
     interviews: [],
     people: [],
     loadedNum: 0,
     hasLoaded: false,
     playingInterviewId: null,
     audioStatus: "stopped",
+    audiopathData: [],
   },
   getters: {
     interviews(state) {
@@ -108,12 +136,16 @@ export default new Vuex.Store({
     setAudioStatus(state, status) {
       state.audioStatus = status;
     },
+    setAudiopathData(state, apd) {
+      state.audiopathData = apd;
+    }
   },
   actions: {
     fetchData(context) {
       if (!context.state.hasLoaded) {
         context.dispatch("fetchInterviews");
         context.dispatch("fetchPeople");
+        context.dispatch("fetchAudiopathData");
       }
     },
     fetchInterviews(context) {
@@ -130,7 +162,7 @@ export default new Vuex.Store({
           return map;
         }, {});
         context.commit("setInterviews", interviews);
-        if(++context.state.loadedNum == 2) { context.commit("setLoaded"); }
+        if(++context.state.loadedNum == 3) { context.commit("setLoaded"); }
       });
     },
     fetchPeople(context) {
@@ -147,11 +179,17 @@ export default new Vuex.Store({
           return map;
         }, {});
         context.commit("setPeople", people);
-        if(++context.state.loadedNum == 2) { context.commit("setLoaded"); }
+        if(++context.state.loadedNum == 3) { context.commit("setLoaded"); }
+      });
+    },
+    fetchAudiopathData(context) {
+      loadAudiopathDataFromSvg(context.state.mapsvg, function(audiopathData) {
+        context.commit("setAudiopathData", audiopathData);
+        if(++context.state.loadedNum == 3) { context.commit("setLoaded"); }
       });
     },
     playInterview(context, id) {
       context.commit("setPlayingInterviewId", id);
-    }
+    },
   }
 });

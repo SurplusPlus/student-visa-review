@@ -68,6 +68,7 @@ export default {
   left: calc(50% - 5px);
   background-color: red;
   z-index: 1000;
+  display: none;
 }
 
 
