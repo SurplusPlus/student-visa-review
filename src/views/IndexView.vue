@@ -79,8 +79,9 @@ export default {
 }
 
 .bureauchief {
-  width: 325px;
-  box-shadow: -1px 1px 0px #5b5b5b, ;
+  width: 325px;    
+  box-shadow: -.5px .5px 0px #212121;
+  background: rgba(201, 215, 239, .3);
 }
 
 .bc-info {
@@ -101,7 +102,7 @@ export default {
 
 .interviews {
   color: #5B5B5B;
-  background-color: #F5F5F5;
+  background-color: rgba(245, 245, 245, .7);
 }
 
 
@@ -110,7 +111,7 @@ export default {
   display: flex;
   flex-direction: row;
   align-items: center;
-  border-bottom: .5px solid #CCC;
+  border-bottom: .5px solid rgb(172, 172, 172);
   padding: 5px 10px;
   height: 40px;
   transition: background .2s ease;
@@ -119,9 +120,9 @@ export default {
 
 .interview:hover {
   cursor: pointer;
-  background: #212121;
-  color: #f5f5f5;
- }
+  background-color: rgba(235, 227, 220, .8);
+}
+
 
 .interviewblob {
   width: 30px;

@@ -1,9 +1,5 @@
 <template>
   <div id="transcript">
-    {{ playingPathId }}
-    <div class="upperborder">
-      <img src="@/assets/interface/transcript_upperborder.svg" style="width: 25vw"/>
-    </div>
     <div class="content">
       <div class="header">Transcript</div>
       <div class="transcript">
@@ -93,18 +89,17 @@ export default {
   max-height: 400px;
 }
 
-.upperborder {
-  width: 25vw;
-}
-
-
 .content {
   overflow: auto;
   margin-top: -10px;
-  padding: 20px;
-  background-color: #E5E1E0;
+  padding: 25px;
+  background-color: #f5f5f5;
   font-size: .9em;
-}
+  box-shadow: -2px 6px 40px rgba(245, 245, 245, .8), 0px 0px 1.5px #212121;
+  mix-blend-mode: hard-light;
+  border-radius: 50px 50px 0 0;
+  margin: 0 0 0 20px;
+  }
 
 .person {
   font-weight: 700;
@@ -117,9 +112,11 @@ export default {
 }
 
 .header {
-  font-weight: 700;
+  font-weight: 400;
   font-size: 1.3em;
   padding-bottom: 20px;
+  font-family: 'Space Mono', serif;
+
 }
 
 .title {
