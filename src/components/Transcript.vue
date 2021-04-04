@@ -51,7 +51,6 @@ export default {
             var res = x.trim().split(/\[(.*)\]/).slice(1); 
             
             var phrases = res[1].trim().split(/(?=\(\d*:\d*\))/).map(function(p) {
-              console.log("p", p);
               try {
                 var newp = p.split(/\((\d*:\d*)\)/).slice(1);
                 return { time: newp[0].trim(), text: newp[1].trim() }

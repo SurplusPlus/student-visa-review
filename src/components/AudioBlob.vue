@@ -79,10 +79,14 @@ export default {
       return this.radii.max + this.dimpadding ;
     },
     radii() {
-      if(this.thisdata.type === "transit") {
-        return { min: 170, max: 180 }
-      } else {
-        return { min: 80, max: 100 }
+      try {
+        if(this.thisdata.type === "transit") {
+          return { min: 170, max: 180 }
+        } else {
+          return { min: 80, max: 100 }
+        }
+      } catch {
+        return null;
       }
     },
     positionStyle() {
@@ -139,7 +143,6 @@ var createBlob = function(options) {
     
     let angle = startAngle + i * slice;
     let radius = random(self.radii.min, self.radii.max);
-    console.log(radius);
     var duration = random(self.minDuration, self.maxDuration);
     
     
@@ -235,6 +238,10 @@ function random(min, max) {
 
 text, .divtext {
   user-select: none;
+}
+
+foreignObject, foreignObject > * {
+  pointer-events: none;
 }
 
 .divtextwrapper {
