@@ -121,7 +121,7 @@ export default {
   position: fixed;
   top: calc(50% - 3px);
   left: calc(50% - 3px);
-  background-color: red;
+  background-color: black;
   border-radius: 5px;
   z-index: 1000;
 }

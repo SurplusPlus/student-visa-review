@@ -90,6 +90,9 @@ export default new Vuex.Store({
     playingPathId: null,
     nextPlayingPathId: null,
     audioStatus: "stopped", // stopped, playing, requeuing (aka moving to a new queue)
+
+    sky: "day",
+
     
   },
   getters: {
@@ -175,6 +178,9 @@ export default new Vuex.Store({
     },
     setRawAudiopathData(state, apd) {
       state._rawAudiopathData = apd;
+    },
+    setSky(state, sky) {
+      state.sky = sky;
     },
   },
   actions: {
