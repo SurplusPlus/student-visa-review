@@ -4,10 +4,14 @@
     {{ stateLoaded}} 
     <div id="windowcenter">{{ playingPathId }}</div>
 
-    <AudioPath v-for="d in audiopathData" :key="d.id" :id="d.id"></AudioPath>
 
-    <!--    <Map scale="1"></Map> -->
-    <SvgMapBackdrop scale="1"></SvgMapBackdrop>
+    <div id="mapcanvas">
+
+      <AudioPath v-for="d in audiopathData" :key="d.id" :id="d.id"></AudioPath>
+
+      <SvgMapBackdrop scale="1"></SvgMapBackdrop>
+
+    </div>
 
     <BackgroundSky class="fixed" />
 
@@ -20,10 +24,12 @@
 
 
 import BackgroundSky from "@/components/BackgroundSky.vue";
-import Map from "@/components/Map.vue";
 import AudioPath from "@/components/AudioPath.vue";
 import SvgMapBackdrop from "@/components/SvgMapBackdrop.vue";
 
+import { gsap } from "gsap";
+import { MotionPathPlugin } from "gsap/MotionPathPlugin.js";
+gsap.registerPlugin(MotionPathPlugin);
 
 export default {
   name: "MapController",
@@ -32,7 +38,6 @@ export default {
     };
   },
   components: {
-    Map,
     AudioPath,
     SvgMapBackdrop,
     BackgroundSky,
@@ -77,6 +82,7 @@ export default {
     },
   },
   mounted() {
+    window.gsap = gsap;
   },
 };
 </script>
@@ -97,6 +103,11 @@ export default {
   bottom: 0px;
 }
 
+#mapcanvas {
+  margin: 0px;
+  padding: 0px;
+  z-index: 1;
+}
 .fixed {
   position: fixed !important;
 }
@@ -110,7 +121,7 @@ export default {
   position: fixed;
   top: calc(50% - 3px);
   left: calc(50% - 3px);
-  background-color: red;
+  background-color: black;
   border-radius: 5px;
   z-index: 1000;
 }

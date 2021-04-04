@@ -4,6 +4,8 @@
     {{ playingPathId }}
     {{ audioFile }} 
 
+    {{ ambientSrc}} 
+
   </div>
 </template>
 
@@ -17,7 +19,7 @@ export default {
   data() {
     return {
       audioHowl: undefined,
-      ambientSrc: [ '@/assets/ambient_crickets.webm' ],
+      ambientSrc: [require('@/assets/sounds/ambient_crickets.webm' )],
       ambientHowl: undefined,
       isPlaying: false,
       status: "stopped",
@@ -27,15 +29,15 @@ export default {
   mounted() {
   },
   methods: {
-    initAmbientHowl() { // TODO : currently not working 
+    initAmbientHowl() { 
       this.ambientHowl = new Howl({
-        src: [ '@/assets/ambient_crickets.webm' ],
+        src: this.ambientSrc,
         html5: true,
         autoplay: true,
         loop: true,
       });
       this.ambientHowl.play();
-      window.as = this.ambientHowl;
+      console.log("playing ambient howl")
     },
     fadeOutAudio() {
       var self = this;
@@ -57,10 +59,10 @@ export default {
 
       console.log("playpathbyid", id)
 
-/*      if(this.ambientHowl === undefined) {
+      if(this.ambientHowl === undefined) {
         console.log("triggering");
         this.initAmbientHowl();
-      } */
+      } 
 
       try { 
         let thisdata = this.audiopathData.filter(function(d) {

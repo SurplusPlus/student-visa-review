@@ -7,6 +7,7 @@
 
       <SoundPlayer />
       <Transcript />
+      <Debug />
     </template>
 
     <template v-else>
@@ -24,6 +25,7 @@
 <script>
 
 import Transcript from "@/components/Transcript.vue";
+import Debug from "@/components/Debug.vue";
 import SoundPlayer from "@/components/SoundPlayer.vue";
 import "@fontsource/cormorant-garamond/500.css"
 import "@fontsource/space-mono/400.css"
@@ -35,6 +37,7 @@ export default {
     return {};
   },
   components: {
+    Debug,
     Transcript,
     SoundPlayer,
   },
