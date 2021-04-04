@@ -9,6 +9,7 @@ import Overlay from "@/views/Overlay.vue";
 import TestView from "@/views/TestView.vue";
 import IndexView from "@/views/IndexView.vue";
 import MapController from "@/views/MapController.vue";
+import SplashPage from "@/views/SplashPage.vue";
 
 Vue.use(VueRouter);
 
@@ -17,7 +18,7 @@ var siteName = "Student Visa Review"
 const routes = [
   {
     path: "/",
-    redirect: "/Landscape"
+    redirect: "/coming-soon"
   },
   {
     path: "/index",
@@ -42,6 +43,15 @@ const routes = [
       overlay: Overlay,
       underlay: TestView,
     },
+  },
+  {
+    path: "/coming-soon", 
+    name: "ComingSoon",
+    components: {
+      overlay: null,
+      underlay: SplashPage,
+    },
+    alias: '*'
   },
 ];
 

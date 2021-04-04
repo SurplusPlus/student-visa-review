@@ -35,15 +35,13 @@ export default {
 
 
 
-body {
-  background: no-repeat center center fixed;
-  background-color: #ADCEFF;
+body, html {
+  margin: 0px;
+  padding: 0px;
 }
 
 #app {
   color: #212121;
-  margin-top: 60px;
-  padding: 1em;
 }
 
 
