@@ -1,10 +1,7 @@
 <template>
   <div id="mapcontroller">
 
-    {{ stateLoaded}}  
-    {{ windowHeight }}
-    {{ windowWidth }}
-    <div id="windowcenter">{{ playingPathId }}</div>
+    <div id="windowcenter"></div>
 
 
     <div id="gsapdummy"></div>
@@ -230,6 +227,7 @@ var y = gsap.getProperty(this.targets()[0], "y");
 
 
 #windowcenter {
+  display: none;
   width: 6px;
   height: 6px;
   position: fixed;
