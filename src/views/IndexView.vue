@@ -7,7 +7,7 @@
       </div>
       <div class="interviews">
         <div class="interview" v-for="interview in bc.interviews" :key="interview.id">
-          <AudioBlob :id="interview.id" />
+          <div>{{interview}} </div>
           <div class="interview-name">{{ interview.fields["Name"] }}</div>
         </div>
       </div>
@@ -18,6 +18,7 @@
 </template>
 
 <script>
+/*  eslint-disable */ 
 import AudioBlob from "@/components/AudioBlob.vue";
 import BackgroundSky from "@/components/BackgroundSky.vue";
 
@@ -52,6 +53,9 @@ export default {
     },
     interviewsByBureauChief() {
       return this.$store.getters.interviewsByBureauChief;
+    },
+    audiopathData() {
+      return this.$store.getters.audiopathData;
     },
     allFields() {
       try { 
