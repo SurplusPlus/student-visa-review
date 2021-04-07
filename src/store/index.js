@@ -240,6 +240,10 @@ export default new Vuex.Store({
           return a;
         }, {})
 
+      console.log(interviewsByAirtableSVGIDs);
+      window.interviewsByAirtableSVGIDs = interviewsByAirtableSVGIDs;
+      console.log(context.state._rawAudiopathData);
+
       let validAudiopathData = context.state._rawAudiopathData.filter(function(audiopath) {
         return audiopath.id in interviewsByAirtableSVGIDs;
       });
@@ -258,6 +262,7 @@ export default new Vuex.Store({
       context.commit("setAudiopathData", validAudiopathData);
 
       console.log(validAudiopathData);
+      window.validAudiopathData = validAudiopathData;
 
       context.commit("setLoaded");
     },

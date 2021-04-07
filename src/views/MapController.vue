@@ -35,6 +35,7 @@ export default {
   name: "MapController",
   data() {
     return {
+      gsapMapcanvas: null,
     };
   },
   components: {
@@ -67,17 +68,46 @@ export default {
     },
   },
   methods: {
+    stopExistingJourney() {
+      // audio fadeout is handled by SoundPlayer.vue's watch function
+
+    },
+    focusOnNewBlob() {
+    },
+    startNewJourney(newid) {
+      this.$store.commit("setPlayingPathId", newid);
+
+      console.log(newid, this.audiopathData, this.audiopathData[newid])
+
+      this.gsapMapcanvas = gsap.to("#mapcanvas", {
+        motionPath: {
+            path:[{x:2500, y:2500}, {x:2800, y:2800}, {x:3000, y:3000}, {x:1000, y:3000}],
+        },
+        transformOrigin: "50% 50%",
+        force3D: false,
+        duration: 2,
+        ease: "power2.inOut"
+      });
+    },
+    scheduleNewJourney(newid, oldid) {
+      var self = this;
+
+      // stop existing animation
+      this.stopExistingJourney();
+
+      // requeuing animation, as focus of camera goes to new blob
+      this.focusOnNewBlob();
+
+      // when animation is done, start new animation
+      setTimeout(function() {
+        self.startNewJourney(newid);
+      }, 2000);
+    },
 
   },
   watch: {
     nextPlayingPathId(newid, oldid) {
-      var self = this;
-      //TRIGGER ANIMATION HERE TODO 
-      console.log(oldid, newid)
-      console.log("ok....")
-      setTimeout(function() {
-        self.$store.commit("setPlayingPathId", newid);
-      }, 2000);
+      this.scheduleNewJourney(newid, oldid);
 
     },
   },

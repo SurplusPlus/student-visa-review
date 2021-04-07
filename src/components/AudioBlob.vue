@@ -4,7 +4,7 @@
         <g>
           <path class="blobpath" :d="points" :style="'fill: url(#texture-' + id + ')' "></path>
           <template v-if="thisdata.type !== 'interview'">
-            <foreignObject x="0%" y="0%" width="100%" height="100%" dominant-baseline="middle" text-anchor="middle">
+            <foreignObject :class="thisdata.type" x="0%" y="0%" width="100%" height="100%" dominant-baseline="middle" text-anchor="middle">
               <div class='divtextwrapper'>
                 <div class='divtext'>{{ thisdata['Name'] }}</div>
               </div>
@@ -90,7 +90,7 @@ export default {
       }
     },
     positionStyle() {
-      return { 'margin-top': -this.centerXY + "px", 'margin-left': -this.centerXY + "px"}
+      return { 'transform': 'translate(' + -this.centerXY + "px, "+ -this.centerXY + "px)"}
     },
     viewboxdim() {
       return (this.radii.max + this.dimpadding) * 2;
@@ -225,6 +225,10 @@ function random(min, max) {
 </script>
 
 <style scoped>
+
+.audioBlob {
+  position: absolute;
+}
 
 .blobpath {
   stroke: #999;

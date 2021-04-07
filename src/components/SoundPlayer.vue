@@ -61,7 +61,7 @@ export default {
 
       if(this.ambientHowl === undefined) {
         console.log("triggering");
-        this.initAmbientHowl();
+//        this.initAmbientHowl();
       } 
 
       try { 

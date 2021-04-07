@@ -42,6 +42,7 @@ export default {
 
 
 #svgmapwrapper {
+  display: none;
   z-index: 10;
   width: 5000px;
   height: 5000px;
