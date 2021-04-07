@@ -9,6 +9,16 @@
           <Transcript />
         </transition>
         <Debug />
+
+
+        <div id="logos" @click="aboutToggle">
+          <img :src="logo_risd" />
+          <img :src="logo_cca" />
+        </div>
+
+        <About :show="showAbout" @close="aboutToggle"></About>
+
+
     </template>
 
     <template v-else>
@@ -28,6 +38,7 @@
 <script>
 
 import Transcript from "@/components/Transcript.vue";
+import About from "@/components/About.vue";
 import Debug from "@/components/Debug.vue";
 import SoundPlayer from "@/components/SoundPlayer.vue";
 import "@fontsource/cormorant-garamond/500.css"
@@ -37,10 +48,15 @@ import "@fontsource/space-mono/400.css"
 export default {
   name: "Overlay",
   data() {
-    return {};
+    return {
+      logo_risd: require('@/assets/logos/logo_placeholder.png'),
+      logo_cca: require('@/assets/logos/logo_placeholder.png'),
+      showAbout: false,
+    };
   },
   components: {
     Debug,
+    About,
     Transcript,
     SoundPlayer,
   },
@@ -50,6 +66,9 @@ export default {
     }
   },
   methods: {
+    aboutToggle: function() {
+      this.showAbout = !(this.showAbout);
+    },
   }
 };
 </script>
@@ -151,6 +170,16 @@ a {
     background-color: rgba(235, 227, 220, .8);
 }
 
+#logos {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  cursor: pointer;
+}
+
+#logos img {
+  height: 80px;
+}
 
 @keyframes floating {
   0%   {transform: translatey(-8px);}
