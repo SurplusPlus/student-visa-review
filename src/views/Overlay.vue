@@ -17,6 +17,7 @@
         <div id="logos" @click="aboutToggle">
           <img :src="logo_risd" />
           <img :src="logo_cca" />
+          <img :src="logo_plus" />
         </div>
 
     </template>
@@ -49,8 +50,10 @@ export default {
   name: "Overlay",
   data() {
     return {
-      logo_risd: require('@/assets/logos/logo_placeholder.png'),
-      logo_cca: require('@/assets/logos/logo_placeholder.png'),
+      logo_risd: require('@/assets/logos/cca.png'),
+      logo_cca: require('@/assets/logos/risd.png'),
+      logo_plus: require('@/assets/logos/plus.png'),
+
       showAbout: false,
     };
   },
@@ -172,13 +175,15 @@ a {
 
 #logos {
   position: fixed;
-  right: 20px;
-  bottom: 20px;
+  right: 25px;
+  bottom: 25px;
   cursor: pointer;
 }
 
 #logos img {
-  height: 80px;
+  max-height: 60px;
+  max-width: 75px;
+  margin-left: 1.25em;
 }
 
 @keyframes floating {
