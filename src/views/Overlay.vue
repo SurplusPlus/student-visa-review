@@ -5,7 +5,6 @@
         <div id="nav-home" class="navbutton"  ><router-link :to="{ name: 'Landscape' }">Home</router-link></div>
         <div id="nav-index" class="navbutton" ><router-link :to="{ name: 'Index' }">Index</router-link></div>
 
-        <SoundPlayer />
         <transition name="fade">
           <Transcript />
         </transition>
@@ -20,6 +19,8 @@
         </router-link>
       </div>
     </template>
+
+    <SoundPlayer />
 
   </div>
 </template>

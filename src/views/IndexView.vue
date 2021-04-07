@@ -6,9 +6,10 @@
         <div class="bc-location">{{ bc.fields["Location"] }}</div>
       </div>
       <div class="interviews">
-        <div class="interview" v-for="interview in bc.interviews" :key="interview.id" :class="{ playing: playingPathId === audiopathDataFromAirtableId(interview.id).id }" >
+        <div class="interview" v-for="interview in bc.interviews" @click="onclick(interview.id)" :key="interview.id" :class="{ playing: playingPathId === audiopathDataFromAirtableId(interview.id).id }" >
           <div class="interview-icon">
-            <AudioBlob :id="audiopathDataFromAirtableId(interview.id).id" viewmode="indexview" />
+            <AudioBlob :id="audiopathDataFromAirtableId(interview.id).id" 
+            :ref="'audioBlob-' + audiopathDataFromAirtableId(interview.id).id" viewmode="indexview" />
           </div>
           <div class="interview-name">{{ interview.fields["Name"] }}</div>
         </div>
@@ -36,6 +37,10 @@ export default {
     BackgroundSky,
   },
   methods: {
+    onclick(iid) {
+      var aid = this.audiopathDataFromAirtableId(iid).id
+      this.$refs['audioBlob-' + aid][0].onclick();
+    },
     bureau_chief_of(id) {
       try { return this.people[this.interviews[id].fields["Bureau Chief"]];   } 
       catch { return undefined;  }
