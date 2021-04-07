@@ -9,6 +9,10 @@
           <Transcript />
         </transition>
         <Debug />
+
+        <About show="true"/>
+
+
     </template>
 
     <template v-else>
@@ -28,6 +32,7 @@
 <script>
 
 import Transcript from "@/components/Transcript.vue";
+import About from "@/components/About.vue";
 import Debug from "@/components/Debug.vue";
 import SoundPlayer from "@/components/SoundPlayer.vue";
 import "@fontsource/cormorant-garamond/500.css"
@@ -41,6 +46,7 @@ export default {
   },
   components: {
     Debug,
+    About,
     Transcript,
     SoundPlayer,
   },
