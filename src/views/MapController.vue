@@ -85,7 +85,6 @@ export default {
       // audio fadeout is handled by SoundPlayer.vue's watch function
       this.cameraFocusedOnId = null;
       try { 
-        this.gsapMapcanvas.kill(); 
 /*        var prevBlobId = this.gsapMapcanvas.targets()[0].id
         this.gsapMapcanvas.kill(); 
         this.gsapMapcanvas = gsap.to(prevBlobId, {
@@ -109,24 +108,19 @@ export default {
       let newsvgpath = SVG(thisdata.elem);
       let newsvgpathpoint = newsvgpath.pointAt(0);
 
-      console.log("focusing on new blob..")
-      console.log("CURRENTLY we should be at", this.mcX, this.mcY);
-      console.log("WE WANT TO GO TO newsvgpathpoint", newsvgpathpoint.x, newsvgpathpoint.y);
-      console.log([{ x: thisx, y: thisy }, newsvgpathpoint])
 
-      gsap.to("#gsapdummy", {
-        motionPath: {
-          path: [{ x: thisx, y: thisy }, newsvgpathpoint]
-        },
+      gsap.fromTo("#gsapdummy", {
+        x: thisx,
+        y: thisy,
+      },
+      {
+        x: newsvgpathpoint.x,
+        y: newsvgpathpoint.y,
         transformOrigin: "50% 50%",
         force3D: false,
         duration: transitionTime,
         ease: "power2.inOut",
         onUpdate: function() {
-          console.log(this);
-var x = gsap.getProperty(this.targets()[0], "x");
-var y = gsap.getProperty(this.targets()[0], "y");
-          console.log("updating", x ,y)
           self.mcX = gsap.getProperty(this.targets()[0], "x");
           self.mcY = gsap.getProperty(this.targets()[0], "y");
         },
