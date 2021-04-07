@@ -3,7 +3,7 @@
 
     <template v-if="route.name == 'Landscape'">
         <div id="nav-home" class="navbutton"  ><router-link :to="{ name: 'Landscape' }">Home</router-link></div>
-        <div id="nav-index" class="navbutton" ><router-link :to="{ name: 'Index' }">Index</router-link></div>
+        <div id="nav-index" class="navbutton" ><router-link :to="{ name: 'Index' }">Index<img class="forward" src="@/assets/interface/forward.svg"/></router-link></div>
 
         <transition name="fade">
           <Transcript />
@@ -25,8 +25,7 @@
     <template v-if="route.name == 'Index'">
       <div id="indexnav">
         <router-link :to="{ name: 'Landscape' }">
-          <div class="buttontext returnbutton">Return</div>
-          <!-- <img class="returnbutton" src="@/assets/return.svg"/> -->
+          <div class="buttontext returnbutton"><img class="back" src="@/assets/interface/back.svg"/>Return</div>
         </router-link>
       </div>
     </template>
@@ -121,6 +120,8 @@ a {
   margin: 25px 0 0 20px;
   animation: floating 5s infinite;
   animation-timing-function: ease;
+  transition: background-color 2s ease;
+
 }
 
 #nav-index {
@@ -134,6 +135,7 @@ a {
   margin: 25px 20px 0 0;
   animation: floating 5s infinite;
   animation-timing-function: ease;
+  transition: background-color 2s ease;
 }
 
 
@@ -167,12 +169,32 @@ a {
   transition: background-color 2s ease;
   animation: floating 5s infinite;
   animation-timing-function: ease;
+  vertical-align: middle;
 }
 
 .returnbutton:hover {
     background-color: rgba(235, 227, 220, .8);
 }
 
+.back {
+  margin-right: 16px;
+  display: inline;
+  vertical-align: middle;
+}
+
+.forward {
+  margin-left: 16px;
+  display: inline;
+  vertical-align: middle;
+}
+
+#nav-home:hover {
+    background-color: rgba(235, 227, 220, .8);
+}
+
+#nav-index:hover {
+    background-color: rgba(235, 227, 220, .8);
+}
 #logos {
   position: fixed;
   right: 25px;
