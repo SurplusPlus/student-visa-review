@@ -9,19 +9,19 @@
           <Transcript />
         </transition>
         <Debug />
+        <About :show="showAbout" @close="aboutToggle"></About>
+    </template>
 
+    <template v-if="route.name == 'Landscape'">
 
         <div id="logos" @click="aboutToggle">
           <img :src="logo_risd" />
           <img :src="logo_cca" />
         </div>
 
-        <About :show="showAbout" @close="aboutToggle"></About>
-
-
     </template>
 
-    <template v-else>
+    <template v-if="route.name == 'Index'">
       <div id="indexnav">
         <router-link :to="{ name: 'Landscape' }">
           <div class="buttontext returnbutton">Return</div>

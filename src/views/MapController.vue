@@ -7,6 +7,7 @@
 
 
     <div id="gsapdummy"></div>
+    <div id="gsapdummy2"></div>
     <div id="mapcanvas" :style="translateStyle">
 
       <AudioPath v-for="d in audiopathData" :key="d.id" :id="d.id"></AudioPath>
@@ -45,6 +46,7 @@ export default {
   data() {
     return {
       gsapMapcanvas: null,
+      gsapIntroScale: null,
       cameraFocusedOnId: null,
       windowHeight: 0,
       windowWidth: 0,
@@ -187,7 +189,6 @@ export default {
           path: thisdata.d,
           start: start,
           end: end,
-          scale: [1.5, 1],
         },
         transformOrigin: "50% 50%",
         force3D: false,
@@ -197,11 +198,6 @@ export default {
           if(self.cameraFocusedOnId === newid) { // this is so blobs keep on animating and we can just change the camera focus
             self.mcX = gsap.getProperty(this.targets()[0], "x");
             self.mcY = gsap.getProperty(this.targets()[0], "y");
-            if(newid === startId) {
-              console.log(this.progress())
-              self.scale = startScale * (1 - this.progress())
-            }
-
           }
         },
         onStart: function() {
@@ -222,6 +218,27 @@ export default {
           self.$store.commit("setPlayingPathId", null);
         },
       });
+
+      this.gsapIntroScale = gsap.fromTo("#gsapdummy2", {
+        scale: self.scale
+      },
+      {
+        scale: 1,
+        duration: 300, //placeholder; this is changed when audio duration is updated
+        ease: "power4.out",
+        onUpdate: function() {
+          if(self.cameraFocusedOnId === newid) { // this is so blobs keep on animating and we can just change the camera focus
+            if(newid === startId) {
+              self.scale = gsap.getProperty(this.targets()[0], "scale");
+            }
+
+          }
+        },
+      });
+
+
+
+
     },
     scheduleNewJourney(newid, oldid) {
       var self = this;
@@ -243,8 +260,6 @@ export default {
       this.scheduleNewJourney(newid, oldid);
     },
     playingPathDuration(newdur) {
-        console.log(this.gsapMapcanvas.duration())
-        this.gsapMapcanvas.duration(newdur)
       try {
         console.log(this.gsapMapcanvas.duration())
         this.gsapMapcanvas.duration(newdur)
@@ -290,7 +305,7 @@ export default {
   position: fixed !important;
 }
 
-#gsapdummy {
+#gsapdummy, #gsapdummy2 {
   display: none;
 }
 

@@ -22,7 +22,6 @@ export default {
       ambientSrc: [require('@/assets/sounds/ambient_crickets.webm' )],
       ambientHowl: undefined,
       isPlaying: false,
-      status: "stopped",
       audioFile: "",
     };
   },
@@ -77,6 +76,12 @@ export default {
           onload: function() {
             self.setPlayingPathDuration(self.audioHowl.duration())
             console.log(self.audioHowl.duration())
+          },
+          onplay: function() {
+            self.$store.commit("setStatus", "playing");
+          },
+          onstop: function() {
+            self.$store.commit("setStatus", "stopped");
           },
         });
 
