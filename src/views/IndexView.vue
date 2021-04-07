@@ -1,12 +1,13 @@
 <template>
   <div id="index">
+    {{ playingPathId }}
     <div class="bureauchief" v-for="(bc, bcid) in interviewsByBureauChief" v-bind:key = "bcid">
       <div class="bc-info">
         <div class="bc-name">{{ bc.fields["Name"] }}</div>
         <div class="bc-location">{{ bc.fields["Location"] }}</div>
       </div>
       <div class="interviews">
-        <div class="interview" v-for="interview in bc.interviews" :key="interview.id">
+        <div class="interview" v-for="interview in bc.interviews" :key="interview.id" :class="{ playing: playingPathId === audiopathDataFromAirtableId(interview.id).id }" >
           <div class="interview-icon">
             <AudioBlob :id="audiopathDataFromAirtableId(interview.id).id" viewmode="indexview" />
           </div>
@@ -75,6 +76,9 @@ export default {
         return []
       }
     },
+    playingPathId() {
+      return this.$store.getters.playingPathId;
+    },
   },
 };
 </script>
@@ -137,6 +141,11 @@ export default {
 .interview:hover {
   cursor: pointer;
   background-color: rgba(235, 227, 220, .8);
+}
+
+.interview.playing {
+  background-color: black;
+  color: rgba(245, 245, 245, .7);
 }
 
 
