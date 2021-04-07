@@ -76,6 +76,7 @@ export default {
           loop: false,
           onload: function() {
             self.setPlayingPathDuration(self.audioHowl.duration())
+            console.log(self.audioHowl.duration())
           },
         });
 
