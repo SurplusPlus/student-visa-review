@@ -1,6 +1,5 @@
 <template>
   <div id="index">
-    {{ playingPathId }}
     <div class="bureauchief" v-for="(bc, bcid) in interviewsByBureauChief" v-bind:key = "bcid">
       <div class="bc-info">
         <div class="bc-name">{{ bc.fields["Name"] }}</div>

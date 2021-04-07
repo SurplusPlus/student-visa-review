@@ -2,12 +2,14 @@
   <div class="nav">
 
     <template v-if="route.name == 'Landscape'">
-      <div id="nav-home" class="navbutton"  ><router-link :to="{ name: 'Landscape' }">Home</router-link></div>
-      <div id="nav-index" class="navbutton" ><router-link :to="{ name: 'Index' }">Index</router-link></div>
+        <div id="nav-home" class="navbutton"  ><router-link :to="{ name: 'Landscape' }">Home</router-link></div>
+        <div id="nav-index" class="navbutton" ><router-link :to="{ name: 'Index' }">Index</router-link></div>
 
-      <SoundPlayer />
-      <Transcript />
-      <Debug />
+        <SoundPlayer />
+        <transition name="fade">
+          <Transcript />
+        </transition>
+        <Debug />
     </template>
 
     <template v-else>
@@ -163,6 +165,14 @@ a {
 //   font-size: 1.3em;
 //   z-index: 10001;
 // }
+
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
 
 </style>
 
