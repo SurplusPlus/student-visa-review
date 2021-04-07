@@ -52,19 +52,30 @@ export default {
 #about {
   pointer-events: auto;
   font-family: 'Space Mono', serif;
-  background-color: green;
-  width: 50vw;
-  height: 70vh;
-  padding: 20px;
+  background-color: #f5f5f5;
+  border-radius: 50px;
+  width: 40vw;
+  height: 50vh;
+  padding: 50px;
+  animation: floating 5s infinite;
+  animation-timing-function: ease;
+  box-shadow: -2px 6px 50px rgba(245, 245, 245, 8), 0px 0px 1.5px #212121;
+
 }
 
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.2s;
+  transition: opacity 1s ease-in-out;
 }
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
+}
+
+@keyframes floating {
+  0%   {transform: translatey(-8px);}
+  50%  {transform: translatey(0px);}
+  100% {transform: translatey(-8px);}
 }
 
 </style>
