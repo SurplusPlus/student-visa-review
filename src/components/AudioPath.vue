@@ -36,13 +36,11 @@ export default {
     },
     pathPoints() {
       var points = [];
-      points.push( this.svgElem.pointAt(0) );
-/*      if(this.thisData.type === "interview") {
-        points.push( Object.assign(this.svgElem.pointAt(0), { suffix: "" }) );
+      if(this.id.includes("-B")) {
+        points.push( this.svgElem.pointAt(this.svgElem.length()) );
       } else {
-        points.push( Object.assign(this.svgElem.pointAt(0), { suffix: "-A" }) );
-        points.push( Object.assign(this.svgElem.pointAt(this.svgElem.length()), { suffix: "-B" }) );
-      }*/
+        points.push( this.svgElem.pointAt(0) );
+      }
       return points;
     },
   },

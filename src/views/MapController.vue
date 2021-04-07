@@ -97,14 +97,23 @@ export default {
       let newsvgpath = SVG(thisdata.elem);
       let newsvgpathpoint = newsvgpath.pointAt(0);
 
+      // HANDLE transit directions
+      var startpos, endpos;
+      if(newid.includes("-B")) {
+        startpos = { x: newsvgpathpoint.x, y: newsvgpathpoint.y };
+        endpos = { x: thisx, y: thisy };
+      } else { 
+        startpos = { x: thisx, y: thisy };
+        endpos = { x: newsvgpathpoint.x, y: newsvgpathpoint.y };
+      }
 
       gsap.fromTo("#gsapdummy", {
-        x: thisx,
-        y: thisy,
+        x: startpos.x,
+        y: startpos.y,
       },
       {
-        x: newsvgpathpoint.x,
-        y: newsvgpathpoint.y,
+        x: endpos.x,
+        y: endpos.y,
         transformOrigin: "50% 50%",
         force3D: false,
         duration: transitionTime,
@@ -223,7 +232,7 @@ export default {
 </script>
 <style scoped lang="scss">
 #mapcontroller {
-  position: absolute; 
+  position: fixed; 
   top: 0px;
   right: 0px;
   left: 0px;
