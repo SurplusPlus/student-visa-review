@@ -54,12 +54,19 @@ function loadAudiopathDataFromSvg(svgpath, callback) {
           return { rawid: x.getAttribute("id"), d: x.getAttribute("d"), elem: x }  
         })
 
-      var audiopathData = pathData.filter(function(d) {
+      var audiopathData = pathData;
+
+      audiopathData.forEach(function(d) {
+        d.id = d.rawid;
+      });
+
+/*      var audiopathData = pathData.filter(function(d) {
           return d.rawid.includes( "PATH-");
       });
 
       audiopathData.forEach(function(d) {
         d.id = d.rawid.replace("PATH-", "");
+
         if(d.rawid.includes("TRANSIT")) {
           d.type = "transit";
         } else if(d.rawid.includes("intro")) {
@@ -67,7 +74,7 @@ function loadAudiopathDataFromSvg(svgpath, callback) {
         } else {
           d.type = "interview";
         }
-      });
+      }); */
 
       callback(audiopathData);
     });
@@ -256,6 +263,7 @@ export default new Vuex.Store({
 
       validAudiopathData.forEach(function(audiopath) {
         audiopath['airtableid'] = interviewsByAirtableSVGIDs[audiopath.id]['airtableid']
+        audiopath.type = interviewsByAirtableSVGIDs[audiopath.id]['Type']
         audiopath['Transcript'] = interviewsByAirtableSVGIDs[audiopath.id]['Transcript']
         audiopath['Duration'] = interviewsByAirtableSVGIDs[audiopath.id]['Duration']
         audiopath['Name'] = interviewsByAirtableSVGIDs[audiopath.id]['Name']
@@ -267,14 +275,14 @@ export default new Vuex.Store({
       });
 
       let dictAudiopathData = validAudiopathData.reduce(function(d, audiopath) {
-        if(audiopath.type === "interview") {
-          d[audiopath.id] = audiopath;
-        } else { // HACKY BUT WORKS
+        if(audiopath.type === "transit") {
           let thisid = audiopath.id;
           d[thisid + "-A"] = audiopath;
           d[thisid + "-A"].id = thisid + "-A";
           d[thisid + "-B"] = Object.assign({}, audiopath);
           d[thisid + "-B"].id = thisid + "-B";
+        } else { // HACKY BUT WORKS
+          d[audiopath.id] = audiopath;
         }
         return d;
       }, {});

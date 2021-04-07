@@ -1,7 +1,8 @@
 <template>
   <div id="mapcontroller">
-    <div class="debug">{{ playingPathDuration }}</div>
-
+    <div class="debug">{{ playingPathDuration }}
+      </div>
+{{ startLocation }} 
     <div id="windowcenter"></div>
 
 
@@ -35,6 +36,9 @@ gsap.registerPlugin(MotionPathPlugin);
 
 
 var transitionTime= 2; 
+var startScale = 3;
+
+var startId = 'TRANSITjlintro'
 
 export default {
   name: "MapController",
@@ -44,8 +48,9 @@ export default {
       cameraFocusedOnId: null,
       windowHeight: 0,
       windowWidth: 0,
-      mcX: 2100,
-      mcY: 2000,
+      mcX: 2500,
+      mcY: 2500,
+      scale: startScale,
     };
   },
   components: {
@@ -70,6 +75,17 @@ export default {
     stateLoaded() {
       return this.$store.getters.hasLoaded;
     },
+    startLocation() {
+      try {
+        var startpath = this.audiopathData[startId]
+        var startpoint = SVG(startpath.elem).pointAt(0)
+        console.log(startpoint);
+        this.mcX = startpoint.x;
+        this.mcY = startpoint.y;
+        this.scale = startScale ;
+
+      } catch { return null; }
+    },
     playingPathId() {
       return this.$store.getters.playingPathId;
     },
@@ -80,7 +96,7 @@ export default {
       return this.$store.state.playingPathDuration;
     },
     translateStyle() {
-      return  { transform: 'translate(' + (-this.mcX + this.windowWidth / 2)+ 'px, ' + (-this.mcY + this.windowHeight / 2) + 'px)' };
+      return  { transform: 'translate(' + (-this.mcX + this.windowWidth / 2) * this.scale + 'px, ' + (-this.mcY + this.windowHeight / 2) * this.scale + 'px) scale(' + this.scale + ')' };
       //TODO to figure out centering on window
     }
   },
@@ -88,6 +104,7 @@ export default {
     stopFollowingExistingJourney() {
       // audio fadeout is handled by SoundPlayer.vue's watch function
       this.cameraFocusedOnId = null;
+      if(this.gsapMapcanvas) { this.gsapMapcanvas.reverse(); }
     },
     focusOnNewBlob(newid, callback) {
       var self = this;
@@ -152,7 +169,7 @@ export default {
 
       var otherelem, otherid;
 
-      if(thisdata.type !== "interview") {
+      if(thisdata.type === "transit") {
 
         if(thisdata.id.includes("-B")) { 
           otherid = thisdata.id.replace("-B", "-A");
@@ -170,6 +187,7 @@ export default {
           path: thisdata.d,
           start: start,
           end: end,
+          scale: [1.5, 1],
         },
         transformOrigin: "50% 50%",
         force3D: false,
@@ -179,6 +197,12 @@ export default {
           if(self.cameraFocusedOnId === newid) { // this is so blobs keep on animating and we can just change the camera focus
             self.mcX = gsap.getProperty(this.targets()[0], "x");
             self.mcY = gsap.getProperty(this.targets()[0], "y");
+            if(newid === startId) {
+              console.log(this.progress())
+              self.scale = startScale * (1 - this.progress())
+              consol
+            }
+
           }
         },
         onStart: function() {
@@ -189,8 +213,14 @@ export default {
           }
         },
         onComplete: function() {
-          if(otherelem) { otherelem.style.display = 'block'; }
-          this.pause(0);
+          if(otherelem) { 
+            otherelem.style.display = 'block'; 
+            this.pause(0);
+          } else {
+            self.cameraFocusedOnId = null;
+            this.reverse();
+          }
+          self.$store.commit("setPlayingPathId", null);
         },
       });
     },
