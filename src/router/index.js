@@ -25,7 +25,8 @@ const routes = [
     name: "Index",
     components: {
       overlay: Overlay,
-      underlay: IndexView,
+      index: IndexView,
+      map: MapController,
     },
   },
   {
@@ -33,7 +34,8 @@ const routes = [
     name: "Landscape",
     components: {
       overlay: Overlay,
-      underlay: MapController,
+      index: null,
+      map: MapController,
     },
   },
   {
@@ -41,7 +43,8 @@ const routes = [
     name: "TestView",
     components: {
       overlay: Overlay,
-      underlay: TestView,
+      index: null,
+      map: TestView,
     },
   },
   {
@@ -49,7 +52,8 @@ const routes = [
     name: "ComingSoon",
     components: {
       overlay: null,
-      underlay: SplashPage,
+      index: null,
+      map: SplashPage,
     },
     alias: '*'
   },

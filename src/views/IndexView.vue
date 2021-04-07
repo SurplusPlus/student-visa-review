@@ -1,13 +1,16 @@
 <template>
-  <div class="indexview">
+  <div id="index">
     <div class="bureauchief" v-for="(bc, bcid) in interviewsByBureauChief" v-bind:key = "bcid">
       <div class="bc-info">
         <div class="bc-name">{{ bc.fields["Name"] }}</div>
         <div class="bc-location">{{ bc.fields["Location"] }}</div>
       </div>
       <div class="interviews">
-        <div class="interview" v-for="interview in bc.interviews" :key="interview.id">
-          <AudioBlob :id="interview.id" />
+        <div class="interview" v-for="interview in bc.interviews" @click="onclick(interview.id)" :key="interview.id"  :class="interviewClass(interview.id)" >
+          <div class="interview-icon">
+            <AudioBlob :id="audiopathDataFromAirtableId(interview.id).id" 
+            :ref="'audioBlob-' + audiopathDataFromAirtableId(interview.id).id" viewmode="indexview" />
+          </div>
           <div class="interview-name">{{ interview.fields["Name"] }}</div>
         </div>
       </div>
@@ -18,6 +21,7 @@
 </template>
 
 <script>
+/*  eslint-disable */ 
 import AudioBlob from "@/components/AudioBlob.vue";
 import BackgroundSky from "@/components/BackgroundSky.vue";
 
@@ -33,6 +37,10 @@ export default {
     BackgroundSky,
   },
   methods: {
+    onclick(iid) {
+      var aid = this.audiopathDataFromAirtableId(iid).id
+      this.$refs['audioBlob-' + aid][0].onclick();
+    },
     bureau_chief_of(id) {
       try { return this.people[this.interviews[id].fields["Bureau Chief"]];   } 
       catch { return undefined;  }
@@ -41,6 +49,21 @@ export default {
       try { return this.people[this.interviews[id].fields["Interviewee"]];   } 
       catch { return undefined;  }
     },
+    audiopathDataFromAirtableId(airtableid) {
+      try {
+        return Object.values(this.audiopathData).filter(function(d) {
+          return d.airtableid === airtableid;
+        })[0];
+      } catch {
+        return null;
+      }
+    },
+    interviewClass(iid) {
+      return { 
+        playing: this.playingPathId === this.audiopathDataFromAirtableId(iid).id, 
+        nextPlaying: this.nextPlayingPathId === this.audiopathDataFromAirtableId(iid).id && this.playingPathId !== this.audiopathDataFromAirtableId(iid).id, 
+      }
+    }
 
   },
   computed: {
@@ -53,12 +76,21 @@ export default {
     interviewsByBureauChief() {
       return this.$store.getters.interviewsByBureauChief;
     },
+    audiopathData() {
+      return this.$store.getters.audiopathData;
+    },
     allFields() {
       try { 
         return Object.keys(this.records[0].fields)
       } catch {
         return []
       }
+    },
+    playingPathId() {
+      return this.$store.getters.playingPathId;
+    },
+    nextPlayingPathId() {
+      return this.$store.getters.nextPlayingPathId;
     },
   },
 };
@@ -67,7 +99,8 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 
-.indexview {
+#index {
+  z-index: 2000;
   font-family: 'Space Mono', serif;
   position: absolute;
   right: 0px;
@@ -123,10 +156,34 @@ export default {
   background-color: rgba(235, 227, 220, .8);
 }
 
+.interview.playing {
+  background-color: black;
+  color: rgba(245, 245, 245, .7);
+}
+
+.interview.nextPlaying {
+  color: rgba(245, 245, 245, .7);
+    animation-name: nextPlayingAnimation;
+    animation-duration: 1s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;    
+}
+
+
+@keyframes nextPlayingAnimation {
+    0%     { background-color:rgba(245, 245, 245, .7); }
+    50.0%  { background-color:black; }
+    100.0%  { background-color:rgba(245, 245, 245, .7); }
+}
 
 .interviewblob {
   width: 30px;
   margin-right: 10px;
+}
+
+.interview-icon {
+  flex-shrink: 0;
+  width: 50px;
 }
 
 </style>

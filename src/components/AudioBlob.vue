@@ -1,17 +1,19 @@
 <template>
-  <div :id="'audioBlob-' + id" :class="[ 'audioBlob', thisdata.type, { 'playing': areWePlaying } ]" :style="positionStyle">  
+  <div :id="'audioBlob-' + id" :class="[ 'audioBlob', viewmode, thisdata.type, { 'playing': areWePlaying } ]" :style="positionStyle">  
       <svg @click="onclick" :width="viewboxdim" :height="viewboxdim" :viewBox="'0 0 ' + viewboxdim + ' ' + viewboxdim">
         <g>
           <path class="blobpath" :d="points" :style="'fill: url(#texture-' + id + ')' "></path>
-          <template v-if="thisdata.type !== 'interview'">
-            <foreignObject :class="thisdata.type" x="0%" y="0%" width="100%" height="100%" dominant-baseline="middle" text-anchor="middle">
-              <div class='divtextwrapper'>
-                <div class='divtext'>{{ thisdata['Name'] }}</div>
-              </div>
-            </foreignObject>    
-          </template>
-          <template v-else>
-            <text x="50%" y="95%" dominant-baseline="middle" text-anchor="middle">{{ thisdata['Name'] }}</text>    
+          <template v-if="viewmode !== 'indexview'">
+            <template v-if="thisdata.type !== 'interview'">
+              <foreignObject :class="thisdata.type" x="0%" y="0%" width="100%" height="100%" dominant-baseline="middle" text-anchor="middle">
+                <div class='divtextwrapper'>
+                  <div class='divtext'>{{ thisdata['Name'] }}</div>
+                </div>
+              </foreignObject>    
+            </template>
+            <template v-else>
+              <text x="50%" y="95%" dominant-baseline="middle" text-anchor="middle">{{ thisdata['Name'] }}</text>    
+            </template>
           </template>
         </g>
           <defs>
@@ -30,7 +32,7 @@ import "@fontsource/space-mono/700.css"
 
 export default {
   name: "AudioBlob",
-  props: ['id'],
+  props: ['id', 'viewmode'],
   data() {
     return {
       blob: null,
@@ -90,7 +92,11 @@ export default {
       }
     },
     positionStyle() {
-      return { 'transform': 'translate(' + -this.centerXY + "px, "+ -this.centerXY + "px)"}
+      if(this.viewmode !== "indexview") {
+        return { 'transform': 'translate(' + -this.centerXY + "px, "+ -this.centerXY + "px)"}
+      } else {
+        return { };
+      }
     },
     viewboxdim() {
       return (this.radii.max + this.dimpadding) * 2;
@@ -111,7 +117,8 @@ export default {
   },
   mounted() {
     this.blob = createBlob({
-      this: this
+      this: this,
+      animated: this.viewmode === "mapview",
     });
   },
   watch: {
@@ -149,16 +156,19 @@ var createBlob = function(options) {
     let point = {
       x: self.centerXY + Math.cos(angle) * radius,
       y: self.centerXY + Math.sin(angle) * radius,
-    };   
+    };  
 
-    tl.to(point, duration, {
-      x: self.centerXY + Math.cos(angle) * self.radii.max,
-      y: self.centerXY + Math.sin(angle) * self.radii.max,
-      repeat: -1,
-      yoyo: true,
-      ease: "sine.inOut",
-      duration: -random(duration)
-    }); 
+    if(options.animated) {
+
+      tl.to(point, duration, {
+        x: self.centerXY + Math.cos(angle) * self.radii.max,
+        y: self.centerXY + Math.sin(angle) * self.radii.max,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+        duration: -random(duration)
+      }); 
+    }
    
     points.push(point);
   }
@@ -226,7 +236,7 @@ function random(min, max) {
 
 <style scoped>
 
-.audioBlob {
+.audioBlob.mapview {
   position: absolute;
 }
 
@@ -269,6 +279,11 @@ foreignObject, foreignObject > * {
 svg {
   font-family: 'Space Mono', serif;
   height: auto;
+}
+
+.indexview svg {
+  width: 100%;
+  height: 100%;
 }
 
 </style>

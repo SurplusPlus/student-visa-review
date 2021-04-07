@@ -242,6 +242,7 @@ export default new Vuex.Store({
         .filter(function(d) { return d.fields['SVGID'] !== undefined })
         .reduce(function(a,d) { 
           a[d.fields['SVGID']] = d.fields;
+          a[d.fields['SVGID']].airtableid = d.id;
           return a;
         }, {})
 
@@ -254,6 +255,7 @@ export default new Vuex.Store({
       });
 
       validAudiopathData.forEach(function(audiopath) {
+        audiopath['airtableid'] = interviewsByAirtableSVGIDs[audiopath.id]['airtableid']
         audiopath['Transcript'] = interviewsByAirtableSVGIDs[audiopath.id]['Transcript']
         audiopath['Duration'] = interviewsByAirtableSVGIDs[audiopath.id]['Duration']
         audiopath['Name'] = interviewsByAirtableSVGIDs[audiopath.id]['Name']
