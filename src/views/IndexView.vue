@@ -6,7 +6,7 @@
         <div class="bc-location">{{ bc.fields["Location"] }}</div>
       </div>
       <div class="interviews">
-        <div class="interview" v-for="interview in bc.interviews" @click="onclick(interview.id)" :key="interview.id" :class="{ playing: playingPathId === audiopathDataFromAirtableId(interview.id).id }" >
+        <div class="interview" v-for="interview in bc.interviews" @click="onclick(interview.id)" :key="interview.id"  :class="interviewClass(interview.id)" >
           <div class="interview-icon">
             <AudioBlob :id="audiopathDataFromAirtableId(interview.id).id" 
             :ref="'audioBlob-' + audiopathDataFromAirtableId(interview.id).id" viewmode="indexview" />
@@ -57,6 +57,12 @@ export default {
       } catch {
         return null;
       }
+    },
+    interviewClass(iid) {
+      return { 
+        playing: this.playingPathId === this.audiopathDataFromAirtableId(iid).id, 
+        nextPlaying: this.nextPlayingPathId === this.audiopathDataFromAirtableId(iid).id && this.playingPathId !== this.audiopathDataFromAirtableId(iid).id, 
+      }
     }
 
   },
@@ -82,6 +88,9 @@ export default {
     },
     playingPathId() {
       return this.$store.getters.playingPathId;
+    },
+    nextPlayingPathId() {
+      return this.$store.getters.nextPlayingPathId;
     },
   },
 };
@@ -152,6 +161,20 @@ export default {
   color: rgba(245, 245, 245, .7);
 }
 
+.interview.nextPlaying {
+  color: rgba(245, 245, 245, .7);
+    animation-name: nextPlayingAnimation;
+    animation-duration: 1s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;    
+}
+
+
+@keyframes nextPlayingAnimation {
+    0%     { background-color:rgba(245, 245, 245, .7); }
+    50.0%  { background-color:black; }
+    100.0%  { background-color:rgba(245, 245, 245, .7); }
+}
 
 .interviewblob {
   width: 30px;
