@@ -5,7 +5,8 @@
     <div id="windowcenter">{{ playingPathId }}</div>
 
 
-    <div id="mapcanvas">
+    <div id="gsapdummy"></div>
+    <div id="mapcanvas" :style="translateStyle">
 
       <AudioPath v-for="d in audiopathData" :key="d.id" :id="d.id"></AudioPath>
 
@@ -36,6 +37,8 @@ export default {
   data() {
     return {
       gsapMapcanvas: null,
+      mcX: 2100,
+      mcY: 2000,
     };
   },
   components: {
@@ -66,6 +69,10 @@ export default {
     nextPlayingPathId() {
       return this.$store.getters.nextPlayingPathId;
     },
+    translateStyle() {
+      return  { transform: 'translate(' + (-this.mcX + 500)+ 'px, ' + (-this.mcY + 400) + 'px)' };
+      //TODO to figure out centering on window
+    }
   },
   methods: {
     stopExistingJourney() {
@@ -75,6 +82,7 @@ export default {
     focusOnNewBlob() {
     },
     startNewJourney(newid) {
+      var self = this;
       let thisdata = this.audiopathData[newid];
  
       this.$store.commit("setPlayingPathId", newid);
@@ -88,7 +96,11 @@ export default {
         transformOrigin: "50% 50%",
         force3D: false,
         duration: 20,
-        ease: "power2.inOut"
+        ease: "power2.inOut",
+        onUpdate: function() {
+          self.mcX = gsap.getProperty(this.targets()[0], "x");
+          self.mcY = gsap.getProperty(this.targets()[0], "y");
+        },
       });
     },
     scheduleNewJourney(newid, oldid) {
@@ -120,7 +132,7 @@ export default {
 </script>
 <style scoped lang="scss">
 #mapcontroller {
-  position: absolute;
+  position: fixed;
   top: 0px;
   right: 0px;
   left: 0px;
