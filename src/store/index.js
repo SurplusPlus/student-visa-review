@@ -34,6 +34,7 @@ function loadAirtableData(options, callback) {
           console.error(err);
           return;
         }
+        console.log(interviews);
         callback(interviews);
       }
     );
@@ -59,7 +60,7 @@ function loadAudiopathDataFromSvg(svgpath, callback) {
 
       audiopathData.forEach(function(d) {
         d.id = d.rawid.replace("PATH-", "");
-        if(d.rawid.includes("transit")) {
+        if(d.rawid.includes("TRANSIT")) {
           d.type = "transit";
         } else if(d.rawid.includes("intro")) {
           d.type = "intro";
@@ -78,7 +79,7 @@ function loadAudiopathDataFromSvg(svgpath, callback) {
 
 export default new Vuex.Store({
   state: {
-    mapsvg: require('@/assets/map/working/map.svg'),
+    mapsvg: require('@/assets/map/working/pathmap.svg'),
     interviews: [],
     people: [],
     _rawAudiopathData: [],
@@ -89,6 +90,7 @@ export default new Vuex.Store({
 
     playingPathId: null,
     nextPlayingPathId: null,
+    playingPathDuration: null,
     audioStatus: "stopped", // stopped, playing, requeuing (aka moving to a new queue)
 
     sky: "day",
@@ -170,6 +172,9 @@ export default new Vuex.Store({
     setNextPlayingPathId(state, id) {
 			state.nextPlayingPathId = id;
 		},
+    setPlayingPathDuration(state, dur) {
+			state.playingPathDuration = dur;
+		},
     setAudioStatus(state, status) {
       state.audioStatus = status;
     },
@@ -240,6 +245,10 @@ export default new Vuex.Store({
           return a;
         }, {})
 
+      console.log(interviewsByAirtableSVGIDs);
+      window.interviewsByAirtableSVGIDs = interviewsByAirtableSVGIDs;
+      console.log(context.state._rawAudiopathData);
+
       let validAudiopathData = context.state._rawAudiopathData.filter(function(audiopath) {
         return audiopath.id in interviewsByAirtableSVGIDs;
       });
@@ -255,9 +264,15 @@ export default new Vuex.Store({
         }
       });
 
-      context.commit("setAudiopathData", validAudiopathData);
+      let dictAudiopathData = validAudiopathData.reduce(function(d, audiopath) {
+        d[audiopath.id] = audiopath;
+        return d;
+      }, {});
 
-      console.log(validAudiopathData);
+      context.commit("setAudiopathData", dictAudiopathData);
+
+      console.log(dictAudiopathData);
+      window.dictAudiopathData = dictAudiopathData;
 
       context.commit("setLoaded");
     },

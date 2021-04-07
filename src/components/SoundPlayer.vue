@@ -50,33 +50,35 @@ export default {
         }, fadeoutdur)
       } catch {}
     },
+    setPlayingPathDuration(dur) {
+      this.$store.commit("setPlayingPathDuration", dur);
+    },
     playPathById(id) {
+      var self = this;
  
       if(this.audioHowl !== undefined) {
         this.audioHowl.stop();
         this.audioHowl.unload();
       }
 
-      console.log("playpathbyid", id)
-
       if(this.ambientHowl === undefined) {
-        console.log("triggering");
-        this.initAmbientHowl();
+//        this.initAmbientHowl();
       } 
 
       try { 
-        let thisdata = this.audiopathData.filter(function(d) {
-          return d.id === id
-        })[0]
+        let thisdata = this.audiopathData[id]
 
         this.audioFile = thisdata['Audio File'].url; 
-        console.log('wooo', this.audioFile);
 
         this.audioHowl = new Howl({
           src: [this.audioFile],
           autoplay: false,
           loop: false,
+          onload: function() {
+            self.setPlayingPathDuration(self.audioHowl.duration())
+          },
         });
+
         this.audioHowl.play();
       } catch {
       }

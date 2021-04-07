@@ -4,7 +4,7 @@
         <g>
           <path class="blobpath" :d="points" :style="'fill: url(#texture-' + id + ')' "></path>
           <template v-if="thisdata.type !== 'interview'">
-            <foreignObject x="0%" y="0%" width="100%" height="100%" dominant-baseline="middle" text-anchor="middle">
+            <foreignObject :class="thisdata.type" x="0%" y="0%" width="100%" height="100%" dominant-baseline="middle" text-anchor="middle">
               <div class='divtextwrapper'>
                 <div class='divtext'>{{ thisdata['Name'] }}</div>
               </div>
@@ -44,10 +44,12 @@ export default {
   },
   methods: {
     onclick: function() {
-      // clicking on a blob means playing it!
-      this.$store.commit("setNextPlayingPathId", this.id);
-      console.log('setNextPlayingPathId', this.id);
-      // this is handled by MapController
+      if(this.playingPathId === this.id) {
+        // we're already playing this blob! we should pause
+      } else {
+        this.$store.commit("setNextPlayingPathId", this.id);
+        console.log('setNextPlayingPathId', this.id);
+      }
     }
   },
   computed: {
@@ -60,10 +62,7 @@ export default {
     thisdata() {
       var self = this;
       try {
-        let thisdata = this.audiopathData.filter(function(d) {
-          return d.id === self.id;
-        })[0]
-        return thisdata;
+        return this.audiopathData[this.id]
       } catch {
         return null;
       }
@@ -90,7 +89,7 @@ export default {
       }
     },
     positionStyle() {
-      return { 'margin-top': -this.centerXY + "px", 'margin-left': -this.centerXY + "px"}
+      return { 'transform': 'translate(' + -this.centerXY + "px, "+ -this.centerXY + "px)"}
     },
     viewboxdim() {
       return (this.radii.max + this.dimpadding) * 2;
@@ -225,6 +224,10 @@ function random(min, max) {
 </script>
 
 <style scoped>
+
+.audioBlob {
+  position: absolute;
+}
 
 .blobpath {
   stroke: #999;
