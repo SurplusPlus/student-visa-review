@@ -200,7 +200,6 @@ export default {
             if(newid === startId) {
               console.log(this.progress())
               self.scale = startScale * (1 - this.progress())
-              consol
             }
 
           }

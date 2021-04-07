@@ -1,7 +1,7 @@
 <template>
   <transition name="fade">
-    <div id="aboutwrapper">
-      <div id="about">
+    <div id="aboutwrapper" v-if="show">
+      <div id="about" @click="close">
 
         <p>The Student Visa Review was co-curated by Jess Myers (Assistant Professor, RISD) and Lev Bratishenko (Curator Public, CCA), with SURPLUS+ (Shea Fitzpatrick, Lucy Liu, and Dan Taeyoung) and produced by RISD graduate assistants Michael Garel-Martorana, Sanjana Govind Masurkar, and Remi (Wenyue) Qiu.</p>
 
@@ -27,6 +27,9 @@ export default {
   computed: {
   },
   methods: {
+    close() {
+      this.$emit('close');
+    },
   }
 };
 </script>
@@ -34,12 +37,12 @@ export default {
 
 
 #aboutwrapper {
+  pointer-events: none;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   position: fixed;
-  z-index: 10000;
   top: 0;
   right: 0;
   bottom: 0;
@@ -47,6 +50,7 @@ export default {
 }
 
 #about {
+  pointer-events: auto;
   font-family: 'Space Mono', serif;
   background-color: green;
   width: 50vw;
