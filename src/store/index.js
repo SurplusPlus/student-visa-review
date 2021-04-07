@@ -265,13 +265,21 @@ export default new Vuex.Store({
       });
 
       let dictAudiopathData = validAudiopathData.reduce(function(d, audiopath) {
-        d[audiopath.id] = audiopath;
+        if(audiopath.type === "interview") {
+          d[audiopath.id] = audiopath;
+        } else { // HACKY BUT WORKS
+          let thisid = audiopath.id;
+          d[thisid + "-A"] = audiopath;
+          d[thisid + "-A"].id = thisid + "-A";
+          d[thisid + "-B"] = Object.assign({}, audiopath);
+          d[thisid + "-B"].id = thisid + "-B";
+        }
         return d;
       }, {});
 
+      console.log(dictAudiopathData);
       context.commit("setAudiopathData", dictAudiopathData);
 
-      console.log(dictAudiopathData);
       window.dictAudiopathData = dictAudiopathData;
 
       context.commit("setLoaded");

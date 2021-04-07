@@ -37,9 +37,12 @@ export default {
     pathPoints() {
       var points = [];
       points.push( this.svgElem.pointAt(0) );
-      if(this.thisData.type === "transit") {
-        points.push( this.svgElem.pointAt(this.svgElem.length()) );
-      }
+/*      if(this.thisData.type === "interview") {
+        points.push( Object.assign(this.svgElem.pointAt(0), { suffix: "" }) );
+      } else {
+        points.push( Object.assign(this.svgElem.pointAt(0), { suffix: "-A" }) );
+        points.push( Object.assign(this.svgElem.pointAt(this.svgElem.length()), { suffix: "-B" }) );
+      }*/
       return points;
     },
   },

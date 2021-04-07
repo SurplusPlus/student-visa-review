@@ -47,6 +47,7 @@ export default {
       if(this.playingPathId === this.id) {
         // we're already playing this blob! we should pause
       } else {
+//        this.$store.commit("setNextPlayingPathId", this.id);
         this.$store.commit("setNextPlayingPathId", this.id);
         console.log('setNextPlayingPathId', this.id);
       }
