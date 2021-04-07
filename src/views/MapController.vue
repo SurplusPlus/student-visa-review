@@ -75,17 +75,19 @@ export default {
     focusOnNewBlob() {
     },
     startNewJourney(newid) {
+      let thisdata = this.audiopathData[newid];
+ 
       this.$store.commit("setPlayingPathId", newid);
 
-      console.log(newid, this.audiopathData, this.audiopathData[newid])
+      console.log(thisdata.d);
 
-      this.gsapMapcanvas = gsap.to("#mapcanvas", {
+      this.gsapMapcanvas = gsap.to("#mapblob-" + newid, {
         motionPath: {
-            path:[{x:2500, y:2500}, {x:2800, y:2800}, {x:3000, y:3000}, {x:1000, y:3000}],
+          path: thisdata.d,
         },
         transformOrigin: "50% 50%",
         force3D: false,
-        duration: 2,
+        duration: 20,
         ease: "power2.inOut"
       });
     },

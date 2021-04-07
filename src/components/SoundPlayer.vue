@@ -65,9 +65,7 @@ export default {
       } 
 
       try { 
-        let thisdata = this.audiopathData.filter(function(d) {
-          return d.id === id
-        })[0]
+        let thisdata = this.audiopathData[id]
 
         this.audioFile = thisdata['Audio File'].url; 
         console.log('wooo', this.audioFile);

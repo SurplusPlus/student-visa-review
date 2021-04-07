@@ -1,6 +1,6 @@
 <template>
   <div id="audiopath">
-    <div class="mapblob" v-for="p in pathPoints"  :key="p.x + p.y" :style="{ top: p.y + 'px', left: p.x + 'px'}">
+    <div :id="'mapblob-' + thisData.id" class="mapblob" v-for="p in pathPoints"  :key="p.x + p.y" :style="{ transform: 'translate(' + p.x + 'px, ' + p.y + 'px)'}">
       <AudioBlob :id="thisData.id"  />
     </div>
   </div>
@@ -29,8 +29,7 @@ export default {
       return this.$store.getters.audiopathData;
     },
     thisData() {
-      var self = this;
-      return this.audiopathData.filter(function(d) { return d.id === self.id; })[0]
+      return this.audiopathData[this.id];
     },
     svgElem() {
       return SVG(this.thisData.elem);
@@ -56,10 +55,6 @@ export default {
 <style scoped lang="scss">
 .mapblob{
   position: absolute;
-  top: 0px;
-  right: 0px;
-  left: 0px;
-  bottom: 0px;
   z-index: 10000;
 }
 

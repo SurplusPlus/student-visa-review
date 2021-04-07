@@ -60,10 +60,7 @@ export default {
     thisdata() {
       var self = this;
       try {
-        let thisdata = this.audiopathData.filter(function(d) {
-          return d.id === self.id;
-        })[0]
-        return thisdata;
+        return this.audiopathData[this.id]
       } catch {
         return null;
       }
