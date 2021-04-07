@@ -36,6 +36,9 @@ gsap.registerPlugin(MotionPathPlugin);
 
 
 var transitionTime= 2; 
+var startScale = 3;
+
+var startId = 'TRANSITjlintro'
 
 export default {
   name: "MapController",
@@ -47,6 +50,7 @@ export default {
       windowWidth: 0,
       mcX: 2500,
       mcY: 2500,
+      scale: startScale,
     };
   },
   components: {
@@ -73,12 +77,12 @@ export default {
     },
     startLocation() {
       try {
-        window.interviews = this.interviews;
-        var startInterview = this.interviews.filter(function(d) { 
-          try { return d.fields['SVGID'] === "START"; }
-          catch { return false; }
-        })[0];
-        console.log(startInterview);
+        var startpath = this.audiopathData[startId]
+        var startpoint = SVG(startpath.elem).pointAt(0)
+        console.log(startpoint);
+        this.mcX = startpoint.x;
+        this.mcY = startpoint.y;
+        this.scale = startScale ;
 
       } catch { return null; }
     },
@@ -92,7 +96,7 @@ export default {
       return this.$store.state.playingPathDuration;
     },
     translateStyle() {
-      return  { transform: 'translate(' + (-this.mcX + this.windowWidth / 2)+ 'px, ' + (-this.mcY + this.windowHeight / 2) + 'px)' };
+      return  { transform: 'translate(' + (-this.mcX + this.windowWidth / 2) * this.scale + 'px, ' + (-this.mcY + this.windowHeight / 2) * this.scale + 'px) scale(' + this.scale + ')' };
       //TODO to figure out centering on window
     }
   },
@@ -183,6 +187,7 @@ export default {
           path: thisdata.d,
           start: start,
           end: end,
+          scale: [1.5, 1],
         },
         transformOrigin: "50% 50%",
         force3D: false,
@@ -192,6 +197,12 @@ export default {
           if(self.cameraFocusedOnId === newid) { // this is so blobs keep on animating and we can just change the camera focus
             self.mcX = gsap.getProperty(this.targets()[0], "x");
             self.mcY = gsap.getProperty(this.targets()[0], "y");
+            if(newid === startId) {
+              console.log(this.progress())
+              self.scale = startScale * (1 - this.progress())
+              consol
+            }
+
           }
         },
         onStart: function() {
@@ -209,6 +220,7 @@ export default {
             self.cameraFocusedOnId = null;
             this.reverse();
           }
+          self.$store.commit("setPlayingPathId", null);
         },
       });
     },
