@@ -50,7 +50,11 @@ export default {
         }, fadeoutdur)
       } catch {}
     },
+    setPlayingPathDuration(dur) {
+      this.$store.commit("setPlayingPathDuration", dur);
+    },
     playPathById(id) {
+      var self = this;
  
       if(this.audioHowl !== undefined) {
         this.audioHowl.stop();
@@ -70,7 +74,11 @@ export default {
           src: [this.audioFile],
           autoplay: false,
           loop: false,
+          onload: function() {
+            self.setPlayingPathDuration(self.audioHowl.duration())
+          },
         });
+
         this.audioHowl.play();
       } catch {
       }

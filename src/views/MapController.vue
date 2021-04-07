@@ -1,5 +1,6 @@
 <template>
   <div id="mapcontroller">
+    {{ playingPathDuration }}
 
     <div id="windowcenter"></div>
 
@@ -75,6 +76,9 @@ export default {
     nextPlayingPathId() {
       return this.$store.getters.nextPlayingPathId;
     },
+    playingPathDuration() {
+      return this.$store.state.playingPathDuration;
+    },
     translateStyle() {
       return  { transform: 'translate(' + (-this.mcX + this.windowWidth / 2)+ 'px, ' + (-this.mcY + this.windowHeight / 2) + 'px)' };
       //TODO to figure out centering on window
@@ -84,21 +88,6 @@ export default {
     stopFollowingExistingJourney() {
       // audio fadeout is handled by SoundPlayer.vue's watch function
       this.cameraFocusedOnId = null;
-      try { 
-/*        var prevBlobId = this.gsapMapcanvas.targets()[0].id
-        this.gsapMapcanvas.kill(); 
-        this.gsapMapcanvas = gsap.to(prevBlobId, {
-          motionPath: {
-            path: thisdata.d,
-          },
-          transformOrigin: "50% 50%",
-          force3D: false,
-          duration: 20,
-          ease: "power2.inOut",
-        });*/
-      }
-      catch {}
-
     },
     focusOnNewBlob(newid, callback) {
       var self = this;
@@ -136,18 +125,17 @@ export default {
  
       this.$store.commit("setPlayingPathId", newid);
 
-      console.log(thisdata.d);
 
       self.cameraFocusedOnId = newid;
 
-      gsap.to("#mapblob-" + newid, {
+      this.gsapMapcanvas = gsap.to("#mapblob-" + newid, {
         motionPath: {
           path: thisdata.d,
         },
         transformOrigin: "50% 50%",
         force3D: false,
-        duration: 20,
-        ease: "power2.inOut",
+        duration: 500, //placeholder; this is changed when audio duration is updated
+        ease: "power2.out",
         onUpdate: function() {
           if(self.cameraFocusedOnId === newid) { // this is so blobs keep on animating and we can just change the camera focus
             self.mcX = gsap.getProperty(this.targets()[0], "x");
@@ -174,6 +162,12 @@ export default {
   watch: {
     nextPlayingPathId(newid, oldid) {
       this.scheduleNewJourney(newid, oldid);
+    },
+    playingPathDuration(newdur) {
+      try {
+        console.log(this.gsapMapcanvas.duration())
+        this.gsapMapcanvas.duration(newdur)
+       } catch {}
     },
   },
   mounted() {
