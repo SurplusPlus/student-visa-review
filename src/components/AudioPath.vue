@@ -36,9 +36,10 @@ export default {
     },
     pathPoints() {
       var points = [];
-      points.push( this.svgElem.pointAt(0) );
-      if(this.thisData.type === "transit") {
+      if(this.id.includes("-B")) {
         points.push( this.svgElem.pointAt(this.svgElem.length()) );
+      } else {
+        points.push( this.svgElem.pointAt(0) );
       }
       return points;
     },

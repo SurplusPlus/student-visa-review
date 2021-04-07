@@ -97,18 +97,27 @@ export default {
       let newsvgpath = SVG(thisdata.elem);
       let newsvgpathpoint = newsvgpath.pointAt(0);
 
+      // HANDLE transit directions
+      var startpos, endpos;
+      if(newid.includes("-B")) {
+        startpos = { x: newsvgpathpoint.x, y: newsvgpathpoint.y };
+        endpos = { x: thisx, y: thisy };
+      } else { 
+        startpos = { x: thisx, y: thisy };
+        endpos = { x: newsvgpathpoint.x, y: newsvgpathpoint.y };
+      }
 
       gsap.fromTo("#gsapdummy", {
-        x: thisx,
-        y: thisy,
+        x: startpos.x,
+        y: startpos.y,
       },
       {
-        x: newsvgpathpoint.x,
-        y: newsvgpathpoint.y,
+        x: endpos.x,
+        y: endpos.y,
         transformOrigin: "50% 50%",
         force3D: false,
         duration: transitionTime,
-        ease: "power2.inOut",
+        ease: "sine.inOut",
         onUpdate: function() {
           self.mcX = gsap.getProperty(this.targets()[0], "x");
           self.mcY = gsap.getProperty(this.targets()[0], "y");
@@ -128,19 +137,55 @@ export default {
 
       self.cameraFocusedOnId = newid;
 
+      // HANDLE transit directions
+      var start = 0;
+      var end = 1;
+      if(newid.includes("-B")) {
+        start = 1;
+        end = 0;
+      }
+
+      var otherelem, otherid;
+
+      if(thisdata.type !== "interview") {
+
+        if(thisdata.id.includes("-B")) { 
+          otherid = thisdata.id.replace("-B", "-A");
+        } else { 
+          otherid = thisdata.id.replace("-A", "-B")
+        }
+        var otherelem = document.getElementById("mapblob-" + otherid);
+        console.log(otherid, otherelem)
+
+      }
+
+
       this.gsapMapcanvas = gsap.to("#mapblob-" + newid, {
         motionPath: {
           path: thisdata.d,
+          start: start,
+          end: end,
         },
         transformOrigin: "50% 50%",
         force3D: false,
         duration: 500, //placeholder; this is changed when audio duration is updated
-        ease: "power2.out",
+        ease: "sine.out",
         onUpdate: function() {
           if(self.cameraFocusedOnId === newid) { // this is so blobs keep on animating and we can just change the camera focus
             self.mcX = gsap.getProperty(this.targets()[0], "x");
             self.mcY = gsap.getProperty(this.targets()[0], "y");
           }
+        },
+        onStart: function() {
+          if(otherelem) { 
+            console.log("trying to hide other");
+            console.log(otherid);
+            otherelem.style.display = 'none';
+          }
+        },
+        onComplete: function() {
+          if(otherelem) { otherelem.style.display = 'block'; }
+          this.pause(0);
         },
       });
     },
@@ -164,6 +209,8 @@ export default {
       this.scheduleNewJourney(newid, oldid);
     },
     playingPathDuration(newdur) {
+        console.log(this.gsapMapcanvas.duration())
+        this.gsapMapcanvas.duration(newdur)
       try {
         console.log(this.gsapMapcanvas.duration())
         this.gsapMapcanvas.duration(newdur)
@@ -185,7 +232,7 @@ export default {
 </script>
 <style scoped lang="scss">
 #mapcontroller {
-  position: fixed;
+  position: fixed; 
   top: 0px;
   right: 0px;
   left: 0px;
