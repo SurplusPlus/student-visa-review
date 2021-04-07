@@ -1,7 +1,8 @@
 <template>
   <div id="mapcontroller">
-    <div class="debug">{{ playingPathDuration }}</div>
-
+    <div class="debug">{{ playingPathDuration }}
+      </div>
+{{ startLocation }} 
     <div id="windowcenter"></div>
 
 
@@ -44,8 +45,8 @@ export default {
       cameraFocusedOnId: null,
       windowHeight: 0,
       windowWidth: 0,
-      mcX: 2100,
-      mcY: 2000,
+      mcX: 2500,
+      mcY: 2500,
     };
   },
   components: {
@@ -70,6 +71,17 @@ export default {
     stateLoaded() {
       return this.$store.getters.hasLoaded;
     },
+    startLocation() {
+      try {
+        window.interviews = this.interviews;
+        var startInterview = this.interviews.filter(function(d) { 
+          try { return d.fields['SVGID'] === "START"; }
+          catch { return false; }
+        })[0];
+        console.log(startInterview);
+
+      } catch { return null; }
+    },
     playingPathId() {
       return this.$store.getters.playingPathId;
     },
@@ -88,6 +100,7 @@ export default {
     stopFollowingExistingJourney() {
       // audio fadeout is handled by SoundPlayer.vue's watch function
       this.cameraFocusedOnId = null;
+      if(this.gsapMapcanvas) { this.gsapMapcanvas.reverse(); }
     },
     focusOnNewBlob(newid, callback) {
       var self = this;
@@ -152,7 +165,7 @@ export default {
 
       var otherelem, otherid;
 
-      if(thisdata.type !== "interview") {
+      if(thisdata.type === "transit") {
 
         if(thisdata.id.includes("-B")) { 
           otherid = thisdata.id.replace("-B", "-A");
@@ -189,8 +202,13 @@ export default {
           }
         },
         onComplete: function() {
-          if(otherelem) { otherelem.style.display = 'block'; }
-          this.pause(0);
+          if(otherelem) { 
+            otherelem.style.display = 'block'; 
+            this.pause(0);
+          } else {
+            self.cameraFocusedOnId = null;
+            this.reverse();
+          }
         },
       });
     },
