@@ -1,7 +1,7 @@
 <template>
   <div id="audiopath">
     <div :id="'mapblob-' + thisData.id" class="mapblob" v-for="p in pathPoints"  :key="p.x + p.y" :style="{ transform: 'translate(' + p.x + 'px, ' + p.y + 'px)'}">
-      <AudioBlob :id="thisData.id"  />
+      <AudioBlob :id="thisData.id" viewmode="mapview" />
     </div>
   </div>
 </template>

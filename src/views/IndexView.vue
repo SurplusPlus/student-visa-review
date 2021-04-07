@@ -1,5 +1,5 @@
 <template>
-  <div class="indexview">
+  <div id="index">
     <div class="bureauchief" v-for="(bc, bcid) in interviewsByBureauChief" v-bind:key = "bcid">
       <div class="bc-info">
         <div class="bc-name">{{ bc.fields["Name"] }}</div>
@@ -7,7 +7,9 @@
       </div>
       <div class="interviews">
         <div class="interview" v-for="interview in bc.interviews" :key="interview.id">
-          <div>{{interview}} </div>
+          <div class="interview-icon">
+            <AudioBlob :id="audiopathDataFromAirtableId(interview.id).id" viewmode="indexview" />
+          </div>
           <div class="interview-name">{{ interview.fields["Name"] }}</div>
         </div>
       </div>
@@ -42,6 +44,15 @@ export default {
       try { return this.people[this.interviews[id].fields["Interviewee"]];   } 
       catch { return undefined;  }
     },
+    audiopathDataFromAirtableId(airtableid) {
+      try {
+        return Object.values(this.audiopathData).filter(function(d) {
+          return d.airtableid === airtableid;
+        })[0];
+      } catch {
+        return null;
+      }
+    }
 
   },
   computed: {
@@ -71,7 +82,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 
-.indexview {
+#index {
   font-family: 'Space Mono', serif;
   position: absolute;
   right: 0px;
@@ -131,6 +142,11 @@ export default {
 .interviewblob {
   width: 30px;
   margin-right: 10px;
+}
+
+.interview-icon {
+  flex-shrink: 0;
+  width: 50px;
 }
 
 </style>
