@@ -83,6 +83,7 @@ export default {
 <style lang="scss" scoped>
 
 #index {
+  z-index: 2000;
   font-family: 'Space Mono', serif;
   position: absolute;
   right: 0px;

@@ -57,7 +57,7 @@ export default {
   pointer-events: none;
   font-family: 'Space Mono', serif;
   position: fixed;
-  z-index: 1000;
+  z-index: 100000;
   top: 0px;
   right: 0px;
   left: 0px;
@@ -75,7 +75,7 @@ export default {
   justify-content: center;
   text-align: center;
   position: fixed;
-  z-index: 1000;
+  z-index: 100000;
   font-size: 1.3em;
 }
 
