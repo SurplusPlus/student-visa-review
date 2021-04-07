@@ -99,7 +99,7 @@ export default new Vuex.Store({
     nextPlayingPathId: null,
     playingPathDuration: null,
     status: "stopped", // stopped, playing, requeuing (aka moving to a new queue)
-
+    playedIntro: false,
     sky: "day",
 
     
@@ -184,6 +184,9 @@ export default new Vuex.Store({
 		},
     setStatus(state, status) {
       state.status = status;
+    },
+    setPlayedIntro(state, pi) {
+      state.playedIntro = pi;
     },
     setAudiopathData(state, apd) {
       state.audiopathData = apd;

@@ -37,7 +37,7 @@ gsap.registerPlugin(MotionPathPlugin);
 
 
 var transitionTime= 2; 
-var startScale = 3;
+var startScale = 5;
 
 var startId = 'TRANSITjlintro'
 
@@ -104,9 +104,30 @@ export default {
   },
   methods: {
     stopFollowingExistingJourney() {
+      var self = this;
       // audio fadeout is handled by SoundPlayer.vue's watch function
+      if(this.cameraFocusedOnId === startId) {
+        this.$store.commit("setPlayedIntro", true);
+      }
       this.cameraFocusedOnId = null;
       if(this.gsapMapcanvas) { this.gsapMapcanvas.reverse(); }
+
+
+      if(this.scale !== 1) {
+        this.gsapIntroScale = gsap.fromTo("#gsapdummy2", {
+          scale: self.scale
+        },
+        {
+          scale: 1,
+          duration: 10, 
+          ease: "power1.inOut",
+          onUpdate: function() {
+            self.scale = gsap.getProperty(this.targets()[0], "scale");
+          },
+        });
+      }
+
+
     },
     focusOnNewBlob(newid, callback) {
       var self = this;
@@ -216,6 +237,9 @@ export default {
             this.reverse();
           }
           self.$store.commit("setPlayingPathId", null);
+          if(newid === startId) {
+            self.$store.commit("setPlayedIntro", true);
+          }
         },
       });
 

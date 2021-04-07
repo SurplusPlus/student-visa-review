@@ -1,7 +1,7 @@
 <template>
   <div class="nav">
 
-    <template v-if="route.name == 'Landscape'">
+    <template v-if="route.name == 'Landscape' && playedIntro">
         <div id="nav-home" class="navbutton"  ><router-link :to="{ name: 'Landscape' }">Home</router-link></div>
         <div id="nav-index" class="navbutton" ><router-link :to="{ name: 'Index' }">Index</router-link></div>
 
@@ -9,11 +9,17 @@
           <Transcript />
         </transition>
         <Debug />
-        <About :show="showAbout" @close="aboutToggle"></About>
+    </template>
+
+    <template v-if="!playedIntro">
+      <div id="skipintro" @click="skipIntro">
+        SKIP TODO - MAKE THIS FINISH ANIMATION
+      </div>
     </template>
 
     <template v-if="route.name == 'Landscape'">
 
+        <About :show="showAbout" @close="aboutToggle"></About>
         <div id="logos" @click="aboutToggle">
           <img :src="logo_risd" />
           <img :src="logo_cca" />
@@ -61,13 +67,23 @@ export default {
     SoundPlayer,
   },
   computed: {
+    playingPathId() {
+      return this.$store.getters.playingPathId;
+    },
     route() {
       return this.$store.state.route;
-    }
+    },
+    playedIntro() {
+      return this.$store.state.playedIntro;
+    },
   },
   methods: {
     aboutToggle: function() {
       this.showAbout = !(this.showAbout);
+    },
+    skipIntro: function() {
+      this.$store.commit("setPlayedIntro", true);
+      /* DO SOME SKIIPING TODO */
     },
   }
 };
@@ -179,6 +195,14 @@ a {
 
 #logos img {
   height: 80px;
+}
+
+#skipintro {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  cursor: pointer;
+
 }
 
 @keyframes floating {
