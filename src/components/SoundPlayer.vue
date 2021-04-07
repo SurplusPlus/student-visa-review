@@ -57,10 +57,7 @@ export default {
         this.audioHowl.unload();
       }
 
-      console.log("playpathbyid", id)
-
       if(this.ambientHowl === undefined) {
-        console.log("triggering");
 //        this.initAmbientHowl();
       } 
 
@@ -68,7 +65,6 @@ export default {
         let thisdata = this.audiopathData[id]
 
         this.audioFile = thisdata['Audio File'].url; 
-        console.log('wooo', this.audioFile);
 
         this.audioHowl = new Howl({
           src: [this.audioFile],

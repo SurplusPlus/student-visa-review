@@ -44,10 +44,12 @@ export default {
   },
   methods: {
     onclick: function() {
-      // clicking on a blob means playing it!
-      this.$store.commit("setNextPlayingPathId", this.id);
-      console.log('setNextPlayingPathId', this.id);
-      // this is handled by MapController
+      if(this.playingPathId === this.id) {
+        // we're already playing this blob! we should pause
+      } else {
+        this.$store.commit("setNextPlayingPathId", this.id);
+        console.log('setNextPlayingPathId', this.id);
+      }
     }
   },
   computed: {
