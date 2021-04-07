@@ -33,12 +33,12 @@ export default {
     playingPathId() {
       return this.$store.getters.playingPathId;
     },
-    playingPathData() {
-      return this.$store.getters.playingPathData;
+    audiopathData() {
+      return this.$store.getters.audiopathData;
     },
     transcript() {
       try { 
-        return this.playingPathData['Transcript'];
+        return this.audiopathData[this.playingPathId]['Transcript'];
       } catch {
         return "";
       }
