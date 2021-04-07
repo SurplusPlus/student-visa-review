@@ -6,8 +6,9 @@
         <div class="bc-location">{{ bc.fields["Location"] }}</div>
       </div>
       <div class="interviews">
-        <div class="interview" v-for="interview in bc.interviews" @click="onclick(interview.id)" :key="interview.id"  :class="interviewClass(interview.id)" >
+        <div class="interview" v-for="interview in validAudiopaths(bc.interviews)" @click="onclick(interview.id)" :key="interview.id"  :class="interviewClass(interview.id)" >
           <div class="interview-icon">
+
             <AudioBlob :id="audiopathDataFromAirtableId(interview.id).id" 
             :ref="'audioBlob-' + audiopathDataFromAirtableId(interview.id).id" viewmode="indexview" />
           </div>
@@ -38,8 +39,10 @@ export default {
   },
   methods: {
     onclick(iid) {
-      var aid = this.audiopathDataFromAirtableId(iid).id
-      this.$refs['audioBlob-' + aid][0].onclick();
+      try {
+        var aid = this.audiopathDataFromAirtableId(iid).id
+        this.$refs['audioBlob-' + aid][0].onclick();
+      } catch { }
     },
     bureau_chief_of(id) {
       try { return this.people[this.interviews[id].fields["Bureau Chief"]];   } 
@@ -50,19 +53,32 @@ export default {
       catch { return undefined;  }
     },
     audiopathDataFromAirtableId(airtableid) {
+        console.log("looking for", airtableid);
       try {
         return Object.values(this.audiopathData).filter(function(d) {
           return d.airtableid === airtableid;
         })[0];
       } catch {
+        console.log("nope, doesn't exist");
         return null;
       }
     },
     interviewClass(iid) {
-      return { 
-        playing: this.playingPathId === this.audiopathDataFromAirtableId(iid).id, 
-        nextPlaying: this.nextPlayingPathId === this.audiopathDataFromAirtableId(iid).id && this.playingPathId !== this.audiopathDataFromAirtableId(iid).id, 
+      try {
+        return { 
+          playing: this.playingPathId === this.audiopathDataFromAirtableId(iid).id, 
+          nextPlaying: this.nextPlayingPathId === this.audiopathDataFromAirtableId(iid).id && this.playingPathId !== this.audiopathDataFromAirtableId(iid).id, 
+        }
+      } catch {
+        return {};
       }
+    },
+    validAudiopaths(data) {
+      var self = this;
+      return data.filter(function(interview) {
+        try { return interview.fields['SVGID'] in self.audiopathData; }
+        catch { return false; }
+      });
     }
 
   },

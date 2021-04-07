@@ -83,9 +83,9 @@ export default {
     radii() {
       try {
         if(this.thisdata.type === "transit") {
-          return { min: 170, max: 180 }
+          return { min: 100, max: 120 }
         } else {
-          return { min: 80, max: 100 }
+          return { min: 70, max: 80 }
         }
       } catch {
         return null;
