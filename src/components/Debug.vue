@@ -8,6 +8,10 @@
       <option>fixed</option>
       <option>absolute</option>
     </select>
+     <select v-model="viewdebug" >
+      <option>showDebug</option>
+      <option>hideDebug</option>
+    </select>
         
   </div>
 </template>
@@ -21,6 +25,7 @@ export default {
   data() {
     return {
       fixedcanvas: "fixed",
+      viewdebug: "showDebug",
   };
   },
   components: {
@@ -49,7 +54,14 @@ export default {
       } else {
         document.getElementById("mapcontroller").style.position = "absolute";
       }
-    }
+    },
+    viewdebug: function(val) {
+      if(val === 'showDebug') {
+        document.body.classList.add("showdebug");
+      } else {
+        document.body.classList.remove("showdebug");
+      }
+    },
 
   }
 };

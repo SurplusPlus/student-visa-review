@@ -1,6 +1,6 @@
 <template>
   <div id="mapcontroller">
-    {{ playingPathDuration }}
+    <div class="debug">{{ playingPathDuration }}</div>
 
     <div id="windowcenter"></div>
 
@@ -91,8 +91,8 @@ export default {
     },
     focusOnNewBlob(newid, callback) {
       var self = this;
-      var thisx = JSON.parse(JSON.stringify(this.mcX));
-      var thisy = JSON.parse(JSON.stringify(this.mcY));
+      var thisx = this.mcX;
+      var thisy = this.mcY;
       let thisdata = this.audiopathData[newid];
       let newsvgpath = SVG(thisdata.elem);
       let newsvgpathpoint = newsvgpath.pointAt(0);
@@ -105,6 +105,11 @@ export default {
       } else { 
         startpos = { x: thisx, y: thisy };
         endpos = { x: newsvgpathpoint.x, y: newsvgpathpoint.y };
+      }
+
+      if(!this.playingPathId) {
+        // this is our first play!
+        console.log("first click!");
       }
 
       gsap.fromTo("#gsapdummy", {
@@ -273,6 +278,8 @@ export default {
   z-index: 1000;
 }
 
+.debug { display: none; }
+.showdebug .debug { display: block; }
 
 </style>
 
