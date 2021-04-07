@@ -1,7 +1,15 @@
 <template>
-  <div id="transcript">
+  <div id="transcript" :class="status">
     <div class="content">
       <div class="header">Transcript</div>
+
+      <template v-if="status=='playing'">
+        PLAYING
+      </template>
+      <template v-if="status=='stopped'">
+        STOPPED
+      </template>
+
       <div class="transcript">
         <div v-for="(turn, idx) in processedTranscript" :key="idx"> 
           <span class="person">{{ turn.name }}:</span>
@@ -35,6 +43,9 @@ export default {
     },
     audiopathData() {
       return this.$store.getters.audiopathData;
+    },
+    status() {
+      return this.$store.state.status;
     },
     transcript() {
       try { 
