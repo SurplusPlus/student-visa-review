@@ -241,13 +241,21 @@ function random(min, max) {
 }
 
 .blobpath {
-  stroke: #999;
-  stroke-width: 1;
+  stroke: #212121;
+  stroke-width: .25px;
 }
 
+.blobpath:hover {
+  stroke: rgba(110, 167, 252, 1);
+  stroke-width: 2px;
+  cursor: pointer;
+}
+
+
 .playing .blobpath {
-  stroke: #FFA;
-  stroke-width: 5; 
+  stroke: rgba(110, 167, 252, 1);
+  stroke-width: 2px;
+  box-shadow: 0px 0px 50px rgb(10, 116, 255);
 }
 
 text, .divtext {
