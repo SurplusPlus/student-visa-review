@@ -103,6 +103,9 @@ export default {
     audiopathData() {
       return this.$store.getters.audiopathData;
     },
+    playedIntro() {
+      return this.$store.state.playedIntro;
+    },
   },
   watch: {
     nextPlayingPathId: function(newId, oldId) {
@@ -110,6 +113,11 @@ export default {
     },
     playingPathId: function(newId, oldId) {
       this.playPathById(newId);
+    },
+    playedIntro(newval, oldval) {
+      if(newval == true && oldval == false) {
+        this.fadeOutAudio();
+      }
     },
 
   },

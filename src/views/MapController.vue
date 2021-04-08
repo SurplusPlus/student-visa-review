@@ -1,8 +1,5 @@
 <template>
   <div id="mapcontroller">
-    <div class="debug">{{ playingPathDuration }}
-      </div>
-{{ startLocation }} 
     <div id="windowcenter"></div>
 
 
@@ -37,9 +34,9 @@ gsap.registerPlugin(MotionPathPlugin);
 
 
 var transitionTime= 2; 
-var startScale = 3;
+var startScale = 5;
 
-var startId = 'TRANSITjlintro'
+var introId = 'TRANSITjlintro'
 
 export default {
   name: "MapController",
@@ -53,6 +50,7 @@ export default {
       mcX: 2500,
       mcY: 2500,
       scale: startScale,
+      introLocationSet: false,
     };
   },
   components: {
@@ -79,12 +77,17 @@ export default {
     },
     startLocation() {
       try {
-        var startpath = this.audiopathData[startId]
-        var startpoint = SVG(startpath.elem).pointAt(0)
-        console.log(startpoint);
-        this.mcX = startpoint.x;
-        this.mcY = startpoint.y;
-        this.scale = startScale ;
+        var intropath = this.audiopathData[introId]
+        var startpoint = SVG(intropath.elem).pointAt(0)
+        return startpoint;
+      } catch { console.log("uhoh"); return null; }
+    },
+    homeLocation() {
+      try {
+        var intropath = this.audiopathData[introId]
+        var introSVG = SVG(intropath.elem);
+        var endpoint = introSVG.pointAt(introSVG.length())
+        return endpoint;
 
       } catch { return null; }
     },
@@ -100,13 +103,37 @@ export default {
     translateStyle() {
       return  { transform: 'translate(' + (-this.mcX + this.windowWidth / 2) * this.scale + 'px, ' + (-this.mcY + this.windowHeight / 2) * this.scale + 'px) scale(' + this.scale + ')' };
       //TODO to figure out centering on window
-    }
+    },
+    playedIntro() {
+      return this.$store.state.playedIntro;
+    },
   },
   methods: {
     stopFollowingExistingJourney() {
+      var self = this;
       // audio fadeout is handled by SoundPlayer.vue's watch function
+      if(this.cameraFocusedOnId === introId) {
+        this.$store.commit("setPlayedIntro", true);
+      }
       this.cameraFocusedOnId = null;
       if(this.gsapMapcanvas) { this.gsapMapcanvas.reverse(); }
+
+
+      if(this.scale !== 1) {
+        this.gsapIntroScale = gsap.fromTo("#gsapdummy2", {
+          scale: self.scale
+        },
+        {
+          scale: 1,
+          duration: 10, 
+          ease: "power1.inOut",
+          onUpdate: function() {
+            self.scale = gsap.getProperty(this.targets()[0], "scale");
+          },
+        });
+      }
+
+
     },
     focusOnNewBlob(newid, callback) {
       var self = this;
@@ -216,6 +243,9 @@ export default {
             this.reverse();
           }
           self.$store.commit("setPlayingPathId", null);
+          if(newid === introId) {
+            self.$store.commit("setPlayedIntro", true);
+          }
         },
       });
 
@@ -228,7 +258,7 @@ export default {
         ease: "power4.out",
         onUpdate: function() {
           if(self.cameraFocusedOnId === newid) { // this is so blobs keep on animating and we can just change the camera focus
-            if(newid === startId) {
+            if(newid === introId) {
               self.scale = gsap.getProperty(this.targets()[0], "scale");
             }
 
@@ -253,6 +283,35 @@ export default {
       });
 
     },
+    skipIntro() {
+      var self = this;
+
+      console.log("skipping intro");
+      // stop existing animation
+      this.stopFollowingExistingJourney();
+
+      console.log(this.homeLocation);
+
+      gsap.fromTo("#gsapdummy", {
+        x: this.mcX,
+        y: this.mcY,
+      },
+      {
+        x: this.homeLocation.x,
+        y: this.homeLocation.y,
+        transformOrigin: "50% 50%",
+        force3D: false,
+        duration: 10,
+        ease: "sine.inOut",
+        onUpdate: function() {
+          self.mcX = gsap.getProperty(this.targets()[0], "x");
+          self.mcY = gsap.getProperty(this.targets()[0], "y");
+        },
+        onComplete: function() {
+        },
+      }); 
+
+    },
 
   },
   watch: {
@@ -265,6 +324,9 @@ export default {
         this.gsapMapcanvas.duration(newdur)
        } catch {}
     },
+    playedIntro(newval, oldval) {
+      if(newval == true && oldval == false) { this.skipIntro(); }
+    },
   },
   mounted() {
     window.gsap = gsap;
@@ -275,7 +337,14 @@ export default {
       this.windowHeight = window.innerHeight
       this.windowWidth= window.innerWidth
     })
-
+  },
+  updated() {
+    if(this.startLocation && !this.introLocationSet) {
+      this.mcX = this.startLocation.x;
+      this.mcY = this.startLocation.y;
+      this.scale = startScale ;
+      this.introLocationSet = true;
+    }
   },
 };
 </script>
