@@ -185,7 +185,6 @@ export default {
     animation-iteration-count: infinite;    
 }
 
-
 @keyframes nextPlayingAnimation {
     0%     { background-color:rgba(110, 167, 252, .1); }
     50.0%  { background-color:rgba(110, 167, 252, .5); }
