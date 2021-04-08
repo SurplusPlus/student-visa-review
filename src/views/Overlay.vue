@@ -13,7 +13,7 @@
 
     <template v-if="!playedIntro">
       <div id="skipintro" @click="skipIntro">
-        SKIP TODO - MAKE THIS FINISH ANIMATION
+        SKIP TODO - THIS SHOULD BE STYLED
       </div>
     </template>
 
