@@ -277,15 +277,17 @@ foreignObject, foreignObject > * {
 .divtext {
   display: inline-block;
   padding: 20px;
-  border-radius: 100px;
-  height: 150px;
-  background: linear-gradient(180deg,  rgba(235,227,220,.6) 0%, rgba(191,212,244,.95) 100%);
+  background: rgb(245, 245, 245, 1);
+  border-radius: 10px;
+  mix-blend-mode: hard-light;
+  /* height: 150px; */
+  /* background: linear-gradient(180deg,  rgba(235,227,220,.6) 0%, rgba(191,212,244,.95) 100%); */
   font-size: 1em;
   text-align: center;
   color: #212121; 
   line-height: 150%;
   margin: 1em; 
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
   box-shadow: 0px 0px 20px rgba(110, 167, 252, .2), 0px 0px .5px #212121;
 }
 
