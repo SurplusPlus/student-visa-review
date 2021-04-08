@@ -15,6 +15,7 @@
     <template v-if="route.name == 'Landscape'">
 
         <div id="logos" @click="aboutToggle">
+          <!-- About -->
           <img :src="logo_risd" />
           <img :src="logo_cca" />
           <img :src="logo_plus" />
@@ -113,8 +114,8 @@ a {
   left: 0px;
   top: 0px;
   background-color: #f5f5f5;
-  padding: 25px;
-  border-radius: 50px;
+  padding: 16px 24px;  
+    border-radius: 50px;
   box-shadow: -2px 6px 40px rgba(245, 245, 245, .8), 0px 0px 1.5px #212121;
   mix-blend-mode: hard-light;
   margin: 25px 0 0 20px;
@@ -128,8 +129,7 @@ a {
   right: 0px;
   top: 0px;
   background-color: #f5f5f5;
-  padding: 25px;
-  border-radius: 50px;
+padding: 16px 24px;  border-radius: 50px;
   box-shadow: -2px 6px 40px rgba(245, 245, 245, .8), 0px 0px 1.5px #212121;
   mix-blend-mode: hard-light;
   margin: 25px 20px 0 0;
@@ -160,7 +160,7 @@ a {
   text-align: center;
   color: #212121;
   background: #f5f5f5;
-  padding: 25px;
+  padding: 16px 24px;
   border-radius: 50px;
   box-shadow: -2px 6px 40px rgba(245, 245, 245, .8), 0px 0px 1.5px #212121;
   mix-blend-mode: hard-light;
@@ -198,14 +198,24 @@ a {
 #logos {
   position: fixed;
   right: 25px;
-  bottom: 25px;
+  bottom: 18px;
   cursor: pointer;
+  background: #f5f5f5;
+  mix-blend-mode: hard-light;
+  padding: 12px;
+  border-radius: 60px;
+  box-shadow: -2px 6px 40px rgba(245, 245, 245, .8), 0px 0px 1.5px #212121;
+  transition: background-color 2s ease;
+  animation: floating 5s infinite;
+  animation-timing-function: ease;
+  font-size: 1.3em;
+  vertical-align: middle;
 }
 
 #logos img {
-  max-height: 60px;
-  max-width: 75px;
-  margin-left: 1.25em;
+  max-height: 50px;
+  max-width: 50px;
+  margin: 0 .5em;
 }
 
 @keyframes floating {
