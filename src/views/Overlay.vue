@@ -13,7 +13,7 @@
 
     <template v-if="!playedIntro">
       <div id="skipintro" @click="skipIntro">
-        SKIP TODO - THIS SHOULD BE STYLED
+        Skip intro<img class="forward" src="@/assets/interface/forward.svg"/>
       </div>
     </template>
 
@@ -205,12 +205,22 @@ padding: 16px 24px;  border-radius: 50px;
 }
 
 #nav-home:hover {
-    background-color: rgba(235, 227, 220, .8);
+    background-color: rgba(110, 167, 252, .5);
 }
 
 #nav-index:hover {
-    background-color: rgba(235, 227, 220, .8);
+    background-color: rgba(110, 167, 252, .5);
 }
+
+#skipintro:hover {
+    background-color: rgba(110, 167, 252, .5);
+}
+
+#logos:hover {
+    background-color: rgba(110, 167, 252, .5);
+}
+
+
 #logos {
   position: fixed;
   right: 25px;
@@ -239,7 +249,14 @@ padding: 16px 24px;  border-radius: 50px;
   bottom: 20px;
   left: 20px;
   cursor: pointer;
-
+  background-color: #f5f5f5;
+  padding: 16px 24px;  border-radius: 50px;
+  box-shadow: 0px 0px 40px rgba(110, 167, 252, .5), 0px 0px 1.5px #212121;
+  mix-blend-mode: hard-light;
+  margin: 25px 20px 0 0;
+  animation: floating 5s infinite;
+  animation-timing-function: ease;
+  transition: background-color 2s ease;
 }
 
 @keyframes floating {
