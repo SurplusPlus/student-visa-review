@@ -8,8 +8,8 @@
         <p>The Bureau Chiefs: Abena Acheampong Danquah (Ghana), Anastasia Fedotova (Russia), Amber Han (China), Oromia Jula (Ethiopia), Brad Lei (China), Mackenzie Luke (Barbados), Minho Kwon (Korea), and Kaijie (Kevin) Huang (China).</p>
 
     <div class="logos">
-        <img class="logo" src="@/assets/logos/cca.png"/>
         <img class="logo" src="@/assets/logos/risd.png"/>
+        <img class="logo" src="@/assets/logos/cca.png"/>
         <img class="logo" src="@/assets/logos/plus.png"/>
     </div>
         
@@ -94,7 +94,7 @@ export default {
 }
 
 .logo {
-  max-width: 75px;
+  max-width: 90px;
   margin: 0 1em;
   height: auto;
   margin-left: 1.25em;

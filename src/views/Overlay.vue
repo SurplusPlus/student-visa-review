@@ -50,8 +50,8 @@ export default {
   name: "Overlay",
   data() {
     return {
-      logo_risd: require('@/assets/logos/cca.png'),
-      logo_cca: require('@/assets/logos/risd.png'),
+      logo_risd: require('@/assets/logos/risd.png'),
+      logo_cca: require('@/assets/logos/cca.png'),
       logo_plus: require('@/assets/logos/plus.png'),
 
       showAbout: false,
