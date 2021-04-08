@@ -3,7 +3,7 @@
 
     <template v-if="route.name == 'Landscape' && playedIntro">
         <div id="nav-home" class="navbutton"  ><router-link :to="{ name: 'Landscape' }">Home</router-link></div>
-        <div id="nav-index" class="navbutton" ><router-link :to="{ name: 'Index' }">Index</router-link></div>
+        <div id="nav-index" class="navbutton" ><router-link :to="{ name: 'Index' }">Index<img class="forward" src="@/assets/interface/forward.svg"/></router-link></div>
 
         <transition name="fade">
           <Transcript />
@@ -21,8 +21,10 @@
 
         <About :show="showAbout" @close="aboutToggle"></About>
         <div id="logos" @click="aboutToggle">
+          <!-- About -->
           <img :src="logo_risd" />
           <img :src="logo_cca" />
+          <img :src="logo_plus" />
         </div>
 
     </template>
@@ -30,8 +32,7 @@
     <template v-if="route.name == 'Index'">
       <div id="indexnav">
         <router-link :to="{ name: 'Landscape' }">
-          <div class="buttontext returnbutton">Return</div>
-          <!-- <img class="returnbutton" src="@/assets/return.svg"/> -->
+          <div class="buttontext returnbutton"><img class="back" src="@/assets/interface/back.svg"/>Return</div>
         </router-link>
       </div>
     </template>
@@ -55,8 +56,10 @@ export default {
   name: "Overlay",
   data() {
     return {
-      logo_risd: require('@/assets/logos/logo_placeholder.png'),
-      logo_cca: require('@/assets/logos/logo_placeholder.png'),
+      logo_risd: require('@/assets/logos/risd.png'),
+      logo_cca: require('@/assets/logos/cca.png'),
+      logo_plus: require('@/assets/logos/plus.png'),
+
       showAbout: false,
     };
   },
@@ -127,26 +130,28 @@ a {
   left: 0px;
   top: 0px;
   background-color: #f5f5f5;
-  padding: 25px;
-  border-radius: 50px;
+  padding: 16px 24px;  
+    border-radius: 50px;
   box-shadow: -2px 6px 40px rgba(245, 245, 245, .8), 0px 0px 1.5px #212121;
   mix-blend-mode: hard-light;
   margin: 25px 0 0 20px;
   animation: floating 5s infinite;
   animation-timing-function: ease;
+  transition: background-color 2s ease;
+
 }
 
 #nav-index {
   right: 0px;
   top: 0px;
   background-color: #f5f5f5;
-  padding: 25px;
-  border-radius: 50px;
+padding: 16px 24px;  border-radius: 50px;
   box-shadow: -2px 6px 40px rgba(245, 245, 245, .8), 0px 0px 1.5px #212121;
   mix-blend-mode: hard-light;
   margin: 25px 20px 0 0;
   animation: floating 5s infinite;
   animation-timing-function: ease;
+  transition: background-color 2s ease;
 }
 
 
@@ -171,7 +176,7 @@ a {
   text-align: center;
   color: #212121;
   background: #f5f5f5;
-  padding: 25px;
+  padding: 16px 24px;
   border-radius: 50px;
   box-shadow: -2px 6px 40px rgba(245, 245, 245, .8), 0px 0px 1.5px #212121;
   mix-blend-mode: hard-light;
@@ -180,21 +185,53 @@ a {
   transition: background-color 2s ease;
   animation: floating 5s infinite;
   animation-timing-function: ease;
+  vertical-align: middle;
 }
 
 .returnbutton:hover {
     background-color: rgba(235, 227, 220, .8);
 }
 
+.back {
+  margin-right: 16px;
+  display: inline;
+  vertical-align: middle;
+}
+
+.forward {
+  margin-left: 16px;
+  display: inline;
+  vertical-align: middle;
+}
+
+#nav-home:hover {
+    background-color: rgba(235, 227, 220, .8);
+}
+
+#nav-index:hover {
+    background-color: rgba(235, 227, 220, .8);
+}
 #logos {
   position: fixed;
-  right: 20px;
-  bottom: 20px;
+  right: 25px;
+  bottom: 18px;
   cursor: pointer;
+  background: #f5f5f5;
+  mix-blend-mode: hard-light;
+  padding: 12px;
+  border-radius: 60px;
+  box-shadow: -2px 6px 40px rgba(245, 245, 245, .8), 0px 0px 1.5px #212121;
+  transition: background-color 2s ease;
+  animation: floating 5s infinite;
+  animation-timing-function: ease;
+  font-size: 1.3em;
+  vertical-align: middle;
 }
 
 #logos img {
-  height: 80px;
+  max-height: 50px;
+  max-width: 50px;
+  margin: 0 .5em;
 }
 
 #skipintro {

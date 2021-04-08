@@ -4,10 +4,10 @@
       <div class="header">Transcript</div>
 
       <template v-if="status=='playing'">
-        PLAYING
+        <span class="play play-status"><img class="icon" src="@/assets/interface/volume_up.svg"/>PLAYING</span>
       </template>
       <template v-if="status=='stopped'">
-        STOPPED
+        <span class="stop play-status"><img class="icon" src="@/assets/interface/volume_off.svg"/>STOPPED</span>
       </template>
 
       <div class="transcript">
@@ -95,23 +95,33 @@ export default {
   z-index: 1000;
   bottom: 0px;
   left: 0px;
-  width: 25vw;
-  max-height: 400px;
+  width: 30vw;
+  max-height: 60vh;
 }
 
 .content {
   overflow: auto;
   margin-top: -10px;
-  padding: 25px;
+  padding: 35px;
   background-color: #f5f5f5;
   font-size: .9em;
   box-shadow: -2px 6px 40px rgba(245, 245, 245, .8), 0px 0px 1.5px #212121;
   mix-blend-mode: hard-light;
   border-radius: 50px 50px 0 0;
+  line-height: 200%;
   margin: 0 0 0 20px;
-  }
+  scrollbar-width: none;
+}
+
+.content::-webkit-scrollbar {
+  display: none;
+}
+
+
 
 .person {
+  display: block;
+  margin-top: 25px;
   font-weight: 700;
 }
 
@@ -137,6 +147,31 @@ export default {
 .date {
   font-style: italic;
   color: #5b5b5b;
+}
+
+.icon {
+  display: inline;
+  vertical-align: middle;
+  margin-right: 8px;
+  width: 16px;
+}
+
+.play-status {
+ padding: 8px 16px 8px 12px;
+ border-radius: 20px;
+ display: inline;
+ font-size: .825em;
+}
+
+.stop {
+  box-shadow: 0px 0px 1.5px #212121;
+  color: rgba(91, 91, 91, .8);
+  margin-bottom: 20px;
+}
+
+.play {
+  color: #212121; 
+  box-shadow: 0px 0px 20px rgba(110, 167, 252, .5), 0px 0px 1.5px #212121;
 }
 
 </style>
