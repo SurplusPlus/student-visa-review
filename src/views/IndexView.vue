@@ -173,12 +173,12 @@ export default {
 }
 
 .interview.playing {
-  background-color: black;
-  color: rgba(245, 245, 245, .7);
+  background-color: rgba(110, 167, 252, .5);
+  color: #212121;
 }
 
 .interview.nextPlaying {
-  color: rgba(245, 245, 245, .7);
+   color: #212121;
     animation-name: nextPlayingAnimation;
     animation-duration: 1s;
     animation-timing-function: ease-in-out;
@@ -187,9 +187,9 @@ export default {
 
 
 @keyframes nextPlayingAnimation {
-    0%     { background-color:rgba(245, 245, 245, .7); }
-    50.0%  { background-color:black; }
-    100.0%  { background-color:rgba(245, 245, 245, .7); }
+    0%     { background-color:rgba(110, 167, 252, .1); }
+    50.0%  { background-color:rgba(110, 167, 252, .5); }
+    100.0%  { background-color:rgba(110, 165, 252, .1); }
 }
 
 .interviewblob {
