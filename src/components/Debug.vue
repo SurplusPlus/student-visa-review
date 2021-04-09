@@ -3,6 +3,8 @@
     <select v-model="sky" >
       <option>day</option>
       <option>night</option>
+      <option>sunrise</option>
+      <option>sunset</option>
     </select>
     <select v-model="fixedcanvas" >
       <option>fixed</option>

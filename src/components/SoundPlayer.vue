@@ -66,6 +66,7 @@ export default {
 
         this.audioHowl = new Howl({
           src: [this.audioFile],
+          html5: true,
           autoplay: false,
           loop: false,
           onload: function() {

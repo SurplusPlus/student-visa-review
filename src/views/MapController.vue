@@ -200,20 +200,24 @@ export default {
         end = 0;
       }
 
-      var otherelem, otherid;
+      /* sky transition logic
 
-      if(thisdata.type === "transit") {
+        if this is an intro file, do one transition at the halfway mark.
+        if this is an interview file, do two transitions.
+        if this is a start file, do three transitions.
+      */
 
-        if(thisdata.id.includes("-B")) { 
-          otherid = thisdata.id.replace("-B", "-A");
-        } else { 
-          otherid = thisdata.id.replace("-A", "-B")
-        }
-        var otherelem = document.getElementById("mapblob-" + otherid);
-        console.log(otherid, otherelem)
+      var numTransitions = 1;
+      if(thisdata.type === 'intro') { numTransitions = 1; }
+      if(thisdata.type === 'interview') { numTransitions = 2; }
+      if(thisdata.type === 'start') { numTransitions = 3; }
 
+      var transitionTimes = [];
+      for(let i = 0; i < numTransitions; i++) {
+        transitionTimes.push(1 / (numTransitions + 1) * (i + 1));
       }
 
+      console.log(transitionTimes);
 
       this.gsapMapcanvas = gsap.to("#mapblob-" + newid, {
         motionPath: {
@@ -229,24 +233,18 @@ export default {
           if(self.cameraFocusedOnId === newid) { // this is so blobs keep on animating and we can just change the camera focus
             self.mcX = gsap.getProperty(this.targets()[0], "x");
             self.mcY = gsap.getProperty(this.targets()[0], "y");
+            if(transitionTimes.length > 0 && this.progress() > transitionTimes[0]) {
+              transitionTimes.shift()
+              self.$root.$emit('skyChange') //backgroundsky.vue handles this
+            }
           }
         },
         onStart: function() {
-          if(otherelem) { 
-            console.log("trying to hide other");
-            console.log(otherid);
-            otherelem.style.display = 'none';
-          }
         },
         onComplete: function() {
-          if(otherelem) { 
-            otherelem.style.display = 'block'; 
-            this.pause(0);
-          } else {
-            self.cameraFocusedOnId = null;
-            this.reverse();
-            this.timeScale(3);
-          }
+          self.cameraFocusedOnId = null;
+          this.reverse();
+          this.timeScale(3);
           self.$store.commit("setPlayingPathId", null);
           if(newid === introId) {
             self.$store.commit("setPlayedIntro", true);
@@ -346,8 +344,9 @@ export default {
     nextPlayingPathId(newid, oldid) {
       this.scheduleNewJourney(newid, oldid);
     },
-    playingPathDuration(newdur) {
+    playingPathDuration(newdur, olddur) {
       try {
+        console.log(newdur, olddur)
         console.log(this.gsapMapcanvas.duration())
         this.gsapMapcanvas.duration(newdur)
        } catch {}

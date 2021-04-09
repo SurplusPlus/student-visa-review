@@ -8,7 +8,6 @@
         <transition name="fade">
           <Transcript />
         </transition>
-        <Debug />
     </template>
 
     <template v-if="!playedIntro">
@@ -46,7 +45,6 @@
 
 import Transcript from "@/components/Transcript.vue";
 import About from "@/components/About.vue";
-import Debug from "@/components/Debug.vue";
 import SoundPlayer from "@/components/SoundPlayer.vue";
 import "@fontsource/cormorant-garamond/500.css"
 import "@fontsource/space-mono/400.css"
@@ -64,7 +62,6 @@ export default {
     };
   },
   components: {
-    Debug,
     About,
     Transcript,
     SoundPlayer,
