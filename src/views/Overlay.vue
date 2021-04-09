@@ -300,6 +300,7 @@ a {
   animation: floating 5s infinite;
   animation-timing-function: ease;
   transition: background-color 2s ease;
+  z-index: 10000;
 }
 
 @keyframes floating {
