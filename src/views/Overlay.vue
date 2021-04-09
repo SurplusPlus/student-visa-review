@@ -205,19 +205,19 @@ padding: 16px 24px;  border-radius: 50px;
 }
 
 #nav-home:hover {
-    background-color: rgba(110, 167, 252, .5);
+    background-color: rgba(235, 227, 220, .8);
 }
 
 #nav-index:hover {
-    background-color: rgba(110, 167, 252, .5);
+    background-color: rgba(235, 227, 220, .8);
 }
 
 #skipintro:hover {
-    background-color: rgba(110, 167, 252, .5);
+    background-color: rgba(235, 227, 220, .8);
 }
 
 #logos:hover {
-    background-color: rgba(110, 167, 252, .5);
+    background-color: rgba(235, 227, 220, .8);
 }
 
 
