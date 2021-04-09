@@ -59,6 +59,9 @@ export default {
     BackgroundSky,
   },
   computed: {
+    slug() {
+      return this.$route.params.slug;
+    },
     interviews() {
       return this.$store.getters.interviews;
     },
@@ -112,6 +115,17 @@ export default {
     },
   },
   methods: {
+    startCoordsFromSlug(slug) {
+      try {
+        var pathdata = Object.values(this.audiopathData).filter(function(d) { 
+          return d['Slug'] === slug;
+        })[0]
+        var startpoint = SVG(pathdata.elem).pointAt(0)
+        return startpoint;
+      } catch {
+        return null;
+      }
+    },
     stopFollowingExistingJourney() {
       var self = this;
       // audio fadeout is handled by SoundPlayer.vue's watch function
@@ -269,6 +283,10 @@ export default {
 
       // requeuing animation, as focus of camera goes to new blob
       this.focusOnNewBlob(newid, function() {
+        var newslug = self.audiopathData[newid]['Slug']
+        if(self.slug !== newslug) {
+          self.$router.push({ params: {slug: newslug} })
+        }
         self.startNewJourney(newid);
       });
 
@@ -305,7 +323,23 @@ export default {
       }); 
 
     },
-
+    onMapLoad() {
+      // essentially, when page loads
+      var slugCoords = this.startCoordsFromSlug(this.slug)
+      if(this.slug && slugCoords) {
+         console.log("slug", this.slug);
+        this.mcX = slugCoords.x;
+        this.mcY = slugCoords.y;
+        this.scale = 1;
+        this.introLocationSet = true;
+        this.$store.commit("setPlayedIntro", true);
+      } else {
+        this.mcX = this.startLocation.x;
+        this.mcY = this.startLocation.y;
+        this.scale = startScale;
+        this.introLocationSet = true;
+      }
+    },
   },
   watch: {
     nextPlayingPathId(newid, oldid) {
@@ -318,7 +352,7 @@ export default {
        } catch {}
     },
     playedIntro(newval, oldval) {
-      if(newval == true && oldval == false) { this.skipIntro(); }
+      if(newval == true && oldval == false && !this.slug) { this.skipIntro(); }
     },
     status(newval, oldval) {
       if(newval == "paused" && oldval == "playing") {
@@ -341,10 +375,7 @@ export default {
   },
   updated() {
     if(this.startLocation && !this.introLocationSet) {
-      this.mcX = this.startLocation.x;
-      this.mcY = this.startLocation.y;
-      this.scale = startScale ;
-      this.introLocationSet = true;
+      this.onMapLoad();
     }
   },
 };

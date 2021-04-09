@@ -268,7 +268,7 @@ export default new Vuex.Store({
         audiopath['airtableid'] = interviewsByAirtableSVGIDs[audiopath.id]['airtableid']
         audiopath.type = interviewsByAirtableSVGIDs[audiopath.id]['Type']
         audiopath['Transcript'] = interviewsByAirtableSVGIDs[audiopath.id]['Transcript']
-        audiopath['Duration'] = interviewsByAirtableSVGIDs[audiopath.id]['Duration']
+        audiopath['Slug'] = interviewsByAirtableSVGIDs[audiopath.id]['Slug']
         audiopath['Name'] = interviewsByAirtableSVGIDs[audiopath.id]['Name']
         audiopath['SVGTexture'] = interviewsByAirtableSVGIDs[audiopath.id]['SVGTexture']
         try {

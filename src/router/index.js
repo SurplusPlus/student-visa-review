@@ -30,7 +30,7 @@ const routes = [
     },
   },
   {
-    path: "/landscape",
+    path: "/landscape/:slug?",
     name: "Landscape",
     components: {
       overlay: Overlay,
