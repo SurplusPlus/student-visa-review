@@ -118,7 +118,6 @@ export default {
   padding: 16px 24px;  border-radius: 50px;
   box-shadow: 0px 0px 40px rgba(110, 167, 252, .5), 0px 0px 1.5px #212121;
   mix-blend-mode: hard-light;
-  margin: 25px 20px 0 0;
   animation: floating 5s infinite;
   animation-timing-function: ease;
   transition: background-color 2s ease;
