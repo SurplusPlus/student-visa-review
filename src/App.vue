@@ -20,6 +20,12 @@ const airtable_view = process.env.VUE_APP_AIRTABLE_VIEW ;
 
 export default {
   name: "App",
+  metaInfo: {
+    title: 'Student Visa Review',
+    meta: [
+      { charset: 'utf-8' },
+    ]
+  },
   components: {
   },
   data() {
