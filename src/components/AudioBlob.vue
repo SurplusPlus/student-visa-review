@@ -33,9 +33,9 @@ export default {
   data() {
     return {
       blob: null,
-      numPoints: 6,
-      minDuration: 2,
-      maxDuration: 3,
+      numPoints: 12,
+      minDuration: 4,
+      maxDuration: 8,
       rawpoints: [],
       tl: null,
       dimpadding: 20,
@@ -84,7 +84,7 @@ export default {
     },
     centerY() {
       if(this.thisdata.type === "interview") {
-        return this.radii.max;
+        return this.radii.max + (this.dimpadding / 4);
       } else {
         return this.radii.max + this.dimpadding;
       }
@@ -96,7 +96,7 @@ export default {
         } else if(this.thisdata.type === "intro") {
           return { min: 100, max: 120 }
         } else {
-          return { min: 70, max: 80 }
+          return { min: 60, max: 90 }
         }
       } catch {
         return null;
@@ -139,10 +139,9 @@ export default {
     areWePlaying (newv, oldv) {
       console.log(newv, oldv);
       if(newv) {
-        this.minDuration= 0.5;
-        this.maxDuration= 1;
-        console.log(this.tl.duration())
-        // TODO make this work 
+        this.tl.timeScale(3);
+      } else {
+        this.tl.timeScale(1);
       }
     }
   },
@@ -174,14 +173,14 @@ var createBlob = function(options) {
 
     if(options.animated) {
 
-      tl.to(point, duration, {
+      tl.to(point, {
         x: self.centerX + Math.cos(angle) * self.radii.max,
         y: self.centerY + Math.sin(angle) * self.radii.max,
         repeat: -1,
         yoyo: true,
         ease: "sine.inOut",
-        duration: -random(duration)
-      }); 
+        duration: duration,
+      }, random(duration)); 
     }
    
     points.push(point);
