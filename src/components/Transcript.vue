@@ -165,7 +165,8 @@ export default {
   z-index: 1000;
   bottom: 0px;
   left: 0px;
-  width: 28vw;
+  width: 30vw;
+  min-width: 400px;
   max-height: 60vh;
 
   &.mobile {
