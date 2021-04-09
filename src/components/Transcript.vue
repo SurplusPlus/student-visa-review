@@ -1,5 +1,5 @@
 <template>
-  <div id="transcript" :class="status">
+  <div id="transcript" :class="[status, { mobile: mobile }]">
     <div class="content">
       <div class="header" id="header">Transcript</div>
 
@@ -29,6 +29,7 @@
 import "@fontsource/cormorant-garamond/500.css"
 import "@fontsource/space-mono/700.css"
 
+import { isMobile } from 'mobile-device-detect';
 /*  eslint-disable */ 
 
 export default {
@@ -37,6 +38,7 @@ export default {
     return {
       lastScrollTime: null,
       isHovering: false,
+      mobile: isMobile,
     };
   },
   components: {
@@ -165,6 +167,11 @@ export default {
   left: 0px;
   width: 28vw;
   max-height: 60vh;
+
+  &.mobile {
+    width: 75vw;
+    max-height: 40vh;
+  }
 }
 
 .content {
@@ -179,6 +186,11 @@ export default {
   line-height: 200%;
   margin: 0 0 0 20px;
   scrollbar-width: none;
+
+  .mobile & {
+    padding: 30px 20px;
+    line-height: 150%;
+  }
 }
 
 .content::-webkit-scrollbar {

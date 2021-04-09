@@ -30,6 +30,7 @@ import SvgMapBackdrop from "@/components/SvgMapBackdrop.vue";
 import { SVG } from '@svgdotjs/svg.js'
 import { gsap } from "gsap";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin.js";
+import { isMobile } from 'mobile-device-detect';
 gsap.registerPlugin(MotionPathPlugin);
 
 
@@ -104,7 +105,11 @@ export default {
       return this.$store.state.playingPathDuration;
     },
     translateStyle() {
-      return  { transform: 'translate(' + (-this.mcX + this.windowWidth / 2) * this.scale + 'px, ' + (-this.mcY + this.windowHeight / 2) * this.scale + 'px) scale(' + this.scale + ')' };
+      if(isMobile) {
+        return  { transform: 'translate(' + (-this.mcX + this.windowWidth / 2) * this.scale + 'px, ' + (-this.mcY + this.windowHeight / 3) * this.scale + 'px) scale(' + this.scale + ')' };
+      } else {
+        return  { transform: 'translate(' + (-this.mcX + this.windowWidth / 2) * this.scale + 'px, ' + (-this.mcY + this.windowHeight / 2) * this.scale + 'px) scale(' + this.scale + ')' };
+      }
       //TODO to figure out centering on window
     },
     playedIntro() {

@@ -1,5 +1,5 @@
 <template>
-  <div id="intromessage">
+  <div id="intromessage" v-show="show">
     <transition name="fade" mode="out-in">
       <div id="message" class="message" @click="nextMessageStep" v-if="message != '' && show" v-html="message">
       </div>
