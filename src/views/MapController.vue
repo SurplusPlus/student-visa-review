@@ -354,7 +354,7 @@ export default {
     onMapLoad() {
       // essentially, when page loads
       var slugCoords = this.startCoordsFromSlug(this.slug)
-      if(this.slug && slugCoords) {
+      if(this.slug && slugCoords && this.slug !== "intro") {
          console.log("slug", this.slug);
         this.mcX = slugCoords.x;
         this.mcY = slugCoords.y;
