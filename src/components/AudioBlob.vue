@@ -7,7 +7,9 @@
           <template v-if="viewmode !== 'indexview'">
             <foreignObject :class="thisdata.type" x="0%" y="0%" width="100%" height="100%" dominant-baseline="middle" text-anchor="middle">
               <div class='divtextwrapper'>
-                <div @click="onclick" class='divtext'>{{ thisdata['Name'] }}</div>
+                <transition name="fade">
+                  <div @click="onclick" class='divtext' v-html="thisdata['Name']" v-show="audioBlobDisplayText"></div>
+                </transition>
               </div>
             </foreignObject>    
         </template>
@@ -128,12 +130,16 @@ export default {
     status() {
       return this.$store.state.status;
     },
+    audioBlobDisplayText() {
+      return this.$store.state.audioBlobDisplayText;
+    },
   },
   mounted() {
     this.blob = createBlob({
       this: this,
       animated: this.viewmode === "mapview",
     });
+
   },
   watch: {
     areWePlaying (newv, oldv) {
@@ -329,6 +335,16 @@ svg {
 .indexview svg {
   width: 100%;
   height: 100%;
+}
+
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 2s ease-in-out;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
 }
 
 </style>

@@ -262,7 +262,81 @@ export default {
 
 
     },
+    introZoomOut() {
+      var self = this;
+      console.log("INTRO ZOOM OUT");
+      this.gsapIntroScale = gsap.fromTo("#gsapdummy2", {
+        scale: self.scale
+      },
+      {
+        scale: 2,
+        duration: 10,
+        ease: "power1.inOut",
+        onUpdate: function() {
+          self.scale = gsap.getProperty(this.targets()[0], "scale");
+        },
+      });
+    },
 
+    startIntro() {
+      var self = this;
+      self.$root.$emit('Intro_startIntro')
+      /*
+      console.log("start Intro");
+      let thisdata = this.audiopathData[introId];
+      self.$root.$emit('SoundPlayer_playAmbient', 'airport-arrival-hall')
+ 
+      this.$store.commit("setPlayingPathId", introId);
+
+      self.cameraFocusedOnId = introId;
+
+
+      var numTransitions = 1;
+      if(thisdata.type === 'intro') { numTransitions = 1; }
+      if(thisdata.type === 'interview') { numTransitions = 2; }
+      if(thisdata.type === 'start') { numTransitions = 3; }
+
+      var transitionTimes = [];
+      for(let i = 0; i < numTransitions; i++) {
+        transitionTimes.push(1 / (numTransitions + 1) * (i + 1));
+      }
+
+      console.log(transitionTimes);
+
+      this.gsapMapcanvas = gsap.to("#mapblob-" + introId, {
+        motionPath: {
+          path: thisdata.d,
+        },
+        transformOrigin: "50% 50%",
+        force3D: false,
+        duration: 500, //placeholder; this is changed when audio duration is updated
+        ease: "power2.out",
+        onUpdate: function() {
+          if(self.cameraFocusedOnId === introId) { // this is so blobs keep on animating and we can just change the camera focus
+            self.mcX = gsap.getProperty(this.targets()[0], "x");
+            self.mcY = gsap.getProperty(this.targets()[0], "y");
+            if(transitionTimes.length > 0 && this.progress() > transitionTimes[0]) {
+              transitionTimes.shift()
+              self.$root.$emit('BackgroundSky_skyChange') //backgroundsky.vue handles this
+            }
+          }
+        },
+        onStart: function() {
+        },
+        onComplete: function() {
+          self.cameraFocusedOnId = null;
+          this.reverse();
+          this.timeScale(3);
+          self.$store.commit("setPlayingPathId", null);
+          self.$store.commit("setPlayedIntro", true);
+        },
+      });
+
+
+
+    */
+
+    },
 
 
 
@@ -293,6 +367,8 @@ export default {
           self.scale = gsap.getProperty(this.targets()[0], "scale");
         },
         onComplete: function() {
+          self.$router.push({ params: {slug: "intro"} })
+          self.startIntro();
         },
       }); 
 
@@ -354,15 +430,19 @@ export default {
       // stop existing animation
       this.stopFollowingExistingJourney();
 
-      // requeuing animation, as focus of camera goes to new blob
-      this.focusOnNewBlob(newid, function() {
-        var newslug = self.audiopathData[newid]['Slug']
-        if(self.slug !== newslug) {
-          self.$router.push({ params: {slug: newslug} })
-        }
-        self.startNewJourney(self.nextPlayingPathId);
-      });
 
+      if(newid === introId) {
+        self.startIntro();
+      } else {
+        // requeuing animation, as focus of camera goes to new blob
+        this.focusOnNewBlob(newid, function() {
+          var newslug = self.audiopathData[newid]['Slug']
+          if(self.slug !== newslug) {
+            self.$router.push({ params: {slug: newslug} })
+          }
+          self.startNewJourney(self.nextPlayingPathId);
+        });
+      }
     }, 
   },
   watch: {
@@ -387,6 +467,11 @@ export default {
         this.gsapMapcanvas.resume();
       }
     },
+    stateLoaded(newval, oldval) {
+      if(newval && (this.slug === "" || this.slug === "intro")) {
+        this.startIntro()
+      }
+    },
   },
   mounted() {
     window.gsap = gsap;
@@ -404,6 +489,9 @@ export default {
     this.$root.$on('MapController_goToIntro', () => {
       this.goToIntro();
       this.$root.$emit('SoundPlayer_fadeOut')
+    })
+    this.$root.$on('MapController_introZoomOut', () => {
+      this.introZoomOut();
     })
   },
   updated() {

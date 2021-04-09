@@ -100,9 +100,9 @@ export default new Vuex.Store({
     playingPathDuration: null,
     status: "stopped", // stopped, playing, requeuing (aka moving to a new queue)
     playedIntro: false,
-    sky: "day",
+    sky: "night",
     audioSeek: -1,
-
+    audioBlobDisplayText: false,
     
   },
   getters: {
@@ -201,6 +201,9 @@ export default new Vuex.Store({
     setAudioSeek(state, s) {
       state.audioSeek = s;
     },
+    setAudioBlobDisplayText(state, abdt) {
+      state.audioBlobDisplayText = abdt; 
+    },
   },
   actions: {
     fetchData(context) {
@@ -216,8 +219,8 @@ export default new Vuex.Store({
         base: airtable_base,
         table: airtable_interviews_table,
         view: airtable_interviews_view,
-      },
-        function(interviewsRaw) {
+     },
+      function(interviewsRaw) {
         var interviewsRaw = interviewsRaw.filter(w => w.fields["Name"]);
         var interviews = interviewsRaw.reduce((map, obj) => {
           map[obj.id] = obj;
