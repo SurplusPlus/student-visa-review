@@ -200,6 +200,25 @@ export default {
         end = 0;
       }
 
+      /* sky transition logic
+
+        if this is an intro file, do one transition at the halfway mark.
+        if this is an interview file, do two transitions.
+        if this is a start file, do three transitions.
+      */
+
+      var numTransitions = 1;
+      if(thisdata.type === 'intro') { numTransitions = 1; }
+      if(thisdata.type === 'interview') { numTransitions = 2; }
+      if(thisdata.type === 'start') { numTransitions = 3; }
+
+      var transitionTimes = [];
+      for(let i = 0; i < numTransitions; i++) {
+        transitionTimes.push(1 / (numTransitions + 1) * (i + 1));
+      }
+
+      console.log(transitionTimes);
+
       this.gsapMapcanvas = gsap.to("#mapblob-" + newid, {
         motionPath: {
           path: thisdata.d,
@@ -214,6 +233,10 @@ export default {
           if(self.cameraFocusedOnId === newid) { // this is so blobs keep on animating and we can just change the camera focus
             self.mcX = gsap.getProperty(this.targets()[0], "x");
             self.mcY = gsap.getProperty(this.targets()[0], "y");
+            if(transitionTimes.length > 0 && this.progress() > transitionTimes[0]) {
+              transitionTimes.shift()
+              self.$root.$emit('skyChange') //backgroundsky.vue handles this
+            }
           }
         },
         onStart: function() {
@@ -321,8 +344,9 @@ export default {
     nextPlayingPathId(newid, oldid) {
       this.scheduleNewJourney(newid, oldid);
     },
-    playingPathDuration(newdur) {
+    playingPathDuration(newdur, olddur) {
       try {
+        console.log(newdur, olddur)
         console.log(this.gsapMapcanvas.duration())
         this.gsapMapcanvas.duration(newdur)
        } catch {}

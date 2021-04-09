@@ -2,6 +2,8 @@
   <div id="backgroundsky" :class="sky">
     <div id="daybg" class="bgsky"></div>
     <div id="nightbg" class="bgsky"></div>
+    <div id="sunsetbg" class="bgsky"></div>
+    <div id="sunrisebg" class="bgsky"></div>
   </div>
 </template>
 
@@ -11,12 +13,28 @@ export default {
   props: ['id'],
   data() {
     return {
+      skyIndex: 0,
+      skies: ['day', 'sunset', 'night', 'sunrise'],
     };
   },
   computed: {
     sky() {
       return this.$store.state.sky;
     },
+  },
+  methods: {
+    skyChange() {
+      this.skyIndex = (this.skyIndex + 1) % this.skies.length;
+      var currentSky = this.skies[this.skyIndex];
+      console.log(currentSky);
+      this.$store.commit("setSky", currentSky)
+    },
+  },
+  mounted() {
+   this.$root.$on('skyChange', () => {
+     console.log("change sky");
+     this.skyChange()
+   })
   },
 };
 
@@ -57,12 +75,47 @@ export default {
   opacity: 1;
 }
 
-#backgroundsky.night #nightbg {
+#sunsetbg {
+  z-index: 3;
+  background: linear-gradient(180deg, #1443BB 0%, #FF8179 100%);
   opacity: 1;
 }
-#backgroundsky.day #nightbg{
-  opacity: 0;
+
+#sunrisebg {
+  z-index: 4;
+  background: linear-gradient(180deg, #8AD5FF 0%, #FFEE96 100%);
+  opacity: 1;
 }
+
+#backgroundsky.day {
+  & #daybg { opacity: 1; }
+  & #nightbg { opacity: 0; }
+  & #sunsetbg { opacity: 0; }
+  & #sunrisebg { opacity: 0; }
+}
+
+#backgroundsky.night {
+  & #daybg { opacity: 0; }
+  & #nightbg { opacity: 1; }
+  & #sunsetbg { opacity: 0; }
+  & #sunrisebg { opacity: 0; }
+}
+
+#backgroundsky.sunset {
+  & #daybg { opacity: 0; }
+  & #nightbg { opacity: 0; }
+  & #sunsetbg { opacity: 1; }
+  & #sunrisebg { opacity: 0; }
+}
+
+#backgroundsky.sunrise {
+  & #daybg { opacity: 0; }
+  & #nightbg { opacity: 0; }
+  & #sunsetbg { opacity: 0; }
+  & #sunrisebg { opacity: 1; }
+}
+
+
 
 
 // @keyframes sunset {
