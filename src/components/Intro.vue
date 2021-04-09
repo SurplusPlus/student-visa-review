@@ -31,13 +31,16 @@ export default {
   components: {
   },
   computed: {
+    playedIntro() {
+      return this.$store.state.playedIntro;
+    },
   },
   methods: {
     close() {
       this.$emit('close');
     },
     nextMessageStep() {
-      if(!this.ambientPlaying) {
+      if(!this.ambientPlaying && !this.playedIntro) {
         this.ambientPlaying = true;
         this.$root.$emit('SoundPlayer_playAmbient', 'airport-arrival-hall')
       }
