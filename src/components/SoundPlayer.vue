@@ -21,6 +21,10 @@ export default {
     };
   },
   mounted() {
+    var self = this;
+    this.$root.$on('SoundPlayer_fadeOut', () => {
+      self.fadeOutAudio();
+    });
   },
   methods: {
     initAmbientHowl() { 

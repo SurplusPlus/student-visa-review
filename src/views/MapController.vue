@@ -235,7 +235,7 @@ export default {
             self.mcY = gsap.getProperty(this.targets()[0], "y");
             if(transitionTimes.length > 0 && this.progress() > transitionTimes[0]) {
               transitionTimes.shift()
-              self.$root.$emit('skyChange') //backgroundsky.vue handles this
+              self.$root.$emit('BackgroundSky_skyChange') //backgroundsky.vue handles this
             }
           }
         },
@@ -286,11 +286,39 @@ export default {
         if(self.slug !== newslug) {
           self.$router.push({ params: {slug: newslug} })
         }
-        self.startNewJourney(newid);
+        self.startNewJourney(self.nextPlayingPathId);
       });
 
     },
-    skipIntro() {
+    goToIntro() {
+      var self = this;
+      this.stopFollowingExistingJourney();
+      console.log("gotointroooo");
+      this.$store.commit("setPlayedIntro", false);
+
+      gsap.fromTo("#gsapdummy", {
+        x: this.mcX,
+        y: this.mcY,
+      },
+      {
+        x: this.startLocation.x,
+        y: this.startLocation.y,
+        scale: startScale,
+        transformOrigin: "50% 50%",
+        force3D: false,
+        duration: 5,
+        ease: "power1.inOut",
+        onUpdate: function() {
+          self.mcX = gsap.getProperty(this.targets()[0], "x");
+          self.mcY = gsap.getProperty(this.targets()[0], "y");
+          self.scale = gsap.getProperty(this.targets()[0], "scale");
+        },
+        onComplete: function() {
+        },
+      }); 
+
+    },
+    goHome() {
       var self = this;
 
       console.log("skipping intro");
@@ -318,6 +346,7 @@ export default {
           self.scale = gsap.getProperty(this.targets()[0], "scale");
         },
         onComplete: function() {
+          self.$store.commit("setPlayedIntro", true);
         },
       }); 
 
@@ -352,7 +381,7 @@ export default {
        } catch {}
     },
     playedIntro(newval, oldval) {
-      if(newval == true && oldval == false && !this.slug) { this.skipIntro(); }
+//      if(newval == true && oldval == false && !this.slug) { this.goHome(); }
     },
     status(newval, oldval) {
       if(newval == "paused" && oldval == "playing") {
@@ -371,6 +400,14 @@ export default {
     window.addEventListener('resize', () => {
       this.windowHeight = window.innerHeight
       this.windowWidth= window.innerWidth
+    })
+    this.$root.$on('MapController_goHome', () => {
+      this.goHome();
+      this.$root.$emit('SoundPlayer_fadeOut')
+    })
+    this.$root.$on('MapController_goToIntro', () => {
+      this.goToIntro();
+      this.$root.$emit('SoundPlayer_fadeOut')
     })
   },
   updated() {

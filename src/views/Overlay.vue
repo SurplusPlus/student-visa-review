@@ -2,7 +2,8 @@
   <div class="nav">
 
     <template v-if="route.name == 'Landscape' && playedIntro">
-        <div id="nav-home" class="navbutton"  ><router-link :to="{ name: 'Landscape' }">Home</router-link></div>
+        <div id="nav-home" class="navbutton"  ><router-link @click.native="goHome" :to="{ name: 'Landscape' }">Home</router-link></div>
+        <div id="nav-intro" class="navbutton" @click="goToIntro" >Intro</div>
         <div id="nav-index" class="navbutton" ><router-link :to="{ name: 'Index' }">Index<img class="forward" src="@/assets/interface/forward.svg"/></router-link></div>
 
         <transition name="fade">
@@ -82,8 +83,14 @@ export default {
       this.showAbout = !(this.showAbout);
     },
     skipIntro: function() {
-      this.$store.commit("setPlayedIntro", true);
-      /* DO SOME SKIIPING TODO */
+      this.$root.$emit('MapController_goHome')
+    },
+    goHome() {
+      this.$root.$emit('MapController_goHome')
+    },
+    goToIntro() {
+      console.log("goToIntrp");
+      this.$root.$emit('MapController_goToIntro')
     },
   }
 };
@@ -135,8 +142,22 @@ a {
   animation: floating 5s infinite;
   animation-timing-function: ease;
   transition: background-color 2s ease;
-
 }
+
+#nav-intro {
+  left: 120px;
+  top: 0px;
+  background-color: #f5f5f5;
+  padding: 16px 24px;  
+    border-radius: 50px;
+  box-shadow: -2px 6px 40px rgba(245, 245, 245, .8), 0px 0px 1.5px #212121;
+  mix-blend-mode: hard-light;
+  margin: 25px 0 0 20px;
+  animation: floating 5s infinite;
+  animation-timing-function: ease;
+  transition: background-color 2s ease;
+}
+
 
 #nav-index {
   right: 0px;
