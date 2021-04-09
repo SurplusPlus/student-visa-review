@@ -4,10 +4,13 @@
       <div class="header">Transcript</div>
 
       <template v-if="status=='playing'">
-        <span class="play play-status"><img class="icon" src="@/assets/interface/volume_up.svg"/>PLAYING</span>
+        <span class="play play-status" @click="pauseAudio"><img class="icon" src="@/assets/interface/volume_up.svg"/>PLAYING</span>
       </template>
       <template v-if="status=='stopped'">
         <span class="stop play-status"><img class="icon" src="@/assets/interface/volume_off.svg"/>STOPPED</span>
+      </template>
+      <template v-if="status=='paused'">
+        <span class="pause play-status" @click="playAudio" ><img class="icon" src="@/assets/interface/volume_off.svg"/>PAUSED</span>
       </template>
 
       <div class="transcript">
@@ -81,6 +84,12 @@ export default {
     },
   },
   methods: {
+    pauseAudio() {
+      return this.$store.commit("setStatus", "paused");
+    },
+    playAudio() {
+      return this.$store.commit("setStatus", "playing");
+    },
   }
 };
 </script>
@@ -161,9 +170,10 @@ export default {
  border-radius: 20px;
  display: inline;
  font-size: .825em;
+ cursor: pointer;
 }
 
-.stop {
+.stop, .pause {
   box-shadow: 0px 0px 1.5px #212121;
   color: rgba(91, 91, 91, .8);
   margin-bottom: 20px;

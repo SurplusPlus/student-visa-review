@@ -34,7 +34,7 @@ gsap.registerPlugin(MotionPathPlugin);
 
 
 var transitionTime= 2; 
-var startScale = 5;
+var startScale = 6;
 
 var introId = 'TRANSITjlintro'
 
@@ -106,6 +106,9 @@ export default {
     },
     playedIntro() {
       return this.$store.state.playedIntro;
+    },
+    status() {
+      return this.$store.state.status;
     },
   },
   methods: {
@@ -207,7 +210,7 @@ export default {
         transformOrigin: "50% 50%",
         force3D: false,
         duration: 500, //placeholder; this is changed when audio duration is updated
-        ease: "sine.out",
+        ease: "sine.inout",
         onUpdate: function() {
           if(self.cameraFocusedOnId === newid) { // this is so blobs keep on animating and we can just change the camera focus
             self.mcX = gsap.getProperty(this.targets()[0], "x");
@@ -316,6 +319,14 @@ export default {
     },
     playedIntro(newval, oldval) {
       if(newval == true && oldval == false) { this.skipIntro(); }
+    },
+    status(newval, oldval) {
+      if(newval == "paused" && oldval == "playing") {
+        this.gsapMapcanvas.pause();
+      }
+      if(newval == "playing" && oldval == "paused") {
+        this.gsapMapcanvas.resume();
+      }
     },
   },
   mounted() {

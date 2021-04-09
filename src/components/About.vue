@@ -1,7 +1,8 @@
 <template>
   <transition name="fade">
     <div id="aboutwrapper" v-if="show">
-      <div id="about" @click="close">
+      <div id="aboutbackdrop" @click="close"></div>
+      <div id="about" >
 
         <p>The Student Visa Review was co-curated by Jess Myers (Assistant Professor, RISD) and Lev Bratishenko (Curator Public, CCA), with SURPLUS+ (Shea Fitzpatrick, Lucy Liu, and Dan Taeyoung) and produced by RISD graduate assistants Michael Garel-Martorana, Sanjana Govind Masurkar, and Remi (Wenyue) Qiu.</p>
 
@@ -46,7 +47,6 @@ export default {
 
 
 #aboutwrapper {
-  pointer-events: none;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -59,7 +59,19 @@ export default {
   z-index: 10005;
 }
 
+#aboutbackdrop {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgb(50,50,50);
+  opacity: 0.8;
+  z-index: 0;
+}
+
 #about {
+  z-index: 1;
   pointer-events: auto;
   font-family: 'Space Mono', serif;
   background: linear-gradient(180deg, rgba(191,212,244,1) 0%, rgba(235,227,220,1) 100%); 
@@ -75,7 +87,7 @@ export default {
 
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 1s ease-in-out;
+  transition: opacity 2s ease-in-out;
 }
 .fade-enter,
 .fade-leave-to {

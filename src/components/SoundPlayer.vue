@@ -1,11 +1,5 @@
 <template>
-  <div class="soundplayer debug" :class="{ playing : isPlaying }">
-   soundplayer debug 
-    {{ playingPathId }}
-    {{ audioFile }} 
-
-    {{ ambientSrc}} 
-
+  <div class="soundplayer" :class="{ playing : isPlaying }">
   </div>
 </template>
 
@@ -106,6 +100,9 @@ export default {
     playedIntro() {
       return this.$store.state.playedIntro;
     },
+    status() {
+      return this.$store.state.status;
+    },
   },
   watch: {
     nextPlayingPathId: function(newId, oldId) {
@@ -119,7 +116,14 @@ export default {
         this.fadeOutAudio();
       }
     },
-
+    status(newval, oldval) {
+      if(newval == "paused" && oldval == "playing") {
+        this.audioHowl.pause();
+      }
+      if(newval == "playing" && oldval == "paused") {
+        this.audioHowl.play();
+      }
+    },
   },
 };
 
