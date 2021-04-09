@@ -44,7 +44,12 @@ export default {
   methods: {
     onclick: function() {
       if(this.playingPathId === this.id) {
-        // we're already playing this blob! we should pause
+        // we're already playing this blob! we should pause/play
+        if(this.status === "playing") {
+           this.$store.commit("setStatus", "paused");
+        } else {
+          return this.$store.commit("setStatus", "playing");
+        }
       } else {
 //        this.$store.commit("setNextPlayingPathId", this.id);
         this.$store.commit("setNextPlayingPathId", this.id);
@@ -119,7 +124,10 @@ export default {
       } else {
         return require('@/assets/map/maptextures/broken_image.gif')
       }
-    }
+    },
+    status() {
+      return this.$store.state.status;
+    },
   },
   mounted() {
     this.blob = createBlob({
