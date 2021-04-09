@@ -18,7 +18,7 @@ var siteName = "Student Visa Review"
 const routes = [
   {
     path: "/",
-    redirect: "/coming-soon"
+    redirect: "/landscape"
   },
   {
     path: "/index/:slug?",
@@ -36,15 +36,6 @@ const routes = [
       overlay: Overlay,
       index: null,
       map: MapController,
-    },
-  },
-  {
-    path: "/testview",
-    name: "TestView",
-    components: {
-      overlay: Overlay,
-      index: null,
-      map: TestView,
     },
   },
   {
