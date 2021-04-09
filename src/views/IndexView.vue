@@ -130,7 +130,7 @@ export default {
 .bureauchief {
   width: 325px;    
   box-shadow: -.5px .5px 0px #212121;
-  background: rgba(201, 215, 239, .3);
+  // background: rgba(201, 215, 239, .3);
 }
 
 .bc-info {
@@ -173,7 +173,7 @@ export default {
 }
 
 .interview.playing {
-  background-color: rgba(110, 167, 252, .5);
+  background-color: rgba(110, 167, 252, 1);
   color: #212121;
 }
 
