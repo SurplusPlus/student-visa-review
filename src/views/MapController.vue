@@ -216,7 +216,7 @@ export default {
         },
         transformOrigin: "50% 50%",
         force3D: false,
-        duration: 500, //placeholder; this is changed when audio duration is updated
+        duration: 632, //placeholder; this is changed when audio duration is updated
         ease: "power2.out",
         onUpdate: function() {
           if(self.cameraFocusedOnId === newid) { // this is so blobs keep on animating and we can just change the camera focus
@@ -331,7 +331,7 @@ export default {
       },
       {
         scale: 1,
-        duration: 10,
+        duration: 20,
         ease: "power2.out",
         onUpdate: function() {
           self.scale = gsap.getProperty(this.targets()[0], "scale");
@@ -376,7 +376,10 @@ export default {
           self.scale = gsap.getProperty(this.targets()[0], "scale");
         },
         onComplete: function() {
-          self.$router.push({ params: {slug: "intro"} })
+          if(this.slug !== 'intro') {
+            console.log(this.slug)
+            self.$router.push({ params: {slug: "intro"} })
+          }
           self.startIntro();
         },
       }); 

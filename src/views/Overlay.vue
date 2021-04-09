@@ -3,7 +3,7 @@
 
     <Loading :show="showLoading"></Loading>
 
-    <Intro></Intro>
+    <Intro :show="!playedIntro"></Intro>
 
 
     <template v-if="route.name == 'Landscape' && playedIntro">
@@ -96,6 +96,7 @@ export default {
     },
     skipIntro: function() {
       this.$root.$emit('MapController_goHome')
+      this.$store.commit("setPlayedIntro", true)
     },
     goHome() {
       this.$root.$emit('MapController_goHome')

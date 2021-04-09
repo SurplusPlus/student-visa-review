@@ -6,7 +6,7 @@
 
           <template v-if="viewmode !== 'indexview'">
             <foreignObject :class="thisdata.type" x="0%" y="0%" width="100%" height="100%" dominant-baseline="middle" text-anchor="middle">
-              <div class='divtextwrapper'>
+              <div class='divtextwrapper' :style="'height: ' + viewboxdim + 'px; width: ' + viewboxdim + 'px;'">
                 <transition name="fade">
                   <div @click="onclick" class='divtext' v-html="thisdata['Name']" v-show="audioBlobDisplayText"></div>
                 </transition>
