@@ -31,7 +31,7 @@ export default {
     },
   },
   mounted() {
-   this.$root.$on('skyChange', () => {
+   this.$root.$on('BackgroundSky_skyChange', () => {
      console.log("change sky");
      this.skyChange()
    })

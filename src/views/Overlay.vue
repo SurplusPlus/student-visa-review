@@ -2,7 +2,7 @@
   <div class="nav">
 
     <template v-if="route.name == 'Landscape' && playedIntro">
-        <div id="nav-home" class="navbutton"  ><router-link :to="{ name: 'Landscape' }">Home</router-link></div>
+        <div id="nav-home" class="navbutton"  ><router-link @click.native="goHome" :to="{ name: 'Landscape' }">Home</router-link></div>
         <div id="nav-index" class="navbutton" ><router-link :to="{ name: 'Index' }">Index<img class="forward" src="@/assets/interface/forward.svg"/></router-link></div>
 
         <transition name="fade">
@@ -84,6 +84,9 @@ export default {
     skipIntro: function() {
       this.$store.commit("setPlayedIntro", true);
       /* DO SOME SKIIPING TODO */
+    },
+    goHome() {
+      this.$root.$emit('MapController_goHome')
     },
   }
 };

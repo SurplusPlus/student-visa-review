@@ -235,7 +235,7 @@ export default {
             self.mcY = gsap.getProperty(this.targets()[0], "y");
             if(transitionTimes.length > 0 && this.progress() > transitionTimes[0]) {
               transitionTimes.shift()
-              self.$root.$emit('skyChange') //backgroundsky.vue handles this
+              self.$root.$emit('BackgroundSky_skyChange') //backgroundsky.vue handles this
             }
           }
         },
@@ -290,7 +290,7 @@ export default {
       });
 
     },
-    skipIntro() {
+    goHome() {
       var self = this;
 
       console.log("skipping intro");
@@ -352,7 +352,7 @@ export default {
        } catch {}
     },
     playedIntro(newval, oldval) {
-      if(newval == true && oldval == false && !this.slug) { this.skipIntro(); }
+      if(newval == true && oldval == false && !this.slug) { this.goHome(); }
     },
     status(newval, oldval) {
       if(newval == "paused" && oldval == "playing") {
@@ -371,6 +371,10 @@ export default {
     window.addEventListener('resize', () => {
       this.windowHeight = window.innerHeight
       this.windowWidth= window.innerWidth
+    })
+    this.$root.$on('MapController_goHome', () => {
+      this.goHome();
+      this.$root.$emit('SoundPlayer_fadeOut')
     })
   },
   updated() {
