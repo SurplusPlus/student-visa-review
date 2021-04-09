@@ -173,7 +173,7 @@ a {
 #nav-intro {
   left: 120px;
   top: 0px;
-
+  cursor: pointer;
   .mobile & {
     left: 70px;
   }
