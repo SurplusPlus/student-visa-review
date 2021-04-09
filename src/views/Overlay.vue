@@ -1,6 +1,5 @@
 <template>
-  <div class="nav">
-
+  <div id="nav" :class="{ mobile: mobile }">
     <Loading :show="showLoading"></Loading>
 
     <Intro :show="!playedIntro"></Intro>
@@ -48,15 +47,16 @@
 </template>
 
 <script>
+/*  eslint-disable */ 
 
 import Transcript from "@/components/Transcript.vue";
 import About from "@/components/About.vue";
 import Loading from "@/components/Loading.vue";
 import Intro from "@/components/Intro.vue";
 import SoundPlayer from "@/components/SoundPlayer.vue";
-import "@fontsource/cormorant-garamond/500.css"
 import "@fontsource/space-mono/400.css"
 
+import { isMobile } from 'mobile-device-detect';
 
 export default {
   name: "Overlay",
@@ -67,6 +67,7 @@ export default {
       logo_plus: require('@/assets/logos/plus.png'),
 
       showAbout: false,
+      mobile: isMobile,
     };
   },
   components: {
@@ -116,7 +117,7 @@ export default {
 <style scoped lang="scss">
 
 
-.nav {
+#nav {
   pointer-events: none;
   font-family: 'Space Mono', serif;
   position: fixed;
@@ -127,7 +128,7 @@ export default {
   bottom: 0px;
 }
 
-.nav > * {
+#nav > * {
   pointer-events: all;
 }
 
@@ -140,6 +141,22 @@ export default {
   position: fixed;
   z-index: 10000;
   font-size: 1.3em;
+
+  background-color: #f5f5f5;
+  padding: 16px 24px;  
+  border-radius: 50px;
+  box-shadow: -2px 6px 40px rgba(245, 245, 245, .8), 0px 0px 1.5px #212121;
+  mix-blend-mode: hard-light;
+  margin: 20px 0 0 20px;
+  animation: floating 5s infinite;
+  animation-timing-function: ease;
+  transition: background-color 2s ease;
+}
+
+.mobile .navbutton {
+  padding: 12px 12px;
+  font-size: 0.8em;
+  margin-left: 20px;
 }
 
 
@@ -151,43 +168,21 @@ a {
 #nav-home {
   left: 0px;
   top: 0px;
-  background-color: #f5f5f5;
-  padding: 16px 24px;  
-    border-radius: 50px;
-  box-shadow: -2px 6px 40px rgba(245, 245, 245, .8), 0px 0px 1.5px #212121;
-  mix-blend-mode: hard-light;
-  margin: 25px 0 0 20px;
-  animation: floating 5s infinite;
-  animation-timing-function: ease;
-  transition: background-color 2s ease;
 }
 
 #nav-intro {
   left: 120px;
   top: 0px;
-  background-color: #f5f5f5;
-  padding: 16px 24px;  
-    border-radius: 50px;
-  box-shadow: -2px 6px 40px rgba(245, 245, 245, .8), 0px 0px 1.5px #212121;
-  mix-blend-mode: hard-light;
-  margin: 25px 0 0 20px;
-  animation: floating 5s infinite;
-  animation-timing-function: ease;
-  transition: background-color 2s ease;
+
+  .mobile & {
+    left: 70px;
+  }
 }
 
 
 #nav-index {
-  right: 0px;
+  right: 20px;
   top: 0px;
-  background-color: #f5f5f5;
-padding: 16px 24px;  border-radius: 50px;
-  box-shadow: -2px 6px 40px rgba(245, 245, 245, .8), 0px 0px 1.5px #212121;
-  mix-blend-mode: hard-light;
-  margin: 25px 20px 0 0;
-  animation: floating 5s infinite;
-  animation-timing-function: ease;
-  transition: background-color 2s ease;
 }
 
 
@@ -259,8 +254,8 @@ padding: 16px 24px;  border-radius: 50px;
 
 #logos {
   position: fixed;
-  right: 25px;
-  bottom: 18px;
+  right: 20px;
+  bottom: 15px;
   cursor: pointer;
   background: #f5f5f5;
   mix-blend-mode: hard-light;
@@ -272,12 +267,24 @@ padding: 16px 24px;  border-radius: 50px;
   animation-timing-function: ease;
   font-size: 1.3em;
   vertical-align: middle;
+
+  .mobile & {
+    padding: 8px; 
+    display: flex;
+    flex-direction: column;
+  }
 }
 
 #logos img {
   max-height: 50px;
   max-width: 50px;
   margin: 0 .5em;
+
+  .mobile & {
+    max-height: 25px;
+    max-width: 25px;
+    margin-top: 10px;
+  }
 }
 
 #skipintro {
