@@ -139,7 +139,7 @@ export default {
     areWePlaying (newv, oldv) {
       console.log(newv, oldv);
       if(newv) {
-        this.tl.timeScale(3);
+        this.tl.timeScale(4);
       } else {
         this.tl.timeScale(1);
       }
