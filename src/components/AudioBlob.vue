@@ -1,13 +1,13 @@
 <template>
   <div :id="'audioBlob-' + id" :class="[ 'audioBlob', viewmode, thisdata.type, { 'playing': areWePlaying } ]" :style="positionStyle">  
-      <svg @click="onclick" :width="viewboxdim" :height="viewboxdim" :viewBox="'0 0 ' + viewboxdim + ' ' + viewboxdim">
+      <svg :width="viewboxdim" :height="viewboxdim" :viewBox="'0 0 ' + viewboxdim + ' ' + viewboxdim">
         <g>
-          <path class="blobpath" :d="points" :style="'fill: url(#texture-' + id + ')' "></path>
+          <path @click="onclick" class="blobpath" :d="points" :style="'fill: url(#texture-' + id + ')' "></path>
 
           <template v-if="viewmode !== 'indexview'">
             <foreignObject :class="thisdata.type" x="0%" y="0%" width="100%" height="100%" dominant-baseline="middle" text-anchor="middle">
               <div class='divtextwrapper'>
-                <div class='divtext'>{{ thisdata['Name'] }}</div>
+                <div @click="onclick" class='divtext'>{{ thisdata['Name'] }}</div>
               </div>
             </foreignObject>    
         </template>
