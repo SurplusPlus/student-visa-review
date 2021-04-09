@@ -107,6 +107,9 @@ export default {
     playedIntro() {
       return this.$store.state.playedIntro;
     },
+    status() {
+      return this.$store.state.status;
+    },
   },
   methods: {
     stopFollowingExistingJourney() {
@@ -316,6 +319,14 @@ export default {
     },
     playedIntro(newval, oldval) {
       if(newval == true && oldval == false) { this.skipIntro(); }
+    },
+    status(newval, oldval) {
+      if(newval == "paused" && oldval == "playing") {
+        this.gsapMapcanvas.pause();
+      }
+      if(newval == "playing" && oldval == "paused") {
+        this.gsapMapcanvas.resume();
+      }
     },
   },
   mounted() {
