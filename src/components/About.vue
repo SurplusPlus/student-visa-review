@@ -56,7 +56,7 @@ export default {
   right: 0;
   bottom: 0;
   left: 0;
-  z-index: 10005;
+  z-index: 20000;
 }
 
 #aboutbackdrop {
