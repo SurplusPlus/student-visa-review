@@ -294,6 +294,8 @@ export default {
       var self = this;
       this.stopFollowingExistingJourney();
       console.log("gotointroooo");
+      this.$store.commit("setPlayedIntro", false);
+
       gsap.fromTo("#gsapdummy", {
         x: this.mcX,
         y: this.mcY,
@@ -344,6 +346,7 @@ export default {
           self.scale = gsap.getProperty(this.targets()[0], "scale");
         },
         onComplete: function() {
+          self.$store.commit("setPlayedIntro", true);
         },
       }); 
 
@@ -378,7 +381,7 @@ export default {
        } catch {}
     },
     playedIntro(newval, oldval) {
-      if(newval == true && oldval == false && !this.slug) { this.goHome(); }
+//      if(newval == true && oldval == false && !this.slug) { this.goHome(); }
     },
     status(newval, oldval) {
       if(newval == "paused" && oldval == "playing") {

@@ -83,8 +83,7 @@ export default {
       this.showAbout = !(this.showAbout);
     },
     skipIntro: function() {
-      this.$store.commit("setPlayedIntro", true);
-      /* DO SOME SKIIPING TODO */
+      this.$root.$emit('MapController_goHome')
     },
     goHome() {
       this.$root.$emit('MapController_goHome')
