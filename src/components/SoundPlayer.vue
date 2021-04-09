@@ -140,7 +140,11 @@ export default {
       clearInterval(this.audioSeekTimer);
     },
     updateSeek(callback) {
-      this.$store.commit("setAudioSeek", this.audioHowl.seek())
+      try {
+        this.$store.commit("setAudioSeek", this.audioHowl.seek())
+      } catch {
+        console.log("can't setAudioSeek");
+      }
     },
   },
   computed: {

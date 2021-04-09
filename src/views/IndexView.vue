@@ -53,13 +53,11 @@ export default {
       catch { return undefined;  }
     },
     audiopathDataFromAirtableId(airtableid) {
-        console.log("looking for", airtableid);
       try {
         return Object.values(this.audiopathData).filter(function(d) {
           return d.airtableid === airtableid;
         })[0];
       } catch {
-        console.log("nope, doesn't exist");
         return null;
       }
     },

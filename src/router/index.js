@@ -21,7 +21,7 @@ const routes = [
     redirect: "/coming-soon"
   },
   {
-    path: "/index",
+    path: "/index/:slug?",
     name: "Index",
     components: {
       overlay: Overlay,
