@@ -119,19 +119,6 @@ export default {
       if(this.gsapMapcanvas) { this.gsapMapcanvas.reverse(); }
 
 
-      if(this.scale !== 1) {
-        this.gsapIntroScale = gsap.fromTo("#gsapdummy2", {
-          scale: self.scale
-        },
-        {
-          scale: 1,
-          duration: 10, 
-          ease: "power1.inOut",
-          onUpdate: function() {
-            self.scale = gsap.getProperty(this.targets()[0], "scale");
-          },
-        });
-      }
 
 
     },
@@ -295,17 +282,20 @@ export default {
       gsap.fromTo("#gsapdummy", {
         x: this.mcX,
         y: this.mcY,
+        scale: self.scale,
       },
       {
         x: this.homeLocation.x,
         y: this.homeLocation.y,
+          scale: 1,
         transformOrigin: "50% 50%",
         force3D: false,
-        duration: 10,
-        ease: "sine.inOut",
+        duration: 5,
+        ease: "power3.inOut",
         onUpdate: function() {
           self.mcX = gsap.getProperty(this.targets()[0], "x");
           self.mcY = gsap.getProperty(this.targets()[0], "y");
+          self.scale = gsap.getProperty(this.targets()[0], "scale");
         },
         onComplete: function() {
         },
