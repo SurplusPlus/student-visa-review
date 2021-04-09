@@ -3,6 +3,9 @@
 
     <Loading :show="showLoading"></Loading>
 
+    <Intro :show="!playedIntro"></Intro>
+
+
     <template v-if="route.name == 'Landscape' && playedIntro">
         <div id="nav-home" class="navbutton"  ><router-link @click.native="goHome" :to="{ name: 'Landscape' }">Home</router-link></div>
         <div id="nav-intro" class="navbutton" @click="goToIntro" >Intro</div>
@@ -19,7 +22,7 @@
       </div>
     </template>
 
-    <template v-if="route.name == 'Landscape'">
+    <template v-if="route.name == 'Landscape' && playedIntro">
 
         <About :show="showAbout" @close="aboutToggle"></About>
         <div id="logos" @click="aboutToggle">
@@ -49,6 +52,7 @@
 import Transcript from "@/components/Transcript.vue";
 import About from "@/components/About.vue";
 import Loading from "@/components/Loading.vue";
+import Intro from "@/components/Intro.vue";
 import SoundPlayer from "@/components/SoundPlayer.vue";
 import "@fontsource/cormorant-garamond/500.css"
 import "@fontsource/space-mono/400.css"
@@ -68,6 +72,7 @@ export default {
   components: {
     About,
     Loading,
+    Intro,
     Transcript,
     SoundPlayer,
   },
@@ -91,15 +96,18 @@ export default {
     },
     skipIntro: function() {
       this.$root.$emit('MapController_goHome')
+      this.$store.commit("setPlayedIntro", true)
     },
     goHome() {
       this.$root.$emit('MapController_goHome')
     },
     goToIntro() {
-      console.log("goToIntrp");
       this.$root.$emit('MapController_goToIntro')
     },
-  }
+  },
+  mounted() {
+  },
+
 };
 </script>
 <style scoped lang="scss">
@@ -306,6 +314,7 @@ padding: 16px 24px;  border-radius: 50px;
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
 }
+
 
 </style>
 

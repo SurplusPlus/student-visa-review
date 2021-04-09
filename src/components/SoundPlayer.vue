@@ -14,7 +14,12 @@ export default {
     return {
       audioHowl: undefined,
       audioSeekTimer: null,
-      ambientSrc: [require('@/assets/sounds/ambient_crickets.webm' )],
+      ambientSrc: {
+        'ambient_crickets': require('@/assets/sounds/ambient_crickets.webm'),
+        'airport-arrival-hall': require('@/assets/sounds/airport-arrival-hall.mp3'),
+        'bing-bong-chime': require('@/assets/sounds/bing-bong-chime.mp3'),
+        'ambient-wave-59': require('@/assets/sounds/ambient-wave-59.mp3'),
+      },
       ambientHowl: undefined,
       isPlaying: false,
       audioFile: "",
@@ -25,17 +30,27 @@ export default {
     this.$root.$on('SoundPlayer_fadeOut', () => {
       self.fadeOutAudio();
     });
+    this.$root.$on('SoundPlayer_playAmbient', (id) => {
+      console.log(id)
+      self.playAmbient(id);
+    });
+    this.$root.$on('SoundPlayer_fadeOutAmbient', (dur) => {
+      self.fadeOutAmbient(dur, function() {
+      })
+    });
   },
   methods: {
-    initAmbientHowl() { 
+    playAmbient(id) { 
+      var fadeindur = 3000;
+      console.log(this.ambientSrc[id]);
       this.ambientHowl = new Howl({
-        src: this.ambientSrc,
+        src: [this.ambientSrc[id]],
         html5: true,
         autoplay: true,
         loop: true,
       });
+      this.ambientHowl.fade(0, 1, fadeindur)
       this.ambientHowl.play();
-      console.log("playing ambient howl")
     },
     fadeOutAudio() {
       var self = this;
@@ -45,6 +60,26 @@ export default {
         setTimeout(function() {
           self.audioHowl.stop();
           self.audioHowl.unload();
+        }, fadeoutdur)
+      } catch {}
+    },
+    fadeToAmbient(from, to, fadeoutdur) {
+      var self = this;
+      try { 
+        this.ambientHowl.fade(from, to, fadeoutdur);
+        setTimeout(function() {
+        }, fadeoutdur)
+      } catch {}
+    },
+
+    fadeOutAmbient(fadeoutdur, callback) {
+      var self = this;
+      try { 
+        this.ambientHowl.fade(1, 0, fadeoutdur);
+        setTimeout(function() {
+          self.ambientHowl.stop();
+          self.ambientHowl.unload();
+          callback();
         }, fadeoutdur)
       } catch {}
     },

@@ -14,7 +14,7 @@ export default {
   data() {
     return {
       skyIndex: 0,
-      skies: ['day', 'sunset', 'night', 'sunrise'],
+      skies: ['night', 'sunrise', 'day', 'sunset' ],
     };
   },
   computed: {
