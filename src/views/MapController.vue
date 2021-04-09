@@ -105,13 +105,10 @@ export default {
       return this.$store.state.playingPathDuration;
     },
     translateStyle() {
-      console.log(this.slug)
       
       if(isMobile && (this.slug !== "intro" &&  typeof(this.slug) !== "undefined" &&  this.slug !== "")) {
-        console.log("yopu")
         return  { transform: 'translate(' + (-this.mcX + this.windowWidth / 2) * this.scale + 'px, ' + (-this.mcY + this.windowHeight / 3) * this.scale + 'px) scale(' + this.scale + ')' };
       } else {
-        console.log("hamma");
         return  { transform: 'translate(' + (-this.mcX + this.windowWidth / 2) * this.scale + 'px, ' + (-this.mcY + this.windowHeight / 2) * this.scale + 'px) scale(' + this.scale + ')' };
       }
       //TODO to figure out centering on window
