@@ -200,21 +200,6 @@ export default {
         end = 0;
       }
 
-      var otherelem, otherid;
-
-      if(thisdata.type === "transit") {
-
-        if(thisdata.id.includes("-B")) { 
-          otherid = thisdata.id.replace("-B", "-A");
-        } else { 
-          otherid = thisdata.id.replace("-A", "-B")
-        }
-        var otherelem = document.getElementById("mapblob-" + otherid);
-        console.log(otherid, otherelem)
-
-      }
-
-
       this.gsapMapcanvas = gsap.to("#mapblob-" + newid, {
         motionPath: {
           path: thisdata.d,
@@ -232,21 +217,11 @@ export default {
           }
         },
         onStart: function() {
-          if(otherelem) { 
-            console.log("trying to hide other");
-            console.log(otherid);
-            otherelem.style.display = 'none';
-          }
         },
         onComplete: function() {
-          if(otherelem) { 
-            otherelem.style.display = 'block'; 
-            this.pause(0);
-          } else {
-            self.cameraFocusedOnId = null;
-            this.reverse();
-            this.timeScale(3);
-          }
+          self.cameraFocusedOnId = null;
+          this.reverse();
+          this.timeScale(3);
           self.$store.commit("setPlayingPathId", null);
           if(newid === introId) {
             self.$store.commit("setPlayedIntro", true);
