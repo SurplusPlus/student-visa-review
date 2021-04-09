@@ -56,20 +56,21 @@ export default {
   right: 0;
   bottom: 0;
   left: 0;
+  z-index: 10005;
 }
 
 #about {
   pointer-events: auto;
   font-family: 'Space Mono', serif;
-  background-color: #f5f5f5;
+  background: linear-gradient(180deg, rgba(191,212,244,1) 0%, rgba(235,227,220,1) 100%); 
   border-radius: 50px;
-  width: 30vw;
-  height: 60vh;
+  width: 400px;
+  min-height: 55vh;
   padding: 50px;
+  font-size: .8em;
   // animation: floating 5s infinite;
   // animation-timing-function: ease;
-  box-shadow: -2px 6px 50px rgba(245, 245, 245, 8), 0px 0px 1.5px #212121;
-
+  box-shadow: -2px 6px 50px rgba(110, 167, 252, .5), 0px 0px 1.5px #212121;
 }
 
 .fade-enter-active,
@@ -90,11 +91,11 @@ export default {
 .logos {
   display: flex;
   justify-content: center;
-  margin-top: 40px
+  margin-top: 3rem;
 }
 
 .logo {
-  max-width: 90px;
+  max-width: 75px;
   margin: 0 1em;
   height: auto;
   margin-left: 1.25em;

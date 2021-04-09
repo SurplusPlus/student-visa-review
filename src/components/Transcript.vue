@@ -95,7 +95,7 @@ export default {
   z-index: 1000;
   bottom: 0px;
   left: 0px;
-  width: 30vw;
+  width: 28vw;
   max-height: 60vh;
 }
 
@@ -104,7 +104,7 @@ export default {
   margin-top: -10px;
   padding: 35px;
   background-color: #f5f5f5;
-  font-size: .9em;
+  font-size: .8em;
   box-shadow: -2px 6px 40px rgba(245, 245, 245, .8), 0px 0px 1.5px #212121;
   mix-blend-mode: hard-light;
   border-radius: 50px 50px 0 0;
