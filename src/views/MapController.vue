@@ -286,8 +286,34 @@ export default {
         if(self.slug !== newslug) {
           self.$router.push({ params: {slug: newslug} })
         }
-        self.startNewJourney(newid);
+        self.startNewJourney(self.nextPlayingPathId);
       });
+
+    },
+    goToIntro() {
+      var self = this;
+      this.stopFollowingExistingJourney();
+      console.log("gotointroooo");
+      gsap.fromTo("#gsapdummy", {
+        x: this.mcX,
+        y: this.mcY,
+      },
+      {
+        x: this.startLocation.x,
+        y: this.startLocation.y,
+        scale: startScale,
+        transformOrigin: "50% 50%",
+        force3D: false,
+        duration: 5,
+        ease: "power1.inOut",
+        onUpdate: function() {
+          self.mcX = gsap.getProperty(this.targets()[0], "x");
+          self.mcY = gsap.getProperty(this.targets()[0], "y");
+          self.scale = gsap.getProperty(this.targets()[0], "scale");
+        },
+        onComplete: function() {
+        },
+      }); 
 
     },
     goHome() {
@@ -374,6 +400,10 @@ export default {
     })
     this.$root.$on('MapController_goHome', () => {
       this.goHome();
+      this.$root.$emit('SoundPlayer_fadeOut')
+    })
+    this.$root.$on('MapController_goToIntro', () => {
+      this.goToIntro();
       this.$root.$emit('SoundPlayer_fadeOut')
     })
   },
