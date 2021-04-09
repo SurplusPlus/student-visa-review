@@ -4,9 +4,17 @@
       <div id="aboutbackdrop" @click="close"></div>
       <div id="about" >
 
-        <p>The Student Visa Review was co-curated by Jess Myers (Assistant Professor, RISD) and Lev Bratishenko (Curator Public, CCA), with SURPLUS+ (Shea Fitzpatrick, Lucy Liu, and Dan Taeyoung) and produced by RISD graduate assistants Michael Garel-Martorana, Sanjana Govind Masurkar, and Remi (Wenyue) Qiu.</p>
+        <h3>The Student Visa Review</h3><p> was co-curated by <b>Jess Myers</b> (Assistant Professor, RISD) and <b>Lev Bratishenko</b> (Curator Public, CCA), </p><p>with SURPLUS+ <br />(<b>Shea Fitzpatrick</b>, <b>Lucy Liu</b>, and <b>Dan Taeyoung</b>) </p><p>and produced by RISD graduate assistants <b>Michael Garel-Martorana</b>, <b>Sanjana Govind Masurkar</b>, and <b>Remi (Wenyue) Qiu.</b></p>
 
-        <p>The Bureau Chiefs: Abena Acheampong Danquah (Ghana), Anastasia Fedotova (Russia), Amber Han (China), Oromia Jula (Ethiopia), Brad Lei (China), Mackenzie Luke (Barbados), Minho Kwon (Korea), and Kaijie (Kevin) Huang (China).</p>
+        <p>The Bureau Chiefs: <br />
+        <b>Abena Acheampong Danquah</b> (Ghana),<br />
+        <b>Anastasia Fedotova</b> (Russia), <br />
+        <b>Amber Han</b> (China), <br />
+        <b>Oromia Jula </b>(Ethiopia), <br />
+        <b>Brad Lei </b>(China), <br />
+        <b>Mackenzie Luke</b> (Barbados), <br />
+        <b>Minho Kwon</b> (Korea), and <br />
+        <b>Kaijie (Kevin) Huang</b> (China).</p>
 
     <div class="logos">
         <img class="logo" src="@/assets/logos/risd.png"/>
@@ -84,6 +92,10 @@ export default {
   // animation-timing-function: ease;
   box-shadow: -2px 6px 50px rgba(110, 167, 252, .5), 0px 0px 1.5px #212121;
 }
+
+p b {
+   white-space: nowrap;
+ }
 
 .fade-enter-active,
 .fade-leave-active {
