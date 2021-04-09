@@ -269,7 +269,7 @@ export default {
         scale: self.scale
       },
       {
-        scale: 2,
+        scale: 3,
         duration: 10,
         ease: "power1.inOut",
         onUpdate: function() {
@@ -278,23 +278,17 @@ export default {
       });
     },
 
-    startIntro() {
+    introStartJourney() {
       var self = this;
-      self.$root.$emit('Intro_startIntro')
-      /*
+
       console.log("start Intro");
       let thisdata = this.audiopathData[introId];
-      self.$root.$emit('SoundPlayer_playAmbient', 'airport-arrival-hall')
  
       this.$store.commit("setPlayingPathId", introId);
 
       self.cameraFocusedOnId = introId;
 
-
-      var numTransitions = 1;
-      if(thisdata.type === 'intro') { numTransitions = 1; }
-      if(thisdata.type === 'interview') { numTransitions = 2; }
-      if(thisdata.type === 'start') { numTransitions = 3; }
+      var numTransitions = 3;
 
       var transitionTimes = [];
       for(let i = 0; i < numTransitions; i++) {
@@ -332,9 +326,24 @@ export default {
         },
       });
 
+      this.gsapIntroScale = gsap.fromTo("#gsapdummy2", {
+        scale: self.scale
+      },
+      {
+        scale: 1,
+        duration: 10,
+        ease: "power2.out",
+        onUpdate: function() {
+          self.scale = gsap.getProperty(this.targets()[0], "scale");
+        },
+      });
 
 
-    */
+    },
+
+    startIntro() {
+      var self = this;
+      self.$root.$emit('Intro_startIntro')
 
     },
 
@@ -492,6 +501,9 @@ export default {
     })
     this.$root.$on('MapController_introZoomOut', () => {
       this.introZoomOut();
+    })
+    this.$root.$on('MapController_introStartJourney', () => {
+      this.introStartJourney();
     })
   },
   updated() {
