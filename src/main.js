@@ -5,6 +5,10 @@ import { sync } from 'vuex-router-sync'
 import router from './router'
 import store from './store'
 
+import VueMeta from 'vue-meta'
+
+Vue.use(VueMeta);
+
 Vue.config.productionTip = false
 
 sync(store, router);
