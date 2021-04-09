@@ -13,6 +13,7 @@ export default {
   data() {
     return {
       audioHowl: undefined,
+      audioSeekTimer: null,
       ambientSrc: [require('@/assets/sounds/ambient_crickets.webm' )],
       ambientHowl: undefined,
       isPlaying: false,
@@ -72,16 +73,34 @@ export default {
             console.log(self.audioHowl.duration())
           },
           onplay: function() {
+            self.startUpdateSeek();
             self.$store.commit("setStatus", "playing");
           },
           onstop: function() {
+            self.stopUpdateSeek();
             self.$store.commit("setStatus", "stopped");
+          },
+          onpause: function() {
+            self.stopUpdateSeek();
+            self.stopUpdateSeek();
           },
         });
 
         this.audioHowl.play();
       } catch {
       }
+    },
+    startUpdateSeek() {
+      var self = this;
+      this.audioSeekTimer = setInterval(function() {
+        self.updateSeek();
+      }, 1000);
+    },
+    stopUpdateSeek() {
+      clearInterval(this.audioSeekTimer);
+    },
+    updateSeek(callback) {
+      this.$store.commit("setAudioSeek", this.audioHowl.seek())
     },
   },
   computed: {

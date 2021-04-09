@@ -101,6 +101,7 @@ export default new Vuex.Store({
     status: "stopped", // stopped, playing, requeuing (aka moving to a new queue)
     playedIntro: false,
     sky: "day",
+    audioSeek: -1,
 
     
   },
@@ -196,6 +197,9 @@ export default new Vuex.Store({
     },
     setSky(state, sky) {
       state.sky = sky;
+    },
+    setAudioSeek(state, s) {
+      state.audioSeek = s;
     },
   },
   actions: {

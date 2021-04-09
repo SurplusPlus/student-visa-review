@@ -13,11 +13,11 @@
         <span class="pause play-status" @click="playAudio" ><img class="icon" src="@/assets/interface/volume_off.svg"/>PAUSED</span>
       </template>
 
-      <div class="transcript">
+      <div class="transcript" @mouseover="isHovering=true" @mouseout="isHovering=false">
         <div v-for="(turn, idx) in processedTranscript" :key="idx"> 
           <span class="person">{{ turn.name }}:</span>
           <p v-for="phrase in turn.phrases" :key="phrase.time">
-            <span class="time">{{ phrase.time }}</span> {{ phrase.text }} 
+            <span class="time" :id="timeToId(phrase.time)">{{ phrase.time }}</span> {{ phrase.text }} 
           </p>
         </div>
       </div>
@@ -29,11 +29,15 @@
 import "@fontsource/cormorant-garamond/500.css"
 import "@fontsource/space-mono/700.css"
 
+/*  eslint-disable */ 
 
 export default {
   name: "Transcript",
   data() {
-    return {};
+    return {
+      lastScrollTime: null,
+      isHovering: false,
+    };
   },
   components: {
   },
@@ -49,6 +53,9 @@ export default {
     },
     status() {
       return this.$store.state.status;
+    },
+    audioSeek() {
+      return this.$store.state.audioSeek;
     },
     transcript() {
       try { 
@@ -82,6 +89,21 @@ export default {
         return []; 
       }
     },
+    phraseTimes() {
+      var self = this;
+      let times = {};
+      this.processedTranscript.forEach(t => {
+        t.phrases.forEach(p => {
+          try {
+            var [min, sec] = p.time.split(":")
+            var secs = parseInt(min) * 60 + parseInt(sec)
+            times[secs] = self.timeToId(p.time);
+          } catch { }
+        });
+      });
+      return times;
+    }
+
   },
   methods: {
     pauseAudio() {
@@ -90,7 +112,41 @@ export default {
     playAudio() {
       return this.$store.commit("setStatus", "playing");
     },
-  }
+    timeToId(time) {
+      try {
+        return 'time-' + time.replace(":", "-");
+      } catch {
+        return '';
+      }
+    },
+    scrollTranscript(id) {
+      try {
+        var elem = document.getElementById(id);
+        elem.scrollIntoView({ block: 'start',  behavior: 'smooth' });
+      } catch {
+      }
+    },
+  },
+  watch: {
+    audioSeek(newS, oldS) {
+      try {
+        var nextTimes = Object.keys(this.phraseTimes).filter(t => {
+          return newS > t;
+        });
+        var nextTime = nextTimes[nextTimes.length - 1];
+      } catch {
+        var nextTime = null;
+      }
+
+      if(nextTime !== this.lastScrollTime) {
+        this.lastScrollTime = nextTime;
+        if(!this.isHovering) {
+          // only scroll if not hovering on mouse
+          this.scrollTranscript(this.phraseTimes[nextTime]);
+        }
+      }
+    },
+  },
 };
 </script>
 <style scoped lang="scss">
