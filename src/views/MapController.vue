@@ -245,6 +245,7 @@ export default {
           } else {
             self.cameraFocusedOnId = null;
             this.reverse();
+            this.timeScale(3);
           }
           self.$store.commit("setPlayingPathId", null);
           if(newid === introId) {
