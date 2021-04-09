@@ -1,8 +1,8 @@
 <template>
   <transition name="fade">
-    <div id="aboutwrapper" v-if="show">
+    <div id="aboutwrapper" v-if="show" :class="{mobile: mobile}">
       <div id="aboutbackdrop" @click="close"></div>
-      <div id="about" >
+      <div id="about" @click="close" >
 
         <h3>The Student Visa Review</h3><p> was co-curated by <b>Jess Myers</b> (Assistant Professor, RISD) and <b>Lev Bratishenko</b> (Curator Public, CCA), </p><p>with SURPLUS+ <br />(<b>Shea Fitzpatrick</b>, <b>Lucy Liu</b>, and <b>Dan Taeyoung</b>) </p><p>and produced by RISD graduate assistants <b>Michael Garel-Martorana</b>, <b>Sanjana Govind Masurkar</b>, and <b>Remi (Wenyue) Qiu.</b></p>
 
@@ -33,12 +33,15 @@
 import "@fontsource/cormorant-garamond/500.css"
 import "@fontsource/space-mono/700.css"
 
+import { isMobile } from 'mobile-device-detect';
 
 export default {
   name: "About",
   props: ['show'],
   data() {
-    return {};
+    return {
+      mobile: isMobile,
+    };
   },
   components: {
   },
@@ -123,6 +126,11 @@ p b {
   margin: 0 1em;
   height: auto;
   margin-left: 1.25em;
+
+  .mobile & {
+    width: 50px;
+    height: 50px;
+  }
 }
 
 </style>

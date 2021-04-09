@@ -169,7 +169,8 @@ export default {
   max-height: 60vh;
 
   &.mobile {
-    width: 70vw;
+    width: 75vw;
+    max-height: 40vh;
   }
 }
 
@@ -185,6 +186,11 @@ export default {
   line-height: 200%;
   margin: 0 0 0 20px;
   scrollbar-width: none;
+
+  .mobile & {
+    padding: 30px 20px;
+    line-height: 150%;
+  }
 }
 
 .content::-webkit-scrollbar {
