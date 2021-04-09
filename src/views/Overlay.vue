@@ -1,6 +1,8 @@
 <template>
   <div class="nav">
 
+    <Loading :show="showLoading"></Loading>
+
     <template v-if="route.name == 'Landscape' && playedIntro">
         <div id="nav-home" class="navbutton"  ><router-link @click.native="goHome" :to="{ name: 'Landscape' }">Home</router-link></div>
         <div id="nav-intro" class="navbutton" @click="goToIntro" >Intro</div>
@@ -46,6 +48,7 @@
 
 import Transcript from "@/components/Transcript.vue";
 import About from "@/components/About.vue";
+import Loading from "@/components/Loading.vue";
 import SoundPlayer from "@/components/SoundPlayer.vue";
 import "@fontsource/cormorant-garamond/500.css"
 import "@fontsource/space-mono/400.css"
@@ -64,6 +67,7 @@ export default {
   },
   components: {
     About,
+    Loading,
     Transcript,
     SoundPlayer,
   },
@@ -76,6 +80,9 @@ export default {
     },
     playedIntro() {
       return this.$store.state.playedIntro;
+    },
+    showLoading() {
+      return !this.$store.state.hasLoaded;
     },
   },
   methods: {

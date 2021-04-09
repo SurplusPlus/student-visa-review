@@ -189,16 +189,7 @@ export default {
  
       this.$store.commit("setPlayingPathId", newid);
 
-
       self.cameraFocusedOnId = newid;
-
-      // HANDLE transit directions
-      var start = 0;
-      var end = 1;
-      if(newid.includes("-B")) {
-        start = 1;
-        end = 0;
-      }
 
       /* sky transition logic
 
@@ -222,8 +213,6 @@ export default {
       this.gsapMapcanvas = gsap.to("#mapblob-" + newid, {
         motionPath: {
           path: thisdata.d,
-          start: start,
-          end: end,
         },
         transformOrigin: "50% 50%",
         force3D: false,
@@ -273,23 +262,13 @@ export default {
 
 
     },
-    scheduleNewJourney(newid, oldid) {
-      var self = this;
 
-      console.log("scheduling new journey")
-      // stop existing animation
-      this.stopFollowingExistingJourney();
 
-      // requeuing animation, as focus of camera goes to new blob
-      this.focusOnNewBlob(newid, function() {
-        var newslug = self.audiopathData[newid]['Slug']
-        if(self.slug !== newslug) {
-          self.$router.push({ params: {slug: newslug} })
-        }
-        self.startNewJourney(self.nextPlayingPathId);
-      });
 
-    },
+
+
+
+
     goToIntro() {
       var self = this;
       this.stopFollowingExistingJourney();
@@ -368,6 +347,23 @@ export default {
         this.introLocationSet = true;
       }
     },
+    scheduleNewJourney(newid, oldid) {
+      var self = this;
+
+      console.log("scheduling new journey")
+      // stop existing animation
+      this.stopFollowingExistingJourney();
+
+      // requeuing animation, as focus of camera goes to new blob
+      this.focusOnNewBlob(newid, function() {
+        var newslug = self.audiopathData[newid]['Slug']
+        if(self.slug !== newslug) {
+          self.$router.push({ params: {slug: newslug} })
+        }
+        self.startNewJourney(self.nextPlayingPathId);
+      });
+
+    }, 
   },
   watch: {
     nextPlayingPathId(newid, oldid) {
