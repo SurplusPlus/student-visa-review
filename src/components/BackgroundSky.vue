@@ -77,7 +77,7 @@ export default {
 
 #sunsetbg {
   z-index: 3;
-  background: linear-gradient(180deg, #1443BB 0%, #FF8179 100%);
+  background: linear-gradient(180deg, #5891FF 0%, #FF8179 100%);
   opacity: 1;
 }
 
