@@ -174,6 +174,8 @@ a {
   left: 120px;
   top: 0px;
   cursor: pointer;
+  transition: background-color 2s ease;
+
   .mobile & {
     left: 70px;
   }
@@ -240,6 +242,10 @@ a {
 }
 
 #nav-index:hover {
+    background-color: rgba(235, 227, 220, .8);
+}
+
+#nav-intro:hover {
     background-color: rgba(235, 227, 220, .8);
 }
 
