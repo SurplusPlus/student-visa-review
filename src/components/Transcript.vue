@@ -1,7 +1,7 @@
 <template>
   <div id="transcript" :class="status">
     <div class="content">
-      <div class="header">Transcript</div>
+      <div class="header" id="header">Transcript</div>
 
       <template v-if="status=='playing'">
         <span class="play play-status" @click="pauseAudio"><img class="icon" src="@/assets/interface/volume_up.svg"/>PLAYING</span>
@@ -146,6 +146,9 @@ export default {
         }
       }
     },
+  },
+  updated() {
+    this.scrollTranscript("header")
   },
 };
 </script>
