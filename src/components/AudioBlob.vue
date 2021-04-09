@@ -3,18 +3,15 @@
       <svg @click="onclick" :width="viewboxdim" :height="viewboxdim" :viewBox="'0 0 ' + viewboxdim + ' ' + viewboxdim">
         <g>
           <path class="blobpath" :d="points" :style="'fill: url(#texture-' + id + ')' "></path>
+
           <template v-if="viewmode !== 'indexview'">
-            <template v-if="thisdata.type !== 'interview'">
-              <foreignObject :class="thisdata.type" x="0%" y="0%" width="100%" height="100%" dominant-baseline="middle" text-anchor="middle">
-                <div class='divtextwrapper'>
-                  <div class='divtext'>{{ thisdata['Name'] }}</div>
-                </div>
-              </foreignObject>    
-            </template>
-            <template v-else>
-              <text x="50%" y="95%" dominant-baseline="middle" text-anchor="middle">{{ thisdata['Name'] }}</text>    
-            </template>
-          </template>
+            <foreignObject :class="thisdata.type" x="0%" y="0%" width="100%" height="100%" dominant-baseline="middle" text-anchor="middle">
+              <div class='divtextwrapper'>
+                <div class='divtext'>{{ thisdata['Name'] }}</div>
+              </div>
+            </foreignObject>    
+        </template>
+
         </g>
           <defs>
             <pattern :id="'texture-'+id" width="1" height="1" :viewBox="'0 0 ' + viewboxdim + ' ' + viewboxdim" preserveAspectRatio="none">
@@ -41,7 +38,7 @@ export default {
       maxDuration: 3,
       rawpoints: [],
       tl: null,
-      dimpadding: 30,
+      dimpadding: 20,
     };
   },
   methods: {
@@ -77,12 +74,21 @@ export default {
         return []
       }
     },
-    centerXY() {
+    centerX() {
       return this.radii.max + this.dimpadding ;
+    },
+    centerY() {
+      if(this.thisdata.type === "interview") {
+        return this.radii.max;
+      } else {
+        return this.radii.max + this.dimpadding;
+      }
     },
     radii() {
       try {
-        if(this.thisdata.type === "transit") {
+        if(this.thisdata.type === "start") {
+          return { min: 120, max: 150 }
+        } else if(this.thisdata.type === "intro") {
           return { min: 100, max: 120 }
         } else {
           return { min: 70, max: 80 }
@@ -93,7 +99,7 @@ export default {
     },
     positionStyle() {
       if(this.viewmode !== "indexview") {
-        return { 'transform': 'translate(' + -this.centerXY + "px, "+ -this.centerXY + "px)"}
+        return { 'transform': 'translate(' + -this.centerX + "px, "+ -this.centerY + "px)"}
       } else {
         return { };
       }
@@ -154,15 +160,15 @@ var createBlob = function(options) {
     
     
     let point = {
-      x: self.centerXY + Math.cos(angle) * radius,
-      y: self.centerXY + Math.sin(angle) * radius,
+      x: self.centerX + Math.cos(angle) * radius,
+      y: self.centerY + Math.sin(angle) * radius,
     };  
 
     if(options.animated) {
 
       tl.to(point, duration, {
-        x: self.centerXY + Math.cos(angle) * self.radii.max,
-        y: self.centerXY + Math.sin(angle) * self.radii.max,
+        x: self.centerX + Math.cos(angle) * self.radii.max,
+        y: self.centerY + Math.sin(angle) * self.radii.max,
         repeat: -1,
         yoyo: true,
         ease: "sine.inOut",
@@ -274,7 +280,21 @@ foreignObject, foreignObject > * {
   height: 100%;
 }
 
-.divtext {
+.interview .divtextwrapper {
+  flex-direction: column;
+  justify-content: end;
+}
+
+.divtext { 
+  font-size: 0.8em;
+  text-align: center;
+  color: #212121; 
+  line-height: 150%;
+  /* text-transform: uppercase; */
+}
+
+.intro .divtext {
+  margin: 1em; 
   display: inline-block;
   padding: 20px;
   background: rgb(245, 245, 245, 1);
@@ -282,16 +302,15 @@ foreignObject, foreignObject > * {
   mix-blend-mode: hard-light;
   /* height: 150px; */
   /* background: linear-gradient(180deg,  rgba(235,227,220,.6) 0%, rgba(191,212,244,.95) 100%); */
-  font-size: 1em;
-  text-align: center;
-  color: #212121; 
-  line-height: 150%;
-  margin: 1em; 
-  /* text-transform: uppercase; */
   box-shadow: 0px 0px 20px rgba(110, 167, 252, .2), 0px 0px .5px #212121;
 }
 
-.transit .text {
+.interview .divtext {
+  position: absolute;
+  bottom: 0px;
+}
+
+.intro .divtext {
   color: blue;
 }
 

@@ -1,11 +1,5 @@
 <template>
-  <div class="soundplayer debug" :class="{ playing : isPlaying }">
-   soundplayer debug 
-    {{ playingPathId }}
-    {{ audioFile }} 
-
-    {{ ambientSrc}} 
-
+  <div class="soundplayer" :class="{ playing : isPlaying }">
   </div>
 </template>
 
