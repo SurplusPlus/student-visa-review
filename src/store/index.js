@@ -2,7 +2,7 @@
 
 require('dotenv').config();
 
-const process_api_key = process.env.VUE_APP_AIRTABLE_API_KEY;
+const process_pat = process.env.VUE_APP_AIRTABLE_PAT;
 const airtable_base = process.env.VUE_APP_AIRTABLE_BASE;
 const airtable_interviews_table = process.env.VUE_APP_AIRTABLE_INTERVIEWS_TABLE;
 const airtable_interviews_view = process.env.VUE_APP_AIRTABLE_INTERVIEWS_VIEW;
@@ -16,7 +16,7 @@ Vue.use(Vuex);
 
 function loadAirtableData(options, callback) {
   var Airtable = require("airtable");
-  var base = new Airtable({ apiKey: options.apikey }).base(options.base);
+  var base = new Airtable({ apiKey: options.pat }).base(options.base);
   let interviews = [];
 
   base(options.table)
@@ -29,7 +29,6 @@ function loadAirtableData(options, callback) {
         fetchNextPage();
       },
       function done(err) {
-//        console.log("Fetched Interviews", interviews);
         if (err) {
           console.error(err);
           return;
@@ -215,7 +214,7 @@ export default new Vuex.Store({
     },
     fetchInterviews(context) {
       loadAirtableData({
-        apikey: process_api_key,
+        pat: process_pat,
         base: airtable_base,
         table: airtable_interviews_table,
         view: airtable_interviews_view,
@@ -232,7 +231,7 @@ export default new Vuex.Store({
     },
     fetchPeople(context) {
       loadAirtableData({
-        apikey: process_api_key,
+        pat: process_pat,
         base: airtable_base,
         table: airtable_people_table,
         view: airtable_people_view,
